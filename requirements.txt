@@ -1,0 +1,9 @@
+jupyter
+gensim
+scopus
+numpy
+pandas
+matplotlib
+scikit-learn==0.20.0
+seaborn
+wordcloud
