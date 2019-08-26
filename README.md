@@ -7,8 +7,35 @@ The notebook requires access to Scopus: A citation database of peer-reviewed lit
 
 The required Python packages can be found in `requirements.txt`. Creating a virtual Python environment is recommended (for example, `virtualenv` or `conda`). The notebook has been tested using Python 2.7 and Python 3.6. 
 
-## Running the Notebook
-After installing the dependencies, use `jupyter notebook literature_analysis.ipynb` to launch the notebook. Remaining instructions can be found within the notebook itself.
+
+# Running using virtualenv
+Installation using `virtualenv` is can be using the following commands:
+
+Create virtualenv environment named myenv:
+```
+virtualenv myenv --python=`which python3`
+```
+
+Activate virtual environment
+```
+source ./myenv/bin/activate
+```
+
+Install requirement dependencies.
+```
+pip3 install -r requirements.txt
+```
+
+Install new Jupyther kernel.
+```
+ipython kernel install --user --name=myenv
+```
+
+Run Jupyther and select `myenv` as kernel. Remaining instructions can be found within the notebook itself.
+```
+jupyther notebook literature_analysis.ipynb --MappingKernelManager.default_kernel_name=myenv
+```
+
 
 
 ## Examples
