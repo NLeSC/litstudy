@@ -90,7 +90,7 @@ def search_scopus(query):
                                                                city=affiliation.city,
                                                                country=affiliation.country))
         references = []
-        if int(paper.refcount) > 0:
+        if paper.refcount and int(paper.refcount) > 0:
             for reference in paper.references:
                 if reference.title is not None:
                     references.append(reference.title)
@@ -99,6 +99,7 @@ def search_scopus(query):
                             keywords=paper.authkeywords,
                             abstract=paper.description,
                             source=paper.publicationName,
+                            source_type=paper.aggregationType,
                             citation_count=paper.citedby_count,
                             year=int(paper.coverDate.split("-")[0]),
                             authors=authors,

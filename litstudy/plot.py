@@ -86,6 +86,21 @@ def get_affiliations(doc):
     # count for that affiliation).
     return set(affiliations)
 
+def merge_author_affiliation(doc):
+    if doc.authors is None:
+        return []
+
+    authors_plus_aff = []
+    for author in doc.authors:
+        if author.affiliations is None:
+            authors_plus_aff.append(author.name)
+        else:
+            merged = [author.name + ' ' + affiliation.name for affiliation in author.affiliations]
+            authors_plus_aff += merged
+    # print("A")
+    # print(authors_plus_aff)
+    return set(authors_plus_aff)
+
 def plot_year_histogram(docset, ax=None):
     # Publications per year
     year_count = defaultdict(int)
@@ -103,7 +118,10 @@ def plot_year_histogram(docset, ax=None):
     plot_statistic(lambda p: [p.year], docset=docset, x=years, ax=ax, x_label="No. publications")
 
 def plot_author_histogram(docset, ax=None):
-    plot_statistic(lambda p: set(a.name for a in p.authors or []), x=5, docset=docset, ax=ax, x_label="No. publications")
+    plot_statistic(lambda p: set(a.name for a in p.authors or []), x=20, docset=docset, ax=ax, x_label="No. publications")
+
+def plot_author_affiliation_histogram(docset, ax=None):
+    plot_statistic(lambda p: merge_author_affiliation(p), x=30, docset=docset, ax=ax, x_label="No. publications")
 
 def plot_number_authors_histogram(docset, ax=None):
     plot_statistic(lambda p: [len(set(a.name for a in p.authors or []))], x=5, docset=docset, ax=ax, x_label="No. publications")
