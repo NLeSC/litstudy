@@ -55,9 +55,9 @@ class DocumentSet:
 class DocumentID:
     """The platform transparent ID of a `Document`."""
 
-    def __init__(self):
+    def __init__(self, doc_id=None):
         """Initialize the ID of a document."""
-        self.id = "-1"
+        self.id = doc_id
 
     def parse_scopus(self, scopus_abstract):
         if scopus_abstract.doi is not None:
