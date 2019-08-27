@@ -7,8 +7,7 @@ def top_k(mapping, k=10):
 
 def prepare_fig(w=1, h=None):
     if h is None: h = w
-    figsize = (6 * w, 3 * h)
-    return plt.figure(figsize=figsize)
+    return plt.figure(figsize=(6 * w, 3 * h))
     # sns.set(rc={'figure.figsize': figsize})
     # plt.clf()
 
