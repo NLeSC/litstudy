@@ -52,14 +52,28 @@ class DocumentSet:
         return iter(self.docs)
 
 
+class DocumentID:
+    """The platform transparent ID of a `Document`."""
+
+    def __init__(self):
+        """Initialize the ID of a document."""
+        self.id = "-1"
+
+    def parse_scopus(self, scopus_abstract):
+        if scopus_abstract.doi is not None:
+            self.id = scopus_abstract.doi
+        else:
+            self.id = scopus_abstract.eid
+
+
 class Document:
     """ Meta data of academic document. """
 
     def __init__(self, **kwargs):
         """ Initialize document """
 
-        self.doi = kwargs.pop('doi', None)
-        """ Digital Object Identifier (DOI) of the document, or `None` if unavailable. """
+        self.id = kwargs.pop('id')
+        """ The platform transparent `DocumentID`. """
 
         self.title = kwargs.pop('title')
         """ Title of document. """
@@ -80,7 +94,9 @@ class Document:
         """ Year of publication as integer. """
 
         self.source = kwargs.pop('source', None)
-        """ Name of source (for example: 'The International Conference on Knowledge Discovery and Data Mining') or `None` if unavailable. """
+        """ Name of source (for example: 
+        'The International Conference on Knowledge Discovery and Data Mining') 
+        or `None` if unavailable. """
 
         self.citation_count = kwargs.pop('citation_count', None)
         """ The number of received citations, or `None` if unavailable. """
@@ -94,9 +110,10 @@ class Document:
 
 class Author:
     """Author of `Document`."""
+
     def __init__(self, **kwargs):
         self.orcid = kwargs.pop('orcid', None)
-        """The ORCID id of the author, or `None` if unavailable."""
+        """The ORCID of the author, or `None` if unavailable."""
 
         self.name = kwargs.pop('name')
         """Name and surname of the author."""
@@ -107,7 +124,10 @@ class Author:
         if kwargs:
             raise KeyError('got an unexpected keyword argument {}'.format(next(iter(kwargs))))
 
+
 class Affiliation:
+    """The affiliation of the `Author` of a `Document`."""
+
     def __init__(self, **kwargs):
         self.name = kwargs.pop("name")
         """The name of the institution."""
