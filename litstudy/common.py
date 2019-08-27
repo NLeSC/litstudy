@@ -1,7 +1,13 @@
 
+class DocumentSet:
+    """ Set of documents from retrieved from search query. """
+
+    def __init__(self, docs):
+        self.docs = docs
+        """ List of documents as `Document` objects. """
 
 class Document:
-  """Example of document"""
+  """ Meta data of academic document. """
 
   def __init__(self, **kwargs):
     """ Initialize document """
@@ -36,11 +42,25 @@ class Document:
     self._internal = kwargs.pop('internal', None)
     """ Internal object used to extract these properties  """
 
+    if kwargs:
+        raise KeyError('got an unexpected keyword argument {}'.format(next(iter(kwargs))))
+
 class Author:
-  def __init__(self, **kwargs):
-    self.orcid = kwargs.pop('orcid')
-    self.name = kwargs.pop('name')
-    self.affiliations = kwargs.pop('affiliations')
+    """ Author of `Document` """
+    
+    def __init__(self, **kwargs):
+        self.orcid = kwargs.pop('orcid', None)
+        """ ORCID iD of author or `None` if unavailable` """
+
+        self.name = kwargs.pop('name', None)
+        """ Name of author as reported by provider or `None` if unavailable. """
+
+        self.affiliations = kwargs.pop('affiliations', None)
+        """ Affiliations of authors as list of `Affiliation`, or `None` if unavailable. """
+
+        if kwargs:
+            raise KeyError('got an unexpected keyword argument {}'.format(next(iter(kwargs))))
+
 
 class Affiliation:
   #name

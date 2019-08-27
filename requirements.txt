@@ -1,6 +1,6 @@
 jupyter
 gensim
-scopus
+pybliometrics==2.2
 numpy
 pandas
 matplotlib
