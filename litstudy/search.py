@@ -1,4 +1,7 @@
-from .common import Document, DocumentSet, Author, Affiliation
+from pybliometrics.scopus import ScopusSearch, AbstractRetrieval, AuthorRetrieval
+from pybliometrics.scopus.exception import ScopusQueryError
+
+from .common import Document, DocumentID, DocumentSet, Author, Affiliation
 
 def search_mockup():
     a = Document(
@@ -50,9 +53,37 @@ def search_mockup():
             year=2013,
             source_type='type3',
             source='International Conference on 3')
-
-
+    
     return DocumentSet([a, b, c, d])
 
+
 def search_scopus(query):
-    return []
+    """Search Scopus."""
+    documents = []
+    try:
+        retrieved_paper_ids = ScopusSearch(query, view="STANDARD").get_eids()
+    except ScopusQueryError:
+        print("Impossible to process query \"{}\".".format(query))
+        return None
+    for paper_id in retrieved_paper_ids:
+        try:
+            paper = AbstractRetrieval(paper_id)
+        except ValueError:
+            print("Impossible to retrieve data for paper \"{}\".".format(paper_id))
+            return None
+        doc_id = DocumentID()
+        doc_id.parse_scopus(paper)
+        doc_year = int(paper.coverDate[0])
+        authors = []
+        for author in paper.authors:
+            author_affiliation = Affiliation(name=author.affiliation, city=author.city,
+                                             country=author.country)
+            authors.append(Author(name=author.indexed_name,
+                                  orcid=AuthorRetrieval(author.auid).orcid,
+                                  affiliations=[author_affiliation]))
+        document = Document(id=doc_id, title=paper.title, keywords=paper.authkeywords,
+                            abstract=paper.description, source=paper.publicationName,
+                            citation_count=paper.citedby_count, year=doc_year,
+                            authors=authors, _internal=paper)
+        documents.append(document)
+    return DocumentSet(docs=documents)
