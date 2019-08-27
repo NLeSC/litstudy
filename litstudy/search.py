@@ -1,4 +1,4 @@
-from common import Document, DocumentSet, Author
+from .common import Document, DocumentSet, Author
 
 def search_mockup():
     a = Document(
