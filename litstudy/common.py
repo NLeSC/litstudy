@@ -53,7 +53,7 @@ class DocumentSet:
 
 
 class Document:
-  """ Meta data of academic document. """
+    """ Meta data of academic document. """
 
     def __init__(self, **kwargs):
         """ Initialize document """
@@ -88,8 +88,8 @@ class Document:
         self._internal = kwargs.pop('internal', None)
         """ Internal object used to extract these properties  """
 
-    if kwargs:
-        raise KeyError('got an unexpected keyword argument {}'.format(next(iter(kwargs))))
+        if kwargs:
+            raise KeyError('got an unexpected keyword argument {}'.format(next(iter(kwargs))))
 
 
 class Author:
