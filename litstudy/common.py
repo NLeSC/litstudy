@@ -98,6 +98,9 @@ class Document:
         'The International Conference on Knowledge Discovery and Data Mining') 
         or `None` if unavailable. """
 
+        self.source_type = kwargs.pop('source_type', None)
+        """ Type of source (for example:  'Conference Proceedings') or `None` if unavailable. """
+
         self.citation_count = kwargs.pop('citation_count', None)
         """ The number of received citations, or `None` if unavailable. """
 
@@ -118,7 +121,7 @@ class Author:
         self.name = kwargs.pop('name')
         """Name and surname of the author."""
 
-        self.affiliations = kwargs.pop('affiliations')
+        self.affiliations = kwargs.pop('affiliations', None)
         """Affiliations of the author as list of `Affiliation` objects, or `None` if unavailable."""
 
         if kwargs:
