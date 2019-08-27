@@ -57,6 +57,9 @@ def search_scopus(query):
     except ScopusQueryError:
         print("Impossible to process query \"{}\".".format(query))
         return None
+    if len(retrieved_paper_ids) == 0:
+        print("No matching documents for the provided query.")
+        return None
     for paper_id in retrieved_paper_ids:
         try:
             paper = AbstractRetrieval(paper_id)
@@ -65,17 +68,24 @@ def search_scopus(query):
             return None
         doc_id = DocumentID()
         doc_id.parse_scopus(paper)
-        doc_year = int(paper.coverDate[0])
         authors = []
-        for author in paper.authors:
-            author_affiliation = Affiliation(name=author.affiliation, city=author.city,
-                                             country=author.country)
-            authors.append(Author(name=author.indexed_name,
-                                  orcid=AuthorRetrieval(author.auid).orcid,
-                                  affiliations=[author_affiliation]))
-        document = Document(id=doc_id, title=paper.title, keywords=paper.authkeywords,
-                            abstract=paper.description, source=paper.publicationName,
-                            citation_count=paper.citedby_count, year=doc_year,
-                            authors=authors, _internal=paper)
+        if paper.authorgroup is not None:
+            for author in paper.authorgroup:
+                print(author)
+                author_affiliation = Affiliation(name=author.affiliation,
+                                                 city=author.city,
+                                                 country=author.country)
+                authors.append(Author(name=author.indexed_name,
+                                      orcid=AuthorRetrieval(author.auid).orcid,
+                                      affiliations=[author_affiliation]))
+        document = Document(id=doc_id,
+                            title=paper.title,
+                            keywords=paper.authkeywords,
+                            abstract=paper.description,
+                            source=paper.publicationName,
+                            citation_count=paper.citedby_count,
+                            year=int(paper.coverDate.split("-")[0]),
+                            authors=authors,
+                            internal=paper)
         documents.append(document)
     return DocumentSet(docs=documents)
