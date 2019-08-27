@@ -1,4 +1,7 @@
 
+class DocumentSet:
+    """ Set of documents from query """
+    pass
 
 class Document:
   """Example of document"""
