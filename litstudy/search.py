@@ -78,22 +78,22 @@ def search_scopus(query):
         doc_id = DocumentID()
         doc_id.parse_scopus(paper)
         authors = []
-        if paper.authors is not None:
+        if paper.authors:
             for author in paper.authors:
                 author_affiliations = []
                 authors.append(Author(name=author.indexed_name,
                                       orcid=AuthorRetrieval(author.auid).orcid,
                                       affiliations=author_affiliations))
-                if author.affiliation is not None:
+                if author.affiliation:
                     for affiliation_id in author.affiliation:
                         affiliation = ContentAffiliationRetrieval(affiliation_id)
                         author_affiliations.append(Affiliation(name=affiliation.affiliation_name,
                                                                city=affiliation.city,
                                                                country=affiliation.country))
         references = []
-        if int(paper.refcount) > 0:
+        if paper.refcount and int(paper.refcount) > 0:
             for reference in paper.references:
-                if reference.title is not None:
+                if reference.title:
                     references.append(reference.title)
         document = Document(id=doc_id,
                             title=paper.title,
