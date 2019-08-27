@@ -70,25 +70,14 @@ def search_scopus(query):
         return None
     for paper_id in retrieved_paper_ids:
         try:
-            paper = AbstractRetrieval(paper_id)
+            paper = AbstractRetrieval(paper_id, view="FULL")
         except ValueError:
             print("Impossible to retrieve data for paper \"{}\".".format(paper_id))
             return None
         doc_id = DocumentID()
         doc_id.parse_scopus(paper)
         authors = []
-        if paper.authorgroup is not None:
-            for author in paper.authorgroup:
-                author_affiliations = []
-                authors.append(Author(name=author.indexed_name,
-                                      orcid=AuthorRetrieval(author.auid).orcid,
-                                      affiliations=author_affiliations))
-                if author.affiliation_id is not None:
-                    for affiliation in author.affiliation_id:
-                        author_affiliations.append(Affiliation(name=affiliation.name,
-                                                               city=affiliation.city,
-                                                               country=affiliation.country))
-        elif paper.authors is not None:
+        if paper.authors is not None:
             for author in paper.authors:
                 author_affiliations = []
                 authors.append(Author(name=author.indexed_name,
@@ -100,6 +89,11 @@ def search_scopus(query):
                         author_affiliations.append(Affiliation(name=affiliation.affiliation_name,
                                                                city=affiliation.city,
                                                                country=affiliation.country))
+        references = []
+        if int(paper.refcount) > 0:
+            for reference in paper.references:
+                if reference.title is not None:
+                    references.append(reference.title)
         document = Document(id=doc_id,
                             title=paper.title,
                             keywords=paper.authkeywords,
@@ -108,6 +102,7 @@ def search_scopus(query):
                             citation_count=paper.citedby_count,
                             year=int(paper.coverDate.split("-")[0]),
                             authors=authors,
+                            references=references,
                             internal=paper)
         documents.append(document)
     return DocumentSet(docs=documents)
