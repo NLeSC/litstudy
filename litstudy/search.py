@@ -1,4 +1,4 @@
-from pybliometrics.scopus import ScopusSearch, AbstractRetrieval, AuthorRetrieval
+from pybliometrics.scopus import ScopusSearch, AbstractRetrieval, AuthorRetrieval, ContentAffiliationRetrieval
 from pybliometrics.scopus.exception import ScopusQueryError
 
 from .common import Document, DocumentID, DocumentSet, Author, Affiliation
@@ -71,13 +71,27 @@ def search_scopus(query):
         authors = []
         if paper.authorgroup is not None:
             for author in paper.authorgroup:
-                print(author)
-                author_affiliation = Affiliation(name=author.affiliation,
-                                                 city=author.city,
-                                                 country=author.country)
+                author_affiliations = []
                 authors.append(Author(name=author.indexed_name,
                                       orcid=AuthorRetrieval(author.auid).orcid,
-                                      affiliations=[author_affiliation]))
+                                      affiliations=author_affiliations))
+                if author.affiliation_id is not None:
+                    for affiliation in author.affiliation_id:
+                        author_affiliations.append(Affiliation(name=affiliation.name,
+                                                               city=affiliation.city,
+                                                               country=affiliation.country))
+        elif paper.authors is not None:
+            for author in paper.authors:
+                author_affiliations = []
+                authors.append(Author(name=author.indexed_name,
+                                      orcid=AuthorRetrieval(author.auid).orcid,
+                                      affiliations=author_affiliations))
+                if author.affiliation is not None:
+                    for affiliation_id in author.affiliation:
+                        affiliation = ContentAffiliationRetrieval(affiliation_id)
+                        author_affiliations.append(Affiliation(name=affiliation.affiliation_name,
+                                                               city=affiliation.city,
+                                                               country=affiliation.country))
         document = Document(id=doc_id,
                             title=paper.title,
                             keywords=paper.authkeywords,
