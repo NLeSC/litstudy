@@ -31,7 +31,9 @@ class DocumentSet:
         result = []
 
         for doc in self.docs:
-            if keys.add(key(doc)):
+            k = key(doc)
+            if k not in keys:
+                keys.add(k)
                 result.append(doc)
 
         return DocumentSet(result)

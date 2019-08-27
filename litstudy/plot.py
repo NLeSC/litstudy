@@ -1,16 +1,15 @@
 import matplotlib.pyplot as plt
 from collections import defaultdict
+import seaborn as sns
 
 def top_k(mapping, k=10):
     return sorted(mapping.keys(), key=lambda x: mapping[x])[::-1][:k]
 
-# def prepare_fig(w=1, h=None):
-#     if h is None: h = w
-#     figsize = (6 * w, 3 * h)
-#     sns.set(rc={'figure.figsize': figsize})
-#     fig = plt.figure(figsize=figsize)
-#     plt.clf()
-#     return fig
+def prepare_fig(w=1, h=None):
+    if h is None: h = w
+    return plt.figure(figsize=(6 * w, 3 * h))
+    # sns.set(rc={'figure.figsize': figsize})
+    # plt.clf()
 
 # Publications per aggregation type
 def plot_statistic(fun, docset, x=None, ax=None, x_label=""):
@@ -20,6 +19,7 @@ def plot_statistic(fun, docset, x=None, ax=None, x_label=""):
         the x keys with highest counts are plotted. """
 
     if ax is None:
+        fig = prepare_fig(2)
         ax = plt.gca()
 
     count = defaultdict(int)
@@ -36,7 +36,6 @@ def plot_statistic(fun, docset, x=None, ax=None, x_label=""):
         keys = x
     elif type(x) == type(1):
         keys = top_k(count, x)
-        # x_range = range(len(keys))
     else:
         keys = list(count.keys())
 
@@ -44,6 +43,8 @@ def plot_statistic(fun, docset, x=None, ax=None, x_label=""):
     ax.barh(keys,
         [count[str(a)] for a in keys],
         tick_label=[str(key)[:50] for key in keys])
+
+    plt.show()
 
 def clean_affiliation(name):
     name = str(name).title()
@@ -72,14 +73,17 @@ def get_affiliations(doc):
     # Remove 'None' affialiations
     affiliations = [x for x in affiliation_lists if x is not None]
 
+    # Flatten lists
+    affiliations = [y for x in affiliations for y in x]
+
+    # Get affiliation names
+    affiliations = [af.name for af in affiliations]
+    
+    # Clean affiliation names
+    # affiliations = [clean_affiliation(af) for af in affiliations]
+
     # Remove duplicates (2 authors with same affiliation results in 1
     # count for that affiliation).
-    affiliations = set([y for x in affiliations for y in x])
-
-    # Get and clean affiliation names
-    affiliations = [clean_affiliation(af.name) for af in affiliations]
-
-    # Remove possible duplicates again after cleaning
     return set(affiliations)
 
 def plot_year_histogram(docset, ax=None):
@@ -94,8 +98,7 @@ def plot_year_histogram(docset, ax=None):
 
     # years = range(2000, 2020)
     years = list(range(min_year, max_year+1))
-    print(years)
-
+    
     # plot_statistic(lambda p: [p.year], docset=docset, x=years, ax=ax, x_label="No. publications")
     plot_statistic(lambda p: [p.year], docset=docset, x=years, ax=ax, x_label="No. publications")
 
