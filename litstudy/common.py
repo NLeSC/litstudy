@@ -88,7 +88,7 @@ class Document:
         """ Abstract of document, or `None` if unavailable. """
 
         self.references = kwargs.pop('references', None)
-        """ """
+        """List of titles of referenced papers."""
 
         self.year = kwargs.pop('year', None)
         """ Year of publication as integer. """
