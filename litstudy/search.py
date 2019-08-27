@@ -1,5 +1,6 @@
 from pybliometrics.scopus import ScopusSearch, AbstractRetrieval, AuthorRetrieval, ContentAffiliationRetrieval
 from pybliometrics.scopus.exception import ScopusQueryError
+from tqdm import tqdm
 
 from .common import Document, DocumentID, DocumentSet, Author, Affiliation
 
@@ -68,7 +69,7 @@ def search_scopus(query):
     if len(retrieved_paper_ids) == 0:
         print("No matching documents for the provided query.")
         return None
-    for paper_id in retrieved_paper_ids:
+    for paper_id in tqdm(retrieved_paper_ids):
         try:
             paper = AbstractRetrieval(paper_id, view="FULL")
         except ValueError:
@@ -77,13 +78,13 @@ def search_scopus(query):
         doc_id = DocumentID()
         doc_id.parse_scopus(paper)
         authors = []
-        if paper.authors is not None:
+        if paper.authors:
             for author in paper.authors:
                 author_affiliations = []
                 authors.append(Author(name=author.indexed_name,
                                       orcid=AuthorRetrieval(author.auid).orcid,
                                       affiliations=author_affiliations))
-                if author.affiliation is not None:
+                if author.affiliation:
                     for affiliation_id in author.affiliation:
                         affiliation = ContentAffiliationRetrieval(affiliation_id)
                         author_affiliations.append(Affiliation(name=affiliation.affiliation_name,
@@ -92,7 +93,7 @@ def search_scopus(query):
         references = []
         if paper.refcount and int(paper.refcount) > 0:
             for reference in paper.references:
-                if reference.title is not None:
+                if reference.title:
                     references.append(reference.title)
         document = Document(id=doc_id,
                             title=paper.title,
