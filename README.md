@@ -26,14 +26,14 @@ Install requirement dependencies.
 pip3 install -r requirements.txt
 ```
 
-Install new Jupyther kernel.
+Install new Jupyter kernel.
 ```
 ipython kernel install --user --name=myenv
 ```
 
-Run Jupyther and select `myenv` as kernel. Remaining instructions can be found within the notebook itself.
+Run Jupyter and select `myenv` as kernel. Remaining instructions can be found within the notebook itself.
 ```
-jupyther notebook literature_analysis.ipynb --MappingKernelManager.default_kernel_name=myenv
+jupyter notebook literature_analysis.ipynb --MappingKernelManager.default_kernel_name=myenv
 ```
 
 
