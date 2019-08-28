@@ -2,6 +2,7 @@ from pybliometrics.scopus import ScopusSearch, AbstractRetrieval, AuthorRetrieva
 from pybliometrics.scopus.exception import ScopusQueryError
 from tqdm import tqdm
 import requests
+from urllib.parse import quote_plus
 
 from .common import Document, DocumentID, DocumentSet, Author, Affiliation
 
@@ -64,6 +65,8 @@ def search_scopus(query, docs=None):
     """Search Scopus."""
 
     documents = []
+    authors_cache = {}
+    affiliations_cache = {}
     try:
         retrieved_paper_ids = ScopusSearch(query, view="STANDARD").get_eids()
     except ScopusQueryError:
@@ -84,12 +87,22 @@ def search_scopus(query, docs=None):
         if paper.authors:
             for author in paper.authors:
                 author_affiliations = []
-                authors.append(Author(name=author.indexed_name,
-                                      orcid=AuthorRetrieval(author.auid).orcid,
-                                      affiliations=author_affiliations))
+                if author.auid in authors_cache:
+                    authors.append(Author(name=author.indexed_name,
+                                          orcid=authors_cache[author.auid],
+                                          affiliations=author_affiliations))
+                else:
+                    authors_cache[author.auid] = AuthorRetrieval(author.auid).orcid
+                    authors.append(Author(name=author.indexed_name,
+                                          orcid=authors_cache[author.auid],
+                                          affiliations=author_affiliations))
                 if author.affiliation:
                     for affiliation_id in author.affiliation:
-                        affiliation = ContentAffiliationRetrieval(affiliation_id)
+                        if affiliation_id in affiliations_cache:
+                            affiliation = affiliations_cache[affiliation_id]
+                        else:
+                            affiliation = ContentAffiliationRetrieval(affiliation_id)
+                            affiliations_cache[affiliation_id] = affiliation
                         author_affiliations.append(Affiliation(name=affiliation.affiliation_name,
                                                                city=affiliation.city,
                                                                country=affiliation.country))
@@ -122,9 +135,21 @@ def search_dblp(query, docs=None):
     """Search DBLP."""
 
     documents = []
-    retrieved_papers = requests.get("http://dblp.org/search/publ/api?format=json&h=1000&q=" + query.replace(" ", "+"))
-    retrieved_papers = retrieved_papers.json()
-    for paper in tqdm(retrieved_papers["result"]["hits"]["hit"]):
+    retrieved_papers = []
+    query = quote_plus(query)
+    request = requests.get("http://dblp.org/search/publ/api?format=json&h=1000&f=0&q={}".format(query))
+    results = request.json()
+    expected_documents = int(results["result"]["hits"]["@total"])
+    for paper in results["result"]["hits"]["hit"]:
+        retrieved_papers.append(paper)
+    while len(retrieved_papers) < expected_documents:
+        if int(results["result"]["hits"]["@total"]) > int(results["result"]["hits"]["@sent"]):
+            request = requests.get("http://dblp.org/search/publ/api?format=json&h=1000&f={}&q={}"
+                                   .format(len(retrieved_papers), query.replace(" ", "+")))
+            results = request.json()
+            for paper in results["result"]["hits"]["hit"]:
+                retrieved_papers.append(paper)
+    for paper in tqdm(retrieved_papers):
         doc_id = DocumentID()
         doc_id.parse_dblp(paper)
         document = Document(id=doc_id,
@@ -146,10 +171,16 @@ def search_dblp(query, docs=None):
             document.publisher = paper["info"]["publisher"]
         except KeyError:
             pass
-        authors = []
-        for author in paper["info"]["authors"]["author"]:
-            authors.append(Author(name=author))
-        document.authors = authors
+        try:
+            authors = []
+            if type(paper["info"]["authors"]["author"]) is str:
+                authors.append(Author(name=paper["info"]["authors"]["author"]))
+            else:
+                for author in paper["info"]["authors"]["author"]:
+                    authors.append(Author(name=author))
+            document.authors = authors
+        except KeyError:
+            pass
         documents.append(document)
     if docs:
         return DocumentSet(docs=documents).union(docs)
