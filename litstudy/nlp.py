@@ -7,6 +7,140 @@ import wordcloud
 import matplotlib.pyplot as plt
 from collections import defaultdict
 from functools import partial
+from sklearn.decomposition import TruncatedSVD
+
+import sklearn.manifold
+import sklearn.metrics.pairwise
+
+# def trans(tfidf_matrix):
+#     new_tfidf_matrix = []
+
+#     for i, doc in enumerate(tfidf_matrix):
+#         new_tfidf_matrix.append(defaultdict(int))
+#             for word, tfidf in tfidf_matrix[i]:
+#                 new_tfidf_matrix[i][word] = tfidf
+
+#     return tfidf_matrix
+
+def prepare_fig(w=1, h=None):
+    if h is None: h = w
+    return plt.figure(figsize=(6 * w, 3 * h))
+
+def draw_dot(p, t, zorder=0):
+    labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    num_topics = 12
+
+    color = plt.get_cmap('jet')(float(t) / num_topics)
+    color = 0.8 * np.array(color)[:3]
+    
+    plt.scatter(
+        p[0], 
+        p[1],
+        s=150,
+        c=[color],
+        marker='o',
+        linewidth=0.5,
+        zorder=zorder)
+    
+    plt.text(
+        p[0], 
+        p[1],
+        labels[t],
+        fontsize=6,
+        color='1',
+        va='center',
+        ha='center',
+        fontweight='bold',
+        zorder=zorder + 1)
+
+def plot_topic_distribution(model, dic, freqs, fig=None):
+    seed = 70 # seed for NMF topic model
+    vis_seed = 6 # seed for t-SNE visualization
+    vis_angle = 135 # rotation angle for visualization
+    num_topics = 12
+
+    # Create frequency matrix
+    n, m = len(freqs), len(dic)
+    matrix = np.zeros((n, m))
+
+    for i, row in enumerate(freqs):
+        for j, freq in row:
+            matrix[i, j] = freq
+            
+    # Run TFIDF model
+    tfidf_model = sklearn.feature_extraction.text.TfidfTransformer()
+    tfidf_matrix = tfidf_model.fit_transform(matrix).toarray()
+
+    # Lower dimensionality of original frequency matrix to improve cosine distances for visualization
+    reduced_matrix = TruncatedSVD(
+        n_components=10, 
+        random_state=seed
+    ).fit_transform(tfidf_matrix)
+
+    nmf_model = sklearn.decomposition.NMF(
+        n_components=num_topics,
+        random_state=seed,
+        tol=1e-9,
+        max_iter=500,
+        verbose=False)
+
+    # Train model
+    doc2topic = nmf_model.fit_transform(tfidf_matrix)
+    topic2token = nmf_model.components_
+
+    topic_norm = np.sum(topic2token, axis=1)
+    topic2token /= topic_norm[:,np.newaxis]
+    doc2topic *= topic_norm[np.newaxis,:]
+
+    doc_norm = np.sum(doc2topic, axis=1)
+    doc2topic /= doc_norm[:,np.newaxis]
+
+    # Learn model
+    tsne_model = sklearn.manifold.TSNE(
+        verbose=True,
+        metric='cosine',
+        random_state=vis_seed,
+        perplexity=20)
+    pos = tsne_model.fit_transform(reduced_matrix)
+
+    # Rotate visualization
+    theta = np.deg2rad(vis_angle + 60)
+    R = np.array([[np.cos(theta), np.sin(theta)], 
+                  [-np.sin(theta), np.cos(theta)]])
+    pos = np.dot(pos, R)
+
+    # Resize so xy-position is between 0.05 and 0.95
+    pos -= (np.amin(pos, axis=0) + np.amax(pos, axis=0)) / 2
+    pos /= np.amax(np.abs(pos))
+    pos = (pos * 0.5) + 0.5
+    pos = (pos * 0.9) + 0.05
+    
+    if fig is None:
+        fig = prepare_fig(2)#plt.gcf()
+        ax = plt.gca()
+
+    plt.xticks([])
+    plt.yticks([])
+    plt.xlim(0, 1)
+    plt.ylim(0, 1)
+    zorder = 0
+
+    # Draw dots
+    for i in np.random.permutation(len(doc2topic)):
+        topic_id = np.argmax(doc2topic[i])
+        draw_dot(pos[i], topic_id, zorder)
+        zorder += 2
+
+    # Draw legend
+    for i in range(num_topics):    
+        y = 0.985 - i * 0.02
+        label = ', '.join(dic[w] for w in np.argsort(topic2token[i])[::-1][:3])
+
+        draw_dot([0.015, y], i)
+        plt.text(0.03, y, label, ha='left', va='center', fontsize=8, zorder=zorder)
+        zorder += 1
+
+    # plt.show()
 
 def plot_topic_clouds(model, cols=3, fig=None):
     if fig is None: fig = plt.gcf()
