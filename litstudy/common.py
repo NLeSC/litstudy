@@ -109,6 +109,12 @@ class Document:
         self._internal = kwargs.pop('internal', None)
         """ Internal object used to extract these properties  """
 
+        self.language = kwargs.pop("language", None)
+        """Language of the document, or `None` if unavailable."""
+
+        self.publisher = kwargs.pop("publisher", None)
+        """The name of the publisher, or `None` if unavailable."""
+
         if kwargs:
             raise KeyError('got an unexpected keyword argument {}'.format(next(iter(kwargs))))
 
