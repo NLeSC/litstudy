@@ -1,8 +1,10 @@
 from pybliometrics.scopus import ScopusSearch, AbstractRetrieval, AuthorRetrieval, ContentAffiliationRetrieval
 from pybliometrics.scopus.exception import ScopusQueryError
 from tqdm import tqdm
+import requests
 
 from .common import Document, DocumentID, DocumentSet, Author, Affiliation
+
 
 def search_mockup():
     a = Document(
@@ -60,6 +62,7 @@ def search_mockup():
 
 def search_scopus(query, docs=None):
     """Search Scopus."""
+
     documents = []
     try:
         retrieved_paper_ids = ScopusSearch(query, view="STANDARD").get_eids()
@@ -106,7 +109,47 @@ def search_scopus(query, docs=None):
                             year=int(paper.coverDate.split("-")[0]),
                             authors=authors,
                             references=references,
+                            publisher=paper.publisher,
                             internal=paper)
+        documents.append(document)
+    if docs:
+        return DocumentSet(docs=documents).union(docs)
+    else:
+        return DocumentSet(docs=documents)
+
+
+def search_dblp(query, docs=None):
+    """Search DBLP."""
+
+    documents = []
+    retrieved_papers = requests.get("http://dblp.org/search/publ/api?format=json&h=1000&q=" + query.replace(" ", "+"))
+    retrieved_papers = retrieved_papers.json()
+    for paper in tqdm(retrieved_papers["result"]["hits"]["hit"]):
+        doc_id = DocumentID()
+        doc_id.parse_dblp(paper)
+        document = Document(id=doc_id,
+                            title=paper["info"]["title"],
+                            internal=paper)
+        try:
+            document.year = paper["info"]["year"]
+        except KeyError:
+            pass
+        try:
+            document.source = paper["info"]["venue"]
+        except KeyError:
+            pass
+        try:
+            document.source_type = paper["info"]["type"]
+        except KeyError:
+            pass
+        try:
+            document.publisher = paper["info"]["publisher"]
+        except KeyError:
+            pass
+        authors = []
+        for author in paper["info"]["authors"]["author"]:
+            authors.append(Author(name=author))
+        document.authors = authors
         documents.append(document)
     if docs:
         return DocumentSet(docs=documents).union(docs)
