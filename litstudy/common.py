@@ -16,13 +16,8 @@ class DocumentSet:
         lambda is used as identifier to check if two documents are identical.
         By default, equivalence is determined based on DOI (if available)
         or title (if available)."""
-        def default_key(doc):
-            if doc.doi is not None:
-                return ('doi', doc.doi)
-            elif doc.title is not None:
-                return ('title', doc.title)
-            else:
-                return ('id', id(doc))
+        def default_key(document):
+            return document.id.id
 
         if key is None:
             key = default_key
