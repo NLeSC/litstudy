@@ -58,7 +58,7 @@ def search_mockup():
     return DocumentSet([a, b, c, d])
 
 
-def search_scopus(query):
+def search_scopus(query, docs=None):
     """Search Scopus."""
     documents = []
     try:
@@ -106,4 +106,7 @@ def search_scopus(query):
                             references=references,
                             internal=paper)
         documents.append(document)
-    return DocumentSet(docs=documents)
+    if docs:
+        return DocumentSet(docs=documents).union(docs)
+    else:
+        return DocumentSet(docs=documents)
