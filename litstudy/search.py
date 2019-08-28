@@ -2,6 +2,7 @@ from pybliometrics.scopus import ScopusSearch, AbstractRetrieval, AuthorRetrieva
 from pybliometrics.scopus.exception import ScopusQueryError
 from tqdm import tqdm
 import requests
+from urllib.parse import quote_plus
 
 from .common import Document, DocumentID, DocumentSet, Author, Affiliation
 
@@ -135,14 +136,16 @@ def search_dblp(query, docs=None):
 
     documents = []
     retrieved_papers = []
-    request = requests.get("http://dblp.org/search/publ/api?format=json&h=1000&f=0&q={}".format(query.replace(" ", "+")))
+    query = quote_plus(query)
+    request = requests.get("http://dblp.org/search/publ/api?format=json&h=1000&f=0&q={}".format(query))
     results = request.json()
     expected_documents = int(results["result"]["hits"]["@total"])
     for paper in results["result"]["hits"]["hit"]:
         retrieved_papers.append(paper)
     while len(retrieved_papers) < expected_documents:
         if int(results["result"]["hits"]["@total"]) > int(results["result"]["hits"]["@sent"]):
-            request = requests.get("http://dblp.org/search/publ/api?format=json&h=1000&f={}&q={}".format(len(retrieved_papers), query.replace(" ", "+")))
+            request = requests.get("http://dblp.org/search/publ/api?format=json&h=1000&f={}&q={}"
+                                   .format(len(retrieved_papers), query.replace(" ", "+")))
             results = request.json()
             for paper in results["result"]["hits"]["hit"]:
                 retrieved_papers.append(paper)
