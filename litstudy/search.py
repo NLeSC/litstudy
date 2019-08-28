@@ -4,6 +4,7 @@ from tqdm import tqdm
 
 from .common import Document, DocumentID, DocumentSet, Author, Affiliation
 
+
 def search_mockup():
     a = Document(
             title=' A unified analytical theory of heteropolymers for sequence-specific phase behaviors of polyelectrolytes and polyampholytes ',
@@ -106,7 +107,6 @@ def search_scopus(query, docs=None):
                             year=int(paper.coverDate.split("-")[0]),
                             authors=authors,
                             references=references,
-                            language=paper.language,
                             publisher=paper.publisher,
                             internal=paper)
         documents.append(document)
