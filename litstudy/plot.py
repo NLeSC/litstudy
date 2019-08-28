@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 from collections import defaultdict
 import seaborn as sns
+import pandas as pd
 
 def top_k(mapping, k=10):
     return sorted(mapping.keys(), key=lambda x: mapping[x])[::-1][:k]
@@ -12,7 +13,7 @@ def prepare_fig(w=1, h=None):
     # plt.clf()
 
 # Publications per aggregation type
-def plot_statistic(fun, docset, x=None, ax=None, x_label=""):
+def plot_statistic(fun, docset, x=None, ax=None, x_label="", count=None):
     """ Plot statistics of some sort in a bar plot. If x is not given,
         (None) all keys with a count > 0 are plotted. If x is a list, the
         counts of all list elements are included. If x is an integer,
@@ -22,13 +23,14 @@ def plot_statistic(fun, docset, x=None, ax=None, x_label=""):
         fig = prepare_fig(2)
         ax = plt.gca()
 
-    count = defaultdict(int)
-
-    for d in docset.docs:
-        for key in fun(d):
-            if key:
-                # count[unicode(key)] += 1
-                count[str(key)] += 1
+    # Use given count dict if we are plotting something
+    # unrelated to documents and the counting has already been performed.
+    if count is None:
+        count = defaultdict(int)
+        for d in docset.docs:
+            for key in fun(d):
+                if key:
+                    count[str(key)] += 1
 
     ax.set_xlabel(x_label)
     
@@ -137,7 +139,7 @@ def merge_author_affiliation(doc):
 
 def abbr_to_full_language(language):
     pairs = [
-        ['eng', 'English'],
+        ['eng', 'English']
     ]
     
     for abbr, full in pairs:
@@ -162,36 +164,49 @@ def plot_year_histogram(docset, ax=None):
     # plot_statistic(lambda p: [p.year], docset=docset, x=years, ax=ax, x_label="No. publications")
     plot_statistic(lambda p: [p.year], docset=docset, x=years, ax=ax, x_label="No. publications")
 
-def plot_author_histogram(docset, ax=None):
-    plot_statistic(lambda p: set(a.name for a in p.authors or []), x=20, docset=docset, ax=ax, x_label="No. publications")
+def plot_author_histogram(docset, x=20, ax=None):
+    plot_statistic(lambda p: set(a.name for a in p.authors or []), x=x, docset=docset, ax=ax, x_label="No. publications")
 
-def plot_author_affiliation_histogram(docset, ax=None):
-    plot_statistic(lambda p: merge_author_affiliation(p), x=30, docset=docset, ax=ax, x_label="No. publications")
+def plot_author_affiliation_histogram(docset, x=30, ax=None):
+    plot_statistic(lambda p: merge_author_affiliation(p), x=x, docset=docset, ax=ax, x_label="No. publications")
 
-def plot_number_authors_histogram(docset, ax=None):
-    plot_statistic(lambda p: [len(set(a.name for a in p.authors or []))], x=5, docset=docset, ax=ax, x_label="No. publications")
+def plot_number_authors_histogram(docset, x=5, ax=None):
+    plot_statistic(lambda p: [len(set(a.name for a in p.authors or []))], x=x, docset=docset, ax=ax, x_label="No. publications")
 
 def plot_source_type_histogram(docset, ax=None):
     plot_statistic(lambda p: [p.source_type], docset=docset, ax=ax, x_label="No. publications")
 
-def plot_source_histogram(docset, ax=None):
-    plot_statistic(lambda p: [clean_source(p.source)], x=10, docset=docset, ax=ax, x_label="No. publications")
+def plot_source_histogram(docset, x=10, ax=None):
+    plot_statistic(lambda p: [clean_source(p.source)], x=x, docset=docset, ax=ax, x_label="No. publications")
 
-# def plot_source_histogram(docset, ax=None):
-#     plot_statistic(lambda p: [p.source], docset=docset, ax=ax, x_label="No. publications")
-
-def plot_affiliation_histogram(docset, ax=None):
+def plot_affiliation_histogram(docset, x=10, ax=None):
     # Publications per institute
-    plot_statistic(lambda p: get_affiliations(p), x=10, docset=docset, ax=ax, x_label="No. publications")
+    plot_statistic(lambda p: get_affiliations(p), x=x, docset=docset, ax=ax, x_label="No. publications")
 
-def plot_country_histogram(docset, ax=None):
+def plot_country_histogram(docset, x=10, ax=None):
     # Publications per institute
-    plot_statistic(lambda p: get_affiliations(p, attribute='country'), x=10, docset=docset, ax=ax, x_label="No. publications")
+    plot_statistic(lambda p: get_affiliations(p, attribute='country'), x=x, docset=docset, ax=ax, x_label="No. publications")
 
-def plot_affiliation_type_histogram(docset, ax=None):
+def plot_affiliation_type_histogram(docset, x=10, ax=None):
     # Publications per institute
-    plot_statistic(lambda p: get_affiliations(p, attribute='affiliation_type'), x=10, docset=docset, ax=ax, x_label="No. publications")
+    plot_statistic(lambda p: get_affiliations(p, attribute='affiliation_type'), x=x, docset=docset, ax=ax, x_label="No. publications")
 
 def plot_language_histogram(docset, ax=None):
     # Publications per institute
     plot_statistic(lambda p: [abbr_to_full_language(p.language)], docset=docset, ax=ax, x_label="No. publications")
+
+def plot_words_histogram(freqs, dic, x=25, ax=None):
+    all_freqs = []
+    for doc_freq in freqs:
+        all_freqs += doc_freq
+
+    count = defaultdict(int)
+    for word, freq in all_freqs:
+        count[str(dic[word])] += freq
+
+    plot_statistic(None, docset=None, ax=ax, x_label="No. publications", x=x, count=count)
+
+    # display(pd.DataFrame(
+    #     # [(w, word_count[w], 'Yes' * (w in stopwords)) for w in top_k(one_count, 250)],
+    #     [(w, count[w]) for w in top_k(count, 250)],
+    #     columns=['word', 'count']))
