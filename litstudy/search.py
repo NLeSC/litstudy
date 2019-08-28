@@ -105,6 +105,8 @@ def search_scopus(query, docs=None):
                             year=int(paper.coverDate.split("-")[0]),
                             authors=authors,
                             references=references,
+                            language=paper.language,
+                            publisher=paper.publisher,
                             internal=paper)
         documents.append(document)
     if docs:
