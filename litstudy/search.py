@@ -100,6 +100,7 @@ def search_scopus(query, docs=None):
                             keywords=paper.authkeywords,
                             abstract=paper.description,
                             source=paper.publicationName,
+                            source_type=paper.aggregationType,
                             citation_count=paper.citedby_count,
                             year=int(paper.coverDate.split("-")[0]),
                             authors=authors,
