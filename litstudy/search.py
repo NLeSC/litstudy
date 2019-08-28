@@ -122,7 +122,8 @@ def search_dblp(query, docs=None):
     """Search DBLP."""
 
     documents = []
-    retrieved_papers = requests.get("http://dblp.org/search/publ/api?format=json&h=1000&q=" + query.replace(" ", "+")).json()
+    retrieved_papers = requests.get("http://dblp.org/search/publ/api?format=json&h=1000&q=" + query.replace(" ", "+"))
+    retrieved_papers = retrieved_papers.json()
     for paper in tqdm(retrieved_papers["result"]["hits"]["hit"]):
         doc_id = DocumentID()
         doc_id.parse_dblp(paper)
