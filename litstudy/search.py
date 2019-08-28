@@ -102,6 +102,7 @@ def search_scopus(query, docs=None):
                             source=paper.publicationName,
                             source_type=paper.aggregationType,
                             citation_count=paper.citedby_count,
+                            language=paper.language,
                             year=int(paper.coverDate.split("-")[0]),
                             authors=authors,
                             references=references,
