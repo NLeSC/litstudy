@@ -156,10 +156,16 @@ def search_dblp(query, docs=None):
             document.publisher = paper["info"]["publisher"]
         except KeyError:
             pass
-        authors = []
-        for author in paper["info"]["authors"]["author"]:
-            authors.append(Author(name=author))
-        document.authors = authors
+        try:
+            authors = []
+            if type(paper["info"]["authors"]["author"]) is str:
+                authors.append(Author(name=paper["info"]["authors"]["author"]))
+            else:
+                for author in paper["info"]["authors"]["author"]:
+                    authors.append(Author(name=author))
+            document.authors = authors
+        except KeyError:
+            pass
         documents.append(document)
     if docs:
         return DocumentSet(docs=documents).union(docs)
