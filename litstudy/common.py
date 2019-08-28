@@ -57,10 +57,22 @@ class DocumentID:
         self.id = doc_id
 
     def parse_scopus(self, scopus_abstract):
-        if scopus_abstract.doi is not None:
+        """Retrieve the ID of a document from a Scopus abstract."""
+
+        if scopus_abstract.doi:
             self.id = scopus_abstract.doi
-        else:
+        elif scopus_abstract.eid:
             self.id = scopus_abstract.eid
+        else:
+            self.id = scopus_abstract.title
+
+    def parse_dblp(self, dblp_result):
+        """Retrieve the ID of a document from the DBLP entry."""
+
+        try:
+            self.id = dblp_result["info"]["doi"]
+        except KeyError:
+            self.id = dblp_result["info"]["title"]
 
 
 class Document:
