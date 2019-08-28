@@ -63,10 +63,36 @@ def clean_affiliation(name):
         name = name.replace(needle, replacement)
     return name
 
+def affiliation_to_type(name):
+    name = name.lower()
+    pairs = [
+        ['universi', 'Academic institute'],
+        ['hochschule', 'Academic institute'],
+        ['school', 'Academic institute'],
+        ['ecole', 'Academic institute'],
+        ['institute', 'Academic institute'],
+        ['research center', 'Academic institute'],
+        ['laboratories', 'Laboratory'],
+        ['laboratory', 'Laboratory'],
+        ['corporation', 'Corporation'],
+        ['corp', 'Corporation'],
+        ['ltd', 'Corporation'],
+        ['limited', 'Corporation'],
+        ['gmbh', 'Corporation'],
+        ['ministry', 'Ministry'],
+        ['school of', ''],
+    ]
+    
+    for word, affiliation_type in pairs:
+        if word in name:
+            return affiliation_type
+    
+    return 'Unknown'
+
 def clean_source(name):
     return name
 
-def get_affiliations(doc):
+def get_affiliations(doc, attribute='name'):
     # Put affiliations of all authors in one list.
     affiliation_lists = [a.affiliations for a in doc.authors]
 
@@ -76,14 +102,22 @@ def get_affiliations(doc):
     # Flatten lists
     affiliations = [y for x in affiliations for y in x]
 
-    # Get affiliation names
-    affiliations = [af.name for af in affiliations]
-    
+    if attribute == 'country':
+        # Get affiliation countries and remove 'None' values
+        affiliations = [af.country for af in affiliations if af.country is not None]
+    elif attribute == 'affiliation_type':
+        # Get affiliation names
+        affiliations = [af.name for af in affiliations]
+        affiliations = [affiliation_to_type(x) for x in affiliations]
+    else:
+        # Get affiliation names
+        affiliations = [af.name for af in affiliations]
+
     # Clean affiliation names
     # affiliations = [clean_affiliation(af) for af in affiliations]
 
-    # Remove duplicates (2 authors with same affiliation results in 1
-    # count for that affiliation).
+    # Remove duplicates (2 authors with same affiliation/country
+    # results in 1 count for that affiliation/country).
     return set(affiliations)
 
 def merge_author_affiliation(doc):
@@ -100,6 +134,17 @@ def merge_author_affiliation(doc):
     # print("A")
     # print(authors_plus_aff)
     return set(authors_plus_aff)
+
+def abbr_to_full_language(language):
+    pairs = [
+        ['eng', 'English'],
+    ]
+    
+    for abbr, full in pairs:
+        if language == abbr:
+            return full
+    
+    return language
 
 def plot_year_histogram(docset, ax=None):
     # Publications per year
@@ -132,9 +177,21 @@ def plot_source_type_histogram(docset, ax=None):
 def plot_source_histogram(docset, ax=None):
     plot_statistic(lambda p: [clean_source(p.source)], x=10, docset=docset, ax=ax, x_label="No. publications")
 
-def plot_source_histogram(docset, ax=None):
-    plot_statistic(lambda p: [p.source], docset=docset, ax=ax, x_label="No. publications")
+# def plot_source_histogram(docset, ax=None):
+#     plot_statistic(lambda p: [p.source], docset=docset, ax=ax, x_label="No. publications")
 
 def plot_affiliation_histogram(docset, ax=None):
     # Publications per institute
     plot_statistic(lambda p: get_affiliations(p), x=10, docset=docset, ax=ax, x_label="No. publications")
+
+def plot_country_histogram(docset, ax=None):
+    # Publications per institute
+    plot_statistic(lambda p: get_affiliations(p, attribute='country'), x=10, docset=docset, ax=ax, x_label="No. publications")
+
+def plot_affiliation_type_histogram(docset, ax=None):
+    # Publications per institute
+    plot_statistic(lambda p: get_affiliations(p, attribute='affiliation_type'), x=10, docset=docset, ax=ax, x_label="No. publications")
+
+def plot_language_histogram(docset, ax=None):
+    # Publications per institute
+    plot_statistic(lambda p: [abbr_to_full_language(p.language)], docset=docset, ax=ax, x_label="No. publications")
