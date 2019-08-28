@@ -65,6 +65,7 @@ def search_scopus(query, docs=None):
 
     documents = []
     authors_cache = {}
+    affiliations_cache = {}
     try:
         retrieved_paper_ids = ScopusSearch(query, view="STANDARD").get_eids()
     except ScopusQueryError:
@@ -96,7 +97,11 @@ def search_scopus(query, docs=None):
                                           affiliations=author_affiliations))
                 if author.affiliation:
                     for affiliation_id in author.affiliation:
-                        affiliation = ContentAffiliationRetrieval(affiliation_id)
+                        if affiliation_id in affiliations_cache:
+                            affiliation = affiliations_cache[affiliation_id]
+                        else:
+                            affiliation = ContentAffiliationRetrieval(affiliation_id)
+                            affiliations_cache[affiliation_id] = affiliation
                         author_affiliations.append(Affiliation(name=affiliation.affiliation_name,
                                                                city=affiliation.city,
                                                                country=affiliation.country))
