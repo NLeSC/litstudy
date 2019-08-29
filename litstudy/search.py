@@ -193,7 +193,7 @@ def search_dblp(query, docs=None):
 
 
 def query_semanticscholar(documents):
-    for document in documents:
+    for document in tqdm(documents):
         request = requests.get("http://api.semanticscholar.org/v1/paper/{}".format(quote_plus(document.id.id)))
         results = request.json()
         try:
