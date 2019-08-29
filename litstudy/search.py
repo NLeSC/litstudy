@@ -159,7 +159,7 @@ def search_dblp(query, docs=None):
                             title=paper["info"]["title"],
                             internal=paper)
         try:
-            document.year = paper["info"]["year"]
+            document.year = int(paper["info"]["year"])
         except KeyError:
             pass
         try:
