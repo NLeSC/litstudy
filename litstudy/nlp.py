@@ -3,6 +3,7 @@ import gensim
 import gensim.models.nmf
 import sys
 import sklearn.feature_extraction.text
+import sklearn.decomposition
 import wordcloud
 import matplotlib.pyplot as plt
 from collections import defaultdict
@@ -200,22 +201,36 @@ class TopicModel:
         self.num_documents = len(doc2topic)
         self.num_tokens = len(topic2token.T)
 
-def train_nmf_model(dic, freqs, num_topics, **kwargs):
-    tfidf_model = gensim.models.TfidfModel(dictionary=dic)
-    tmp = [tfidf_model[w] for w in freqs]
+def train_nmf_model(dic, freqs, num_topics, seed=0, **kwargs):
 
-    nmf_model = gensim.models.nmf.Nmf(tmp, num_topics, dic, **kwargs)
-    topic2token = np.array(nmf_model.get_topics())
-    doc2topic = np.zeros((len(freqs), num_topics))
+    # Build dense matrix
+    matrix = np.zeros((len(freqs), len(dic)))
+    for i, vec in enumerate(freqs):
+        for j, f in vec:
+            matrix[i, j] = f
 
-    for i in range(len(freqs)):
-        for j, f in nmf_model.get_document_topics(freqs[i]):
-            doc2topic[i, j] = f
+    # Apply TFIDF
+    tfidf_model = sklearn.feature_extraction.text.TfidfTransformer()
+    tfidf_matrix = tfidf_model.fit_transform(matrix).toarray()
 
+    # Train NMF model
+    nmf_model = sklearn.decomposition.NMF(
+	n_components=num_topics,
+	random_state=seed,
+	tol=1e-9,
+	max_iter=500,
+        **kwargs)
+
+    # Train model
+    doc2topic = nmf_model.fit_transform(tfidf_matrix)
+    topic2token = nmf_model.components_
+
+    # Normalize token distributions.
     sums = np.sum(topic2token, axis=1) # k
     topic2token /= sums.reshape(-1, 1) # k,m
     doc2topic *= sums.reshape(1, -1) # n,k
 
+    # Normalize topic distributions.
     doc2topic /= np.sum(doc2topic, axis=1).reshape(-1, 1) # n,k
 
     return TopicModel(dic, doc2topic, topic2token)
