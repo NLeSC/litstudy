@@ -3,6 +3,8 @@ from collections import defaultdict
 import seaborn as sns
 import pandas as pd
 
+sns.set('paper')
+
 def top_k(mapping, k=10):
     return sorted(mapping.keys(), key=lambda x: mapping[x])[::-1][:k]
 
