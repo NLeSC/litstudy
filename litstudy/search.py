@@ -203,3 +203,10 @@ def query_semanticscholar(documents):
             document.citation_count = len(results["citations"])
         except KeyError:
             pass
+        try:
+            references = []
+            for reference in results["references"]:
+                references.append(reference["title"])
+            document.references = references
+        except KeyError:
+            pass
