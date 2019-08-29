@@ -9,3 +9,4 @@ seaborn
 wordcloud
 tqdm
 requests
+bibtexparser
