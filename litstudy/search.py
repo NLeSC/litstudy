@@ -213,7 +213,7 @@ def query_semanticscholar(documents):
             pass
 
 
-def load_bibtex(file):
+def load_bibtex(file, lookup_authors=False):
     documents = []
     with open(file) as bibtex_file:
         bibtex_data = load(bibtex_file)
@@ -248,12 +248,21 @@ def load_bibtex(file):
             document.keywords = paper["keywords"]
         except KeyError:
             pass
-        try:
-            authors = []
-            for author in paper["author"].split("and"):
-                authors.append(Author(name=author.strip("{}")))
-            document.authors = authors
-        except KeyError:
-            pass
+        authors = []
+        if lookup_authors:
+            request = requests.get("http://api.semanticscholar.org/v1/paper/{}".format(quote_plus(document.id.id)))
+            results = request.json()
+            try:
+                for author in results["authors"]:
+                    authors.append(Author(name=author["name"]))
+            except KeyError:
+                pass
+        else:
+            try:
+                for author in paper["author"].split("and"):
+                    authors.append(Author(name=author.strip("{}")))
+            except KeyError:
+                pass
+        document.authors = authors
         documents.append(document)
     return documents
