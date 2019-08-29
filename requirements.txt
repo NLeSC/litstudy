@@ -10,3 +10,4 @@ wordcloud
 tqdm
 requests
 bibtexparser
+networkx>=2.3
