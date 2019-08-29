@@ -13,16 +13,6 @@ from sklearn.decomposition import TruncatedSVD
 import sklearn.manifold
 import sklearn.metrics.pairwise
 
-# def trans(tfidf_matrix):
-#     new_tfidf_matrix = []
-
-#     for i, doc in enumerate(tfidf_matrix):
-#         new_tfidf_matrix.append(defaultdict(int))
-#             for word, tfidf in tfidf_matrix[i]:
-#                 new_tfidf_matrix[i][word] = tfidf
-
-#     return tfidf_matrix
-
 def prepare_fig(w=1, h=None):
     if h is None: h = w
     return plt.figure(figsize=(6 * w, 3 * h))

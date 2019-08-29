@@ -135,8 +135,7 @@ def merge_author_affiliation(doc):
         else:
             merged = [author.name + ' ' + affiliation.name for affiliation in author.affiliations]
             authors_plus_aff += merged
-    # print("A")
-    # print(authors_plus_aff)
+
     return set(authors_plus_aff)
 
 def abbr_to_full_language(language):
