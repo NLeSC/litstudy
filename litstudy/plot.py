@@ -6,8 +6,9 @@ from sklearn.decomposition import TruncatedSVD
 import sklearn.manifold
 import numpy as np
 import math
+import wordcloud
 
-from .nlp import generate_topic_cloud, create_tfidf
+from .nlp import create_tfidf
 
 sns.set('paper')
 
@@ -160,6 +161,12 @@ def abbr_to_full_language(language):
     return language
 
 def plot_year_histogram(docset, ax=None):
+    """Plot a histogram of the number of documents published for each year.
+
+    :param docset: The `DocumentSet`.
+    :param ax: The axis on which to plot the histogram, defaults to current axis.
+    """
+
     # Publications per year
     year_count = defaultdict(int)
 
@@ -168,45 +175,105 @@ def plot_year_histogram(docset, ax=None):
     
     min_year = min(year_count.keys())
     max_year = max(year_count.keys())
-
-    # years = range(2000, 2020)
     years = list(range(min_year, max_year+1))
     
-    # plot_statistic(lambda p: [p.year], docset=docset, x=years, ax=ax, x_label="No. publications")
     plot_statistic(lambda p: [p.year], docset=docset, x=years, ax=ax, x_label="No. publications")
 
-def plot_author_histogram(docset, x=20, ax=None):
-    plot_statistic(lambda p: set(a.name for a in p.authors or []), x=x, docset=docset, ax=ax, x_label="No. publications")
+def plot_author_histogram(docset, top_k=20, ax=None):
+    """Plot a histogram of the number of documents published by each author. Note that
+    this is done on a best-effort basis since one author could have published under
+    multiple spellings of the same name (e.g., "Alan Turing", "A. Turing", or "A. M. Turing")
 
-def plot_author_affiliation_histogram(docset, x=30, ax=None):
-    plot_statistic(lambda p: merge_author_affiliation(p), x=x, docset=docset, ax=ax, x_label="No. publications")
+    :param docset: The `DocumentSet`.
+    :param ax: The axis on which to plot the histogram, defaults to current axis.
+    :param top_k: Limit results to the top k authors.
+    """
+    plot_statistic(lambda p: set(a.name for a in p.authors or []), x=top_k, docset=docset, ax=ax, x_label="No. publications")
 
-def plot_number_authors_histogram(docset, x=5, ax=None):
-    plot_statistic(lambda p: [len(set(a.name for a in p.authors or []))], x=x, docset=docset, ax=ax, x_label="No. publications")
+def plot_author_affiliation_histogram(docset, top_k=30, ax=None):
+    """Plot a histogram of the number of documents published by each combination 
+    of author + affiliation. This helps to reduce the name number of collisions for
+    different persons having the same name.
+
+    :param docset: The `DocumentSet`.
+    :param ax: The axis on which to plot the histogram, defaults to current axis.
+    :param top_k: Limit results to the top k combinations.
+    """
+    plot_statistic(lambda p: merge_author_affiliation(p), x=top_k, docset=docset, ax=ax, x_label="No. publications")
+
+def plot_number_authors_histogram(docset, ax=None):
+    """Plot a histogram of the number of authors per document.
+
+    :param docset: The `DocumentSet`.
+    :param ax: The axis on which to plot the histogram, defaults to current axis.
+    """
+    plot_statistic(lambda p: [len(set(a.name for a in p.authors or []))], x=range(25), docset=docset, ax=ax, x_label="No. publications")
 
 def plot_source_type_histogram(docset, ax=None):
+    """Plot a histogram of the document source types (e.g., Journal, conference proceedings, etc.)
+
+    :param docset: The `DocumentSet`.
+    :param ax: The axis on which to plot the histogram, defaults to current axis.
+    """
     plot_statistic(lambda p: [p.source_type], docset=docset, ax=ax, x_label="No. publications")
 
 def plot_source_histogram(docset, x=10, ax=None):
+    """Plot a histogram of the document source. Note that this done on a best-effort basis since
+    one publication venue could have multiple spellings.
+
+    :param docset: The `DocumentSet`.
+    :param ax: The axis on which to plot the histogram, defaults to current axis.
+    :param top_k: Limit results to the top k sources.
+    """
     plot_statistic(lambda p: [clean_source(p.source)], x=x, docset=docset, ax=ax, x_label="No. publications")
 
 def plot_affiliation_histogram(docset, x=10, ax=None):
-    # Publications per institute
+    """Plot a histogram of the number of documents published by each affiliation. Note that
+    this is done on a best-effort basis since one affiliation could have multiple spellings
+    (e.g., "University of Amsterdam", "Universiteit van Amsterdam", or "UvA").
+
+    :param docset: The `DocumentSet`.
+    :param ax: The axis on which to plot the histogram, defaults to current axis.
+    :param top_k: Limit results to the top k institutes.
+    """
     plot_statistic(lambda p: get_affiliations(p), x=x, docset=docset, ax=ax, x_label="No. publications")
 
-def plot_country_histogram(docset, x=10, ax=None):
-    # Publications per institute
-    plot_statistic(lambda p: get_affiliations(p, attribute='country'), x=x, docset=docset, ax=ax, x_label="No. publications")
+def plot_country_histogram(docset, top_k=10, ax=None):
+    """Plot a histogram of the number of documents published by each country based
+    on author affiliation. Note that the country is not always available.
+
+    :param docset: The `DocumentSet`.
+    :param ax: The axis on which to plot the histogram, defaults to current axis.
+    :param top_k: Limit results to the top k country.
+    """
+    plot_statistic(lambda p: get_affiliations(p, attribute='country'), x=top_k, docset=docset, ax=ax, x_label="No. publications")
 
 def plot_affiliation_type_histogram(docset, x=10, ax=None):
-    # Publications per institute
+    """Plot a histogram of the number of documents published by each type
+    of affiliation (e.g., research institutes, academic institute, company, etc.)
+
+    :param docset: The `DocumentSet`.
+    :param ax: The axis on which to plot the histogram, defaults to current axis.
+    :param top_k: Limit results to the top k entries.
+    """
     plot_statistic(lambda p: get_affiliations(p, attribute='affiliation_type'), x=x, docset=docset, ax=ax, x_label="No. publications")
 
 def plot_language_histogram(docset, ax=None):
-    # Publications per institute
+    """Plot a histogram of the number of documents published for each language
+    (e.g., English, German, Chinese, etc.)
+
+    :param docset: The `DocumentSet`.
+    :param ax: The axis on which to plot the histogram, defaults to current axis.
+    """
     plot_statistic(lambda p: [abbr_to_full_language(p.language)], docset=docset, ax=ax, x_label="No. publications")
 
-def plot_words_histogram(freqs, dic, x=25, ax=None):
+def plot_words_histogram(freqs, dic, top_k=25, ax=None):
+    """Plot a histogram of word frequencies in the documents.
+
+    :param docset: The `DocumentSet`.
+    :param ax: The axis on which to plot the histogram, defaults to current axis.
+    :param top_k: Limit results to the top k entries.
+    """
     all_freqs = []
     for doc_freq in freqs:
         all_freqs += doc_freq
@@ -215,12 +282,7 @@ def plot_words_histogram(freqs, dic, x=25, ax=None):
     for word, freq in all_freqs:
         count[str(dic[word])] += freq
 
-    plot_statistic(None, docset=None, ax=ax, x_label="No. publications", x=x, count=count)
-
-    # display(pd.DataFrame(
-    #     # [(w, word_count[w], 'Yes' * (w in stopwords)) for w in top_k(one_count, 250)],
-    #     [(w, count[w]) for w in top_k(count, 250)],
-    #     columns=['word', 'count']))
+    plot_statistic(None, docset=None, ax=ax, x_label="No. publications", x=top_k, count=count)
 
 
 #-----------------------------------------------------------------------
@@ -228,6 +290,13 @@ def plot_words_histogram(freqs, dic, x=25, ax=None):
 #-----------------------------------------------------------------------
 
 def plot_topic_clouds(model, cols=3, fig=None, **kwargs):
+    """Plot the word distributions of a topic model.
+
+    :param model: The `TopicModel`.
+    :param cols: Number of columns (e.g., word clouds per row).
+    :param fig: The figure on which to plot the results, defaults to current figure.
+    :param \**kwargs: Additional parameters passed to `plot_topic_cloud`.
+    """
     if fig is None:
         fig, ax = prepare_fig(2, wordcloud=True)
 
@@ -239,13 +308,55 @@ def plot_topic_clouds(model, cols=3, fig=None, **kwargs):
 
 
 def plot_topic_cloud(model, topicid, ax=None, **kwargs):
-    if ax is None: ax = plt.gca()
+    """Plot the word distributions of a single topic from a topic model.
 
-    im = generate_topic_cloud(model, topicid, **kwargs)
+    :param model: The `TopicModel`.
+    :param topicid: The topic index within the topic model.
+    :param ax: The axis on which to plot the histogram, defaults to current axis.
+    :param \**kwargs: Additional parameters passed to `generate_topic_cloud`.
+    """
+    if ax is None: ax = plt.gca()
     ax.set_xticks([])
     ax.set_yticks([])
-    ax.imshow(generate_topic_cloud(model, topicid), interpolation='bilinear')
 
+    im = generate_topic_cloud(model, topicid, **kwargs).to_array()
+    ax.imshow(im, interpolation='bilinear')
+
+def generate_topic_cloud(model, topicid, cmap=None, max_font_size=75, background_color='white'):
+    """Generate the word cloud for the word distributions of a single topic from a topic model.
+
+    :param model: The `TopicModel`.
+    :param topicid: The topic index within the topic model.
+    :param cmap: The color map to use for the foreground colors, defaults to "Blues".
+    :param background_color: The background color, defaults to "white".
+    :param max_font_size: The maximum font size.
+    :param \**kwargs: Additional parameters passed to `wordcloud.WordCloud`.
+    :return: A `wordcloud.WordCloud` instance.
+    """
+    if cmap is None: cmap = plt.get_cmap('Blues')
+
+    mapping = dict()
+    maximum = np.amax(model.topic2token[topicid])
+
+    for i in np.argsort(model.topic2token[topicid])[-100:]:
+        if model.topic2token[topicid, i] > 0:
+            mapping[model.dictionary[i]] = model.topic2token[topicid, i] / maximum
+
+    def get_color(word, **kwargs):
+        weight = kwargs['font_size'] / 75.0 * 0.7 + 0.3
+        r, g, b = np.array(cmap(weight)[:3]) * 255
+        return 'rgb({}, {}, {})'.format(int(r), int(g), int(b))
+
+    wc = wordcloud.WordCloud(
+            prefer_horizontal=True,
+            max_font_size=max_font_size,
+            background_color=background_color,
+            color_func=get_color,
+            scale=2,
+            relative_scaling=0.5)
+    wc.fit_words(mapping)
+
+    return wc
 
 #-----------------------------------------------------------------------
 # Topic map plotting functions
@@ -278,6 +389,7 @@ def draw_dot(model, p, t, zorder=0):
         zorder=zorder + 1)
 
 def plot_topic_map(model, dic, freqs, fig=None):
+    """Embeds the documents onto a 2D plane."""
     seed = 70 # seed for truncatedSVD
     vis_seed = 6 # seed for t-SNE visualization
 

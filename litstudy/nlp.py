@@ -1,6 +1,5 @@
 import numpy as np
 import gensim
-import gensim.models.nmf
 import sys
 import sklearn.feature_extraction.text
 import sklearn.decomposition
@@ -9,32 +8,6 @@ import matplotlib.pyplot as plt
 from collections import defaultdict
 from functools import partial
 
-def generate_topic_cloud(model, topicid, cmap=None, max_font_size=75, background_color='white'):
-    if cmap is None: 
-        cmap = plt.get_cmap('Blues')
-
-    mapping = dict()
-    maximum = np.amax(model.topic2token[topicid])
-
-    for i in np.argsort(model.topic2token[topicid])[-100:]:
-        if model.topic2token[topicid, i] > 0:
-            mapping[model.dictionary[i]] = model.topic2token[topicid, i] / maximum
-
-    def get_color(word, **kwargs):
-        weight = kwargs['font_size'] / 75.0 * 0.7 + 0.3
-        r, g, b = np.array(cmap(weight)[:3]) * 255
-        return 'rgb({}, {}, {})'.format(int(r), int(g), int(b))
-
-    wc = wordcloud.WordCloud(
-            prefer_horizontal=True,
-            max_font_size=max_font_size,
-            background_color=background_color,
-            color_func=get_color,
-            scale=2,
-            relative_scaling=0.5)
-    wc.fit_words(mapping)
-
-    return wc.to_array()
 
 class Corpus:
     def __init__(self, texts):

@@ -13,6 +13,12 @@ Welcome to Automated Literature Study Tool's documentation!
 .. automodule:: litstudy.common
   :members:
 
+.. automodule:: litstudy.plot
+  :members:
+
+.. automodule:: litstudy.nlp
+  :members:
+
 
 Indices and tables
 ==================
