@@ -9,9 +9,12 @@ from .common import Document, DocumentID, DocumentSet, Author, Affiliation
 
 def search_mockup():
     a = Document(
-            title=' A unified analytical theory of heteropolymers for sequence-specific phase behaviors of polyelectrolytes and polyampholytes ',
+            title=' A unified analytical theory of heteropolymers for sequence-specific'
+                  ' phase behaviors of polyelectrolytes and polyampholytes ',
             authors=[
-                Author(name='Yi-Hsuan Lin', affiliations=[Affiliation(name='University of affiliation1'), Affiliation(name='affiliation3')]),
+                Author(name='Yi-Hsuan Lin',
+                       affiliations=[Affiliation(name='University of affiliation1'),
+                                     Affiliation(name='affiliation3')]),
                 Author(name='Jacob P. Brady', affiliations=[Affiliation(name='University of affiliation1')]),
                 Author(name='Hue Sun Chan', affiliations=[Affiliation(name='affiliation2')]),
                 Author(name='Kingshuk Ghosh'),
