@@ -3,6 +3,7 @@ from pybliometrics.scopus.exception import ScopusQueryError
 from tqdm import tqdm
 import requests
 from urllib.parse import quote_plus
+from bibtexparser import load
 
 from .common import Document, DocumentID, DocumentSet, Author, Affiliation
 
@@ -210,3 +211,49 @@ def query_semanticscholar(documents):
             document.references = references
         except KeyError:
             pass
+
+
+def load_bibtex(file):
+    documents = []
+    with open(file) as bibtex_file:
+        bibtex_data = load(bibtex_file)
+    bibtex_file.close()
+    for paper in tqdm(bibtex_data.entries):
+        doc_id = DocumentID()
+        doc_id.parse_bibtex(paper)
+        document = Document(id=doc_id,
+                            title=paper["title"],
+                            internal=paper)
+        try:
+            document.abstract = paper["abstract"]
+        except KeyError:
+            pass
+        try:
+            document.year = int(paper["year"])
+        except KeyError:
+            pass
+        try:
+            document.source = paper["journal"]
+        except KeyError:
+            pass
+        try:
+            document.source_type = paper["ENTRYTYPE"]
+        except KeyError:
+            pass
+        try:
+            document.publisher = paper["publisher"]
+        except KeyError:
+            pass
+        try:
+            document.keywords = paper["keywords"]
+        except KeyError:
+            pass
+        try:
+            authors = []
+            for author in paper["author"].split("and"):
+                authors.append(Author(name=author.strip("{}")))
+            document.authors = authors
+        except KeyError:
+            pass
+        documents.append(document)
+    return documents
