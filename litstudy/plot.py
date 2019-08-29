@@ -1,9 +1,18 @@
 import matplotlib.pyplot as plt
 from collections import defaultdict
 import seaborn as sns
-import pandas as pd
+# import pandas as pd
+from sklearn.decomposition import TruncatedSVD
+import sklearn.manifold
+import numpy as np
+
+from .nlp import generate_topic_cloud, create_tfidf
 
 sns.set('paper')
+
+#-----------------------------------------------------------------------
+# Statistics plotting functions
+#-----------------------------------------------------------------------
 
 def top_k(mapping, k=10):
     return sorted(mapping.keys(), key=lambda x: mapping[x])[::-1][:k]
@@ -135,8 +144,7 @@ def merge_author_affiliation(doc):
         else:
             merged = [author.name + ' ' + affiliation.name for affiliation in author.affiliations]
             authors_plus_aff += merged
-    # print("A")
-    # print(authors_plus_aff)
+
     return set(authors_plus_aff)
 
 def abbr_to_full_language(language):
@@ -212,3 +220,111 @@ def plot_words_histogram(freqs, dic, x=25, ax=None):
     #     # [(w, word_count[w], 'Yes' * (w in stopwords)) for w in top_k(one_count, 250)],
     #     [(w, count[w]) for w in top_k(count, 250)],
     #     columns=['word', 'count']))
+
+
+#-----------------------------------------------------------------------
+# Wordcloud plotting functions
+#-----------------------------------------------------------------------
+
+def plot_topic_clouds(model, cols=3, fig=None, **kwargs):
+    if fig is None:
+        fig = prepare_fig(2)
+        # fig = plt.gcf()
+        ax = plt.gca()
+
+    rows = int(model.num_topics / float(cols) + cols - 1)
+
+    for i in range(model.num_topics):
+        ax = fig.add_subplot(rows, cols, i + 1)
+        plot_topic_cloud(model, i, ax=ax, **kwargs)
+
+
+def plot_topic_cloud(model, topicid, ax=None, **kwargs):
+    if ax is None: ax = plt.gca()
+
+    im = generate_topic_cloud(model, topicid, **kwargs)
+    ax.set_xticks([])
+    ax.set_yticks([])
+    ax.imshow(generate_topic_cloud(model, topicid), interpolation='bilinear')
+
+
+#-----------------------------------------------------------------------
+# Topic map plotting functions
+#-----------------------------------------------------------------------
+
+def draw_dot(model, p, t, zorder=0):
+    labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+    color = plt.get_cmap('jet')(float(t) / model.num_topics)
+    color = 0.8 * np.array(color)[:3]
+    
+    plt.scatter(
+        p[0], 
+        p[1],
+        s=150,
+        c=[color],
+        marker='o',
+        linewidth=0.5,
+        zorder=zorder)
+    
+    plt.text(
+        p[0], 
+        p[1],
+        labels[t],
+        fontsize=6,
+        color='1',
+        va='center',
+        ha='center',
+        fontweight='bold',
+        zorder=zorder + 1)
+
+def plot_topic_map(model, dic, freqs, fig=None):
+    seed = 70 # seed for truncatedSVD
+    vis_seed = 6 # seed for t-SNE visualization
+
+    tfidf_matrix = create_tfidf(freqs, dic)
+
+    # Lower dimensionality of original frequency matrix to improve cosine distances for visualization
+    reduced_matrix = TruncatedSVD(
+        n_components=10, 
+        random_state=seed
+    ).fit_transform(tfidf_matrix)
+
+    # Learn model
+    tsne_model = sklearn.manifold.TSNE(
+        verbose=True,
+        metric='cosine',
+        random_state=vis_seed,
+        perplexity=20)
+    pos = tsne_model.fit_transform(reduced_matrix)
+
+    # Resize so xy-position is between 0.05 and 0.95
+    pos -= (np.amin(pos, axis=0) + np.amax(pos, axis=0)) / 2
+    pos /= np.amax(np.abs(pos))
+    pos = (pos * 0.5) + 0.5
+    pos = (pos * 0.9) + 0.05
+
+    if fig is None:
+        fig = prepare_fig(2)#plt.gcf()
+        ax = plt.gca()
+
+    plt.xticks([])
+    plt.yticks([])
+    plt.xlim(0, 1)
+    plt.ylim(0, 1)
+    zorder = 0
+
+    # Draw dots
+    for i in np.random.permutation(len(model.doc2topic)):
+        topic_id = np.argmax(model.doc2topic[i])
+        draw_dot(model, pos[i], topic_id, zorder)
+        zorder += 2
+
+    # Draw legend
+    for i in range(model.num_topics):    
+        y = 0.985 - i * 0.02
+        label = ', '.join(dic[w] for w in np.argsort(model.topic2token[i])[::-1][:3])
+
+        draw_dot(model, [0.015, y], i)
+        plt.text(0.03, y, label, ha='left', va='center', fontsize=8, zorder=zorder)
+        zorder += 1

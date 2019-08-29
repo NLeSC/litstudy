@@ -121,9 +121,6 @@ class Document:
         self.citation_count = kwargs.pop('citation_count', None)
         """ The number of received citations, or `None` if unavailable. """
 
-        self.language = kwargs.pop('language', None)
-        """ The document's language as string, or `None` if unavailable. """
-
         self._internal = kwargs.pop('internal', None)
         """ Internal object used to extract these properties  """
 
