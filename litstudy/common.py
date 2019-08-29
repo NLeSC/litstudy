@@ -74,6 +74,14 @@ class DocumentID:
         except KeyError:
             self.id = dblp_result["info"]["title"]
 
+    def parse_bibtex(self, bibtex_entry):
+        """Retrieve the ID of a document from a BibTex entry."""
+
+        try:
+            self.id = bibtex_entry["doi"]
+        except KeyError:
+            self.id = bibtex_entry["title"]
+
 
 class Document:
     """ Meta data of academic document. """
