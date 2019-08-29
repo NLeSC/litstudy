@@ -5,6 +5,7 @@ import seaborn as sns
 from sklearn.decomposition import TruncatedSVD
 import sklearn.manifold
 import numpy as np
+import math
 
 from .nlp import generate_topic_cloud, create_tfidf
 
@@ -17,11 +18,13 @@ sns.set('paper')
 def top_k(mapping, k=10):
     return sorted(mapping.keys(), key=lambda x: mapping[x])[::-1][:k]
 
-def prepare_fig(w=1, h=None):
+def prepare_fig(w=1, h=None, wordcloud=False):
     if h is None: h = w
-    return plt.figure(figsize=(6 * w, 3 * h))
-    # sns.set(rc={'figure.figsize': figsize})
-    # plt.clf()
+    fig = plt.figure(figsize=(6 * w, 3 * h))
+    ax = plt.gca()
+    if wordcloud is True:
+        fig.clear()
+    return fig, ax
 
 # Publications per aggregation type
 def plot_statistic(fun, docset, x=None, ax=None, x_label="", count=None):
@@ -31,8 +34,7 @@ def plot_statistic(fun, docset, x=None, ax=None, x_label="", count=None):
         the x keys with highest counts are plotted. """
 
     if ax is None:
-        fig = prepare_fig(2)
-        ax = plt.gca()
+        fig, ax = prepare_fig(2)
 
     # Use given count dict if we are plotting something
     # unrelated to documents and the counting has already been performed.
@@ -52,7 +54,6 @@ def plot_statistic(fun, docset, x=None, ax=None, x_label="", count=None):
     else:
         keys = list(count.keys())
 
-    # prepare_fig(1, 4)
     ax.barh(keys,
         [count[str(a)] for a in keys],
         tick_label=[str(key)[:50] for key in keys])
@@ -228,11 +229,9 @@ def plot_words_histogram(freqs, dic, x=25, ax=None):
 
 def plot_topic_clouds(model, cols=3, fig=None, **kwargs):
     if fig is None:
-        fig = prepare_fig(2)
-        # fig = plt.gcf()
-        ax = plt.gca()
+        fig, ax = prepare_fig(2, wordcloud=True)
 
-    rows = int(model.num_topics / float(cols) + cols - 1)
+    rows = math.ceil(model.num_topics / float(cols))
 
     for i in range(model.num_topics):
         ax = fig.add_subplot(rows, cols, i + 1)
@@ -305,8 +304,7 @@ def plot_topic_map(model, dic, freqs, fig=None):
     pos = (pos * 0.9) + 0.05
 
     if fig is None:
-        fig = prepare_fig(2)#plt.gcf()
-        ax = plt.gca()
+        fig, ax = prepare_fig(2)
 
     plt.xticks([])
     plt.yticks([])
@@ -322,7 +320,7 @@ def plot_topic_map(model, dic, freqs, fig=None):
 
     # Draw legend
     for i in range(model.num_topics):    
-        y = 0.985 - i * 0.02
+        y = 0.95 - i * 0.05
         label = ', '.join(dic[w] for w in np.argsort(model.topic2token[i])[::-1][:3])
 
         draw_dot(model, [0.015, y], i)

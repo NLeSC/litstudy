@@ -63,7 +63,7 @@ def create_tfidf(freqs, dic):
 
     return tfidf_matrix
 
-def train_nmf_model(dic, freqs, num_topics, seed=0, **kwargs):
+def train_nmf_model(dic, freqs, num_topics, seed=0, max_iter=500, **kwargs):
     tfidf_matrix = create_tfidf(freqs, dic)
 
     # Train NMF model
@@ -71,7 +71,8 @@ def train_nmf_model(dic, freqs, num_topics, seed=0, **kwargs):
 	n_components=num_topics,
 	random_state=seed,
 	tol=1e-9,
-	max_iter=500,
+	max_iter=max_iter,
+    # verbose=True,
         **kwargs)
 
     # Train model
