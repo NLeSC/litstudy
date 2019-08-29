@@ -4,6 +4,7 @@ from tqdm import tqdm
 import requests
 from urllib.parse import quote_plus
 from bibtexparser import load
+import iso639
 
 from .common import Document, DocumentID, DocumentSet, Author, Affiliation
 
@@ -115,6 +116,12 @@ def search_scopus(query, docs=None):
             for reference in paper.references:
                 if reference.title:
                     references.append(reference.title)
+
+        if paper.language:
+            language = iso639.languages.get(part2b=paper.language).name
+        else:
+            language = None
+
         document = Document(id=doc_id,
                             title=paper.title,
                             keywords=paper.authkeywords,
@@ -122,7 +129,7 @@ def search_scopus(query, docs=None):
                             source=paper.publicationName,
                             source_type=paper.aggregationType,
                             citation_count=paper.citedby_count,
-                            language=paper.language,
+                            language=language,
                             year=int(paper.coverDate.split("-")[0]),
                             authors=authors,
                             references=references,

@@ -149,17 +149,6 @@ def merge_author_affiliation(doc):
 
     return set(authors_plus_aff)
 
-def abbr_to_full_language(language):
-    pairs = [
-        ['eng', 'English']
-    ]
-    
-    for abbr, full in pairs:
-        if language == abbr:
-            return full
-    
-    return language
-
 def plot_year_histogram(docset, ax=None):
     """Plot a histogram of the number of documents published for each year.
 
@@ -265,7 +254,7 @@ def plot_language_histogram(docset, ax=None):
     :param docset: The `DocumentSet`.
     :param ax: The axis on which to plot the histogram, defaults to current axis.
     """
-    plot_statistic(lambda p: [abbr_to_full_language(p.language)], docset=docset, ax=ax, x_label="No. publications")
+    plot_statistic(lambda p: [p.language], docset=docset, ax=ax, x_label="No. publications")
 
 def plot_words_histogram(freqs, dic, top_k=25, ax=None):
     """Plot a histogram of word frequencies in the documents.

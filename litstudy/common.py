@@ -8,14 +8,21 @@ class DocumentSet:
 
     def filter(self, predicate):
         """ Returns a new `DocumentSet` object which includes only documents
-        for which the given predicates returns true."""
+        for which the given predicates returns true.
+
+        :param predicate: The predicate to check.
+        :return: A `DocumentSet` instance
+        """
         return filter(predicate, self.docs)
 
     def filter_duplicates(self, key=None):
-        """ Remove duplicate documents from this `DocumentSet`. The `key`
-        lambda is used as identifier to check if two documents are identical.
-        By default, equivalence is determined based on DOI (if available)
-        or title (if available)."""
+        """ Remove duplicate documents from this `DocumentSet`.
+
+        :param key: lambda which takes a document and returns a unique key.
+        This key is used as an identifier to check if two documents are identical.
+        By default, equivalence is determined based on DOI (if available) or
+        title (if available).
+        :return: A `DocumentSet` instance"""
         def default_key(document):
             return document.id.id
 
