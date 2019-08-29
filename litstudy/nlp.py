@@ -237,8 +237,19 @@ def build_corpus(docs, filters):
     return dic, freqs
 
 def merge_bigrams(texts, bigrams):
-    # TODO
-    return texts
+    for text in texts:
+        skip_next = True
+        new_text = list(text)
+        index = 0
+
+        while index + 1 < len(new_text):
+            a, b = new_text[index], new_text[index + 1]
+            if (a, b) in bigrams:
+                new_text[index:index + 2] = bigrams
+            else:
+                index += 1
+
+        yield new_text
 
 def strip_short(texts, min_length=3):
     for text in texts:
