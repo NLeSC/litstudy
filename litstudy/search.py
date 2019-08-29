@@ -189,3 +189,17 @@ def search_dblp(query, docs=None):
         return DocumentSet(docs=documents).union(docs)
     else:
         return DocumentSet(docs=documents)
+
+
+def query_semanticscholar(documents):
+    for document in documents:
+        request = requests.get("http://api.semanticscholar.org/v1/paper/{}".format(quote_plus(document.id.id)))
+        results = request.json()
+        try:
+            document.abstract = results["abstract"]
+        except KeyError:
+            pass
+        try:
+            document.citation_count = len(results["citations"])
+        except KeyError:
+            pass
