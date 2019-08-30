@@ -8,7 +8,7 @@ import numpy as np
 import math
 import wordcloud
 
-from .nlp import generate_topic_cloud, create_tfidf
+from .nlp import create_tfidf
 from .clean import read_translation_file, replace_affiliation_names, clean_affiliations
 
 sns.set('paper')
@@ -206,7 +206,7 @@ def plot_source_histogram(docset, top_k=10, ax=None):
     """
     plot_statistic(lambda p: [clean_source(p.source)], x=top_k, docset=docset, ax=ax, x_label="No. publications", title="Publications per source")
 
-def plot_affiliation_histogram(docset, top_k=10, ax=None, filename=None, clean=True):
+def plot_affiliation_histogram(docset, top_k=10, ax=None, filename="translations.yml", clean=True):
     """Plot a histogram of the number of documents published by each affiliation. Note that
     this is done on a best-effort basis since one affiliation could have multiple spellings
     (e.g., "University of Amsterdam", "Universiteit van Amsterdam", or "UvA"). The user is
@@ -221,7 +221,7 @@ def plot_affiliation_histogram(docset, top_k=10, ax=None, filename=None, clean=T
     if not clean:
         plot_statistic(lambda p: get_affiliations(p), x=top_k, docset=docset, ax=ax, x_label="No. publications", title="Publications per affiliation")
     else:
-        clean_affiliations(plot_affiliation_histogram, docset, x, ax, filename)
+        clean_affiliations(plot_affiliation_histogram, docset, top_k, ax, filename)
 
 def plot_country_histogram(docset, top_k=10, ax=None):
     """Plot a histogram of the number of documents published by each country based
