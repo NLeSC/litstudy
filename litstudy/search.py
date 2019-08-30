@@ -5,6 +5,10 @@ import requests
 from urllib.parse import quote_plus
 import bibtexparser
 import iso639
+import os
+import pickle
+import logging
+logger = logging.getLogger(__name__)
 
 from .common import Document, DocumentID, DocumentSet, Author, Affiliation
 
@@ -62,7 +66,7 @@ def search_mockup():
             year=2013,
             source_type='type3',
             source='International Conference on 3')
-    
+
     return DocumentSet([a, b, c, d])
 
 
@@ -141,6 +145,37 @@ def search_scopus(query, docs=None):
     else:
         return DocumentSet(docs=documents)
 
+
+def path_cache(directory, key):
+    valid = "abcdefgijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789.-"
+    safe_key = ''.join(c if c in valid else '_{}_'.format(ord(c)) for c in key)
+    return os.path.join(directory, '.' + safe_key)
+
+def read_cache(directory, key):
+    path = path_cache(directory, key)
+
+    if not os.path.isfile(path):
+        return None
+
+    try:
+        with open(path, 'rb') as f:
+            return pickle.load(f)
+    except Exception as e:
+        logger.warn(e)
+        return None
+
+def write_cache(directory, key, data):
+    path = path_cache(directory, key)
+
+    try:
+        if not os.path.isdir(directory):
+            os.mkdir(directory)
+
+        with open(path, 'wb') as f:
+            pickle.dump(data, f)
+    except Exception as e:
+        logger.warn(e)
+        return None
 
 def search_dblp(query, docs=None):
     """Search DBLP."""
@@ -261,8 +296,12 @@ def load_bibtex(file, lookup_authors=False):
 def query_semanticscholar(documents):
     for document in tqdm(documents):
         if document.id.is_doi:
-            request = requests.get("http://api.semanticscholar.org/v1/paper/{}".format(quote_plus(document.id.id)))
-            results = request.json()
+            results = read_cache(".semanticscholar", document.id.id)
+            if results is None:
+                request = requests.get("http://api.semanticscholar.org/v1/paper/{}".format(quote_plus(document.id.id)))
+                results = request.json()
+                write_cache(".semanticscholar", document.id.id, results)
+
             if not document.title:
                 try:
                     document.title = results["title"]
