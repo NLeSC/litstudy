@@ -13,3 +13,5 @@ bibtexparser
 networkx>=2.3
 python-Levenshtein==0.12.0
 PyYAML==5.1.2
+iso-639>=0.4
+sphinx

@@ -1,11 +1,12 @@
 # Automated Literature Analysis 
-This repository shows an example of how to perform an automated analysis of peer-reviewed scholar literature using Jupyter notebooks and Scopus' citation database. This analysis detects the number of publications over time, popular authors, popular venues, popular affiliations, and popular "topics" that appear within the documents' abstracts (detected using natural language processing).
+This repository shows an example of how to perform an automated analysis of academic literature using Jupyter notebooks and online citation databases such as Scopus, DBLP, and Semantic Scholar. This analysis detects the number of publications over time, popular authors, popular venues, popular affiliations, and popular "topics" that appear within the documents' abstracts (detected using natural language processing).
 
 
 ## Requirements
-The notebook requires access to Scopus: A citation database of peer-reviewed literature from scientific journals, books, and conference proceedings. To utilize the Scopus API, you (or your institute) needs a Scopus subscription and you must request an Elsevier Developer API key (see [Elsevier Developers](https://dev.elsevier.com/sc_apis.html) and [Scopus Python API](https://scopus.readthedocs.io/en/latest/) for more information). 
+The required Python packages can be found in `requirements.txt`. Creating a virtual Python environment is recommended (for example, `virtualenv` or `conda`). The notebook has been tested using Python 3.6. 
 
-The required Python packages can be found in `requirements.txt`. Creating a virtual Python environment is recommended (for example, `virtualenv` or `conda`). The notebook has been tested using Python 2.7 and Python 3.6. 
+Scopus is a citation database of peer-reviewed literature from scientific journals, books, and conference proceedings.
+To utilize the Scopus API, you (or your institute) needs a Scopus subscription and you must request an Elsevier Developer API key (see [Elsevier Developers](https://dev.elsevier.com/sc_apis.html) and [Scopus Python API](https://scopus.readthedocs.io/en/latest/) for more information). 
 
 
 # Running using virtualenv

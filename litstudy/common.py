@@ -8,14 +8,21 @@ class DocumentSet:
 
     def filter(self, predicate):
         """ Returns a new `DocumentSet` object which includes only documents
-        for which the given predicates returns true."""
-        return filter(predicate, self.docs)
+        for which the given predicates returns true.
+
+        :param predicate: The predicate to check.
+        :return: A `DocumentSet` instance
+        """
+        return DocumentSet([d for d in self.docs if predicate(d)])
 
     def filter_duplicates(self, key=None):
-        """ Remove duplicate documents from this `DocumentSet`. The `key`
-        lambda is used as identifier to check if two documents are identical.
-        By default, equivalence is determined based on DOI (if available)
-        or title (if available)."""
+        """ Remove duplicate documents from this `DocumentSet`.
+
+        :param key: lambda which takes a document and returns a unique key.
+        This key is used as an identifier to check if two documents are identical.
+        By default, equivalence is determined based on DOI (if available) or
+        title (if available).
+        :return: A `DocumentSet` instance"""
         def default_key(document):
             return document.id.id
 
@@ -55,12 +62,14 @@ class DocumentID:
     def __init__(self, doc_id=None):
         """Initialize the ID of a document."""
         self.id = doc_id
+        self.is_doi = False
 
     def parse_scopus(self, scopus_abstract):
         """Retrieve the ID of a document from a Scopus abstract."""
 
         if scopus_abstract.doi:
             self.id = scopus_abstract.doi
+            self.is_doi = True
         elif scopus_abstract.eid:
             self.id = scopus_abstract.eid
         else:
@@ -71,6 +80,7 @@ class DocumentID:
 
         try:
             self.id = dblp_result["info"]["doi"]
+            self.is_doi = True
         except KeyError:
             self.id = dblp_result["info"]["title"]
 
@@ -79,6 +89,9 @@ class DocumentID:
 
         try:
             self.id = bibtex_entry["doi"]
+            self.id = self.id.replace("http://doi.org/", "")
+            self.id = self.id.replace("http://doi.ieeecomputersociety.org/", "")
+            self.is_doi = True
         except KeyError:
             self.id = bibtex_entry["title"]
 

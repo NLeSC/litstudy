@@ -3,7 +3,8 @@ from pybliometrics.scopus.exception import ScopusQueryError
 from tqdm import tqdm
 import requests
 from urllib.parse import quote_plus
-from bibtexparser import load
+import bibtexparser
+import iso639
 
 from .common import Document, DocumentID, DocumentSet, Author, Affiliation
 
@@ -115,14 +116,20 @@ def search_scopus(query, docs=None):
             for reference in paper.references:
                 if reference.title:
                     references.append(reference.title)
+
+        if paper.language:
+            language = iso639.languages.get(part2b=paper.language).name
+        else:
+            language = None
+
         document = Document(id=doc_id,
                             title=paper.title,
                             keywords=paper.authkeywords,
                             abstract=paper.description,
                             source=paper.publicationName,
                             source_type=paper.aggregationType,
-                            citation_count=paper.citedby_count,
-                            language=paper.language,
+                            citation_count=int(paper.citedby_count),
+                            language=language,
                             year=int(paper.coverDate.split("-")[0]),
                             authors=authors,
                             references=references,
@@ -175,16 +182,16 @@ def search_dblp(query, docs=None):
             document.publisher = paper["info"]["publisher"]
         except KeyError:
             pass
+        authors = []
         try:
-            authors = []
             if type(paper["info"]["authors"]["author"]) is str:
                 authors.append(Author(name=paper["info"]["authors"]["author"]))
             else:
                 for author in paper["info"]["authors"]["author"]:
                     authors.append(Author(name=author))
-            document.authors = authors
         except KeyError:
             pass
+        document.authors = authors
         documents.append(document)
     if docs:
         return DocumentSet(docs=documents).union(docs)
@@ -192,31 +199,13 @@ def search_dblp(query, docs=None):
         return DocumentSet(docs=documents)
 
 
-def query_semanticscholar(documents):
-    for document in tqdm(documents):
-        request = requests.get("http://api.semanticscholar.org/v1/paper/{}".format(quote_plus(document.id.id)))
-        results = request.json()
-        try:
-            document.abstract = results["abstract"]
-        except KeyError:
-            pass
-        try:
-            document.citation_count = len(results["citations"])
-        except KeyError:
-            pass
-        try:
-            references = []
-            for reference in results["references"]:
-                references.append(reference["title"])
-            document.references = references
-        except KeyError:
-            pass
+def load_bibtex(file, lookup_authors=False):
+    """Load the content of a BibTex file."""
 
-
-def load_bibtex(file):
     documents = []
     with open(file) as bibtex_file:
-        bibtex_data = load(bibtex_file)
+        parser = bibtexparser.bparser.BibTexParser(common_strings=True)
+        bibtex_data = bibtexparser.load(bibtex_file, parser=parser)
     bibtex_file.close()
     for paper in tqdm(bibtex_data.entries):
         doc_id = DocumentID()
@@ -248,12 +237,120 @@ def load_bibtex(file):
             document.keywords = paper["keywords"]
         except KeyError:
             pass
-        try:
-            authors = []
-            for author in paper["author"].split("and"):
-                authors.append(Author(name=author.strip("{}")))
-            document.authors = authors
-        except KeyError:
-            pass
+        authors = []
+        if lookup_authors:
+            if document.id.is_doi:
+                request = requests.get("http://api.semanticscholar.org/v1/paper/{}".format(quote_plus(document.id.id)))
+                results = request.json()
+                try:
+                    for author in results["authors"]:
+                        authors.append(Author(name=author["name"]))
+                except KeyError:
+                    pass
+        else:
+            try:
+                for author in paper["author"].split("and"):
+                    authors.append(Author(name=author.strip("{}")))
+            except KeyError:
+                pass
+        document.authors = authors
         documents.append(document)
-    return documents
+    return DocumentSet(documents)
+
+
+def query_semanticscholar(documents):
+    for document in tqdm(documents):
+        if document.id.is_doi:
+            request = requests.get("http://api.semanticscholar.org/v1/paper/{}".format(quote_plus(document.id.id)))
+            results = request.json()
+            if not document.title:
+                try:
+                    document.title = results["title"]
+                except KeyError:
+                    pass
+            if len(document.authors) == 0:
+                try:
+                    for author in results["authors"]:
+                        document.authors.append(Author(name=author["name"]))
+                except KeyError:
+                    pass
+            if not document.abstract:
+                try:
+                    document.abstract = results["abstract"]
+                except KeyError:
+                    pass
+            if not document.references or len(document.references) == 0:
+                try:
+                    references = []
+                    for reference in results["references"]:
+                        references.append(reference["title"])
+                    document.references = references
+                except KeyError:
+                    pass
+            if not document.year:
+                try:
+                    document.year = int(results["year"])
+                except KeyError:
+                    pass
+            if not document.source:
+                try:
+                    document.source = results["venue"]
+                except KeyError:
+                    pass
+            if not document.citation_count:
+                try:
+                    document.citation_count = len(results["citations"])
+                except KeyError:
+                    pass
+
+
+def query_crossref(documents):
+    for document in tqdm(documents):
+        if document.id.is_doi:
+            request = requests.get("https://api.crossref.org/v1/works/{}".format(quote_plus(document.id.id)))
+            if request.status_code != 200:
+                continue
+            results = request.json()
+
+            if not document.title:
+                try:
+                    document.title = results["message"]["title"][0]
+                except KeyError:
+                    pass
+            if len(document.authors) == 0:
+                try:
+                    for author in results["message"]["author"]:
+                        document.authors.append(Author(name=(author["message"]["given"] + author["message"]["family"])))
+                except KeyError:
+                    pass
+            if not document.year:
+                try:
+                    document.year = int(results["message"]["published-print"]["date-parts"][0])
+                except KeyError:
+                    pass
+            if not document.source:
+                try:
+                    document.source = results["message"]["container-title"][0]
+                except KeyError:
+                    pass
+            if not document.source_type:
+                try:
+                    document.source_type = results["message"]["published-print"]["type"]
+                except KeyError:
+                    pass
+            if not document.citation_count:
+                try:
+                    document.citation_count = int(results["message"]["is-referenced-by-count"])
+                except KeyError:
+                    pass
+            if not document.language:
+                try:
+                    document.language = results["message"]["language"]
+                except KeyError:
+                    pass
+            if not document.publisher:
+                try:
+                    document.publisher = results["message"]["publisher"]
+                except KeyError:
+                    pass
+    return DocumentSet(documents)
