@@ -19,23 +19,22 @@ sns.set('paper')
 def top_k(mapping, k=10):
     return sorted(mapping.keys(), key=lambda x: mapping[x])[::-1][:k]
 
-def prepare_fig(w=1, h=None, wordcloud=False):
+def prepare_plot(w=1, h=None):
     if h is None: h = w
-    fig = plt.figure(figsize=(6 * w, 3 * h))
+    plt.rcParams['figure.figsize'] = [w, h]
+    fig = plt.figure()
     ax = plt.gca()
-    if wordcloud is True:
-        fig.clear()
     return fig, ax
 
 # Publications per aggregation type
-def plot_statistic(fun, docset, x=None, ax=None, x_label="", count=None):
+def plot_statistic(fun, docset, x=None, ax=None, x_label="", count=None, vertical=False, title=None):
     """ Plot statistics of some sort in a bar plot. If x is not given,
         (None) all keys with a count > 0 are plotted. If x is a list, the
         counts of all list elements are included. If x is an integer,
         the x keys with highest counts are plotted. """
 
     if ax is None:
-        fig, ax = prepare_fig(2)
+        ax = plt.gca()
 
     # Use given count dict if we are plotting something
     # unrelated to documents and the counting has already been performed.
@@ -46,7 +45,9 @@ def plot_statistic(fun, docset, x=None, ax=None, x_label="", count=None):
                 if key:
                     count[str(key)] += 1
 
-    ax.set_xlabel(x_label)
+    if title is not None:
+        plt.title(title)
+
     
     if type(x) == type([]):
         keys = x
@@ -55,11 +56,18 @@ def plot_statistic(fun, docset, x=None, ax=None, x_label="", count=None):
     else:
         keys = list(count.keys())
 
-    ax.barh(keys,
-        [count[str(a)] for a in keys],
-        tick_label=[str(key)[:50] for key in keys])
+    if not vertical:
+        keys = keys[::-1]
+        ax.set_xlabel(x_label)
+        ax.barh(keys,
+            [count[str(a)] for a in keys],
+            tick_label=[str(key)[:50] for key in keys])
+    else:
+        ax.set_ylabel(x_label)
+        ax.bar(keys,
+            [count[str(a)] for a in keys],
+            tick_label=[str(key)[:50] for key in keys])
 
-    plt.show()
 
 def clean_affiliation(name):
     name = str(name).title()
@@ -144,7 +152,7 @@ def merge_author_affiliation(doc):
         if author.affiliations is None:
             authors_plus_aff.append(author.name)
         else:
-            merged = [author.name + ' ' + affiliation.name for affiliation in author.affiliations]
+            merged = [author.name + ', ' + affiliation.name for affiliation in author.affiliations]
             authors_plus_aff += merged
 
     return set(authors_plus_aff)
@@ -166,7 +174,7 @@ def plot_year_histogram(docset, ax=None):
     max_year = max(year_count.keys())
     years = list(range(min_year, max_year+1))
     
-    plot_statistic(lambda p: [p.year], docset=docset, x=years, ax=ax, x_label="No. publications")
+    plot_statistic(lambda p: [p.year], docset=docset, x=years, ax=ax, x_label="No. publications", vertical=True, title='Publications per year')
 
 def plot_author_histogram(docset, top_k=20, ax=None):
     """Plot a histogram of the number of documents published by each author. Note that
@@ -177,7 +185,7 @@ def plot_author_histogram(docset, top_k=20, ax=None):
     :param ax: The axis on which to plot the histogram, defaults to current axis.
     :param top_k: Limit results to the top k authors.
     """
-    plot_statistic(lambda p: set(a.name for a in p.authors or []), x=top_k, docset=docset, ax=ax, x_label="No. publications")
+    plot_statistic(lambda p: set(a.name for a in p.authors or []), x=top_k, docset=docset, ax=ax, x_label="No. publications", title="Publications per author")
 
 def plot_author_affiliation_histogram(docset, top_k=30, ax=None):
     """Plot a histogram of the number of documents published by each combination 
@@ -188,7 +196,7 @@ def plot_author_affiliation_histogram(docset, top_k=30, ax=None):
     :param ax: The axis on which to plot the histogram, defaults to current axis.
     :param top_k: Limit results to the top k combinations.
     """
-    plot_statistic(lambda p: merge_author_affiliation(p), x=top_k, docset=docset, ax=ax, x_label="No. publications")
+    plot_statistic(lambda p: merge_author_affiliation(p), x=top_k, docset=docset, ax=ax, x_label="No. publications", title="Publications per author+affiliation")
 
 def plot_number_authors_histogram(docset, ax=None):
     """Plot a histogram of the number of authors per document.
@@ -196,7 +204,7 @@ def plot_number_authors_histogram(docset, ax=None):
     :param docset: The `DocumentSet`.
     :param ax: The axis on which to plot the histogram, defaults to current axis.
     """
-    plot_statistic(lambda p: [len(set(a.name for a in p.authors or []))], x=range(25), docset=docset, ax=ax, x_label="No. publications")
+    plot_statistic(lambda p: [len(set(a.name for a in p.authors or []))], x=list(range(1, 26)), docset=docset, ax=ax, x_label="No. publications", vertical=True, title="Histogram for number of authors")
 
 def plot_source_type_histogram(docset, ax=None):
     """Plot a histogram of the document source types (e.g., Journal, conference proceedings, etc.)
@@ -204,9 +212,9 @@ def plot_source_type_histogram(docset, ax=None):
     :param docset: The `DocumentSet`.
     :param ax: The axis on which to plot the histogram, defaults to current axis.
     """
-    plot_statistic(lambda p: [p.source_type], docset=docset, ax=ax, x_label="No. publications")
+    plot_statistic(lambda p: [p.source_type], docset=docset, ax=ax, x_label="No. publications", title="Publication per source type")
 
-def plot_source_histogram(docset, x=10, ax=None):
+def plot_source_histogram(docset, top_k=10, ax=None):
     """Plot a histogram of the document source. Note that this done on a best-effort basis since
     one publication venue could have multiple spellings.
 
@@ -214,9 +222,9 @@ def plot_source_histogram(docset, x=10, ax=None):
     :param ax: The axis on which to plot the histogram, defaults to current axis.
     :param top_k: Limit results to the top k sources.
     """
-    plot_statistic(lambda p: [clean_source(p.source)], x=x, docset=docset, ax=ax, x_label="No. publications")
+    plot_statistic(lambda p: [clean_source(p.source)], x=top_k, docset=docset, ax=ax, x_label="No. publications", title="Publications per source")
 
-def plot_affiliation_histogram(docset, x=10, ax=None):
+def plot_affiliation_histogram(docset, top_k=10, ax=None):
     """Plot a histogram of the number of documents published by each affiliation. Note that
     this is done on a best-effort basis since one affiliation could have multiple spellings
     (e.g., "University of Amsterdam", "Universiteit van Amsterdam", or "UvA").
@@ -225,7 +233,7 @@ def plot_affiliation_histogram(docset, x=10, ax=None):
     :param ax: The axis on which to plot the histogram, defaults to current axis.
     :param top_k: Limit results to the top k institutes.
     """
-    plot_statistic(lambda p: get_affiliations(p), x=x, docset=docset, ax=ax, x_label="No. publications")
+    plot_statistic(lambda p: get_affiliations(p), x=top_k, docset=docset, ax=ax, x_label="No. publications", title="Publications per affiliation")
 
 def plot_country_histogram(docset, top_k=10, ax=None):
     """Plot a histogram of the number of documents published by each country based
@@ -235,7 +243,7 @@ def plot_country_histogram(docset, top_k=10, ax=None):
     :param ax: The axis on which to plot the histogram, defaults to current axis.
     :param top_k: Limit results to the top k country.
     """
-    plot_statistic(lambda p: get_affiliations(p, attribute='country'), x=top_k, docset=docset, ax=ax, x_label="No. publications")
+    plot_statistic(lambda p: get_affiliations(p, attribute='country'), x=top_k, docset=docset, ax=ax, x_label="No. publications", title="Publications per country of affiliations")
 
 def plot_affiliation_type_histogram(docset, x=10, ax=None):
     """Plot a histogram of the number of documents published by each type
@@ -245,7 +253,7 @@ def plot_affiliation_type_histogram(docset, x=10, ax=None):
     :param ax: The axis on which to plot the histogram, defaults to current axis.
     :param top_k: Limit results to the top k entries.
     """
-    plot_statistic(lambda p: get_affiliations(p, attribute='affiliation_type'), x=x, docset=docset, ax=ax, x_label="No. publications")
+    plot_statistic(lambda p: get_affiliations(p, attribute='affiliation_type'), x=x, docset=docset, ax=ax, x_label="No. publications", title="Publications per type of affiliation")
 
 def plot_language_histogram(docset, ax=None):
     """Plot a histogram of the number of documents published for each language
@@ -254,10 +262,27 @@ def plot_language_histogram(docset, ax=None):
     :param docset: The `DocumentSet`.
     :param ax: The axis on which to plot the histogram, defaults to current axis.
     """
-    plot_statistic(lambda p: [p.language], docset=docset, ax=ax, x_label="No. publications")
+    plot_statistic(lambda p: [p.language], docset=docset, ax=ax, x_label="No. publications", title="Publications per source language")
 
 def plot_words_histogram(freqs, dic, top_k=25, ax=None):
     """Plot a histogram of word frequencies in the documents.
+
+    :param docset: The `DocumentSet`.
+    :param ax: The axis on which to plot the histogram, defaults to current axis.
+    :param top_k: Limit results to the top k entries.
+    """
+    all_freqs = []
+    for doc_freq in freqs:
+        all_freqs += doc_freq
+
+    count = defaultdict(int)
+    for word, freq in all_freqs:
+        count[str(dic[word])] += freq
+
+    plot_statistic(None, docset=None, ax=ax, x_label="No. occurences", x=top_k, count=count)
+
+def plot_bigram_histogram(freqs, dic, top_k=25, ax=None):
+    """Plot a histogram of bigram frequency in the documents.
 
     :param docset: The `DocumentSet`.
     :param ax: The axis on which to plot the histogram, defaults to current axis.
@@ -287,7 +312,8 @@ def plot_topic_clouds(model, cols=3, fig=None, **kwargs):
     :param \**kwargs: Additional parameters passed to `plot_topic_cloud`.
     """
     if fig is None:
-        fig, ax = prepare_fig(2, wordcloud=True)
+        plt.clf()
+        fig = plt.gcf()
 
     rows = math.ceil(model.num_topics / float(cols))
 
@@ -351,13 +377,13 @@ def generate_topic_cloud(model, topicid, cmap=None, max_font_size=75, background
 # Topic map plotting functions
 #-----------------------------------------------------------------------
 
-def draw_dot(model, p, t, zorder=0):
+def draw_dot(ax, model, p, t, zorder=0):
     labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
     color = plt.get_cmap('jet')(float(t) / model.num_topics)
     color = 0.8 * np.array(color)[:3]
     
-    plt.scatter(
+    ax.scatter(
         p[0], 
         p[1],
         s=150,
@@ -366,7 +392,7 @@ def draw_dot(model, p, t, zorder=0):
         linewidth=0.5,
         zorder=zorder)
     
-    plt.text(
+    ax.text(
         p[0], 
         p[1],
         labels[t],
@@ -377,10 +403,9 @@ def draw_dot(model, p, t, zorder=0):
         fontweight='bold',
         zorder=zorder + 1)
 
-def plot_topic_map(model, dic, freqs, fig=None):
+def plot_topic_map(model, dic, freqs, ax=None, seed=0):
     """Embeds the documents onto a 2D plane."""
-    seed = 70 # seed for truncatedSVD
-    vis_seed = 6 # seed for t-SNE visualization
+    if ax is None: ax = plt.gca()
 
     tfidf_matrix = create_tfidf(freqs, dic)
 
@@ -394,7 +419,7 @@ def plot_topic_map(model, dic, freqs, fig=None):
     tsne_model = sklearn.manifold.TSNE(
         verbose=True,
         metric='cosine',
-        random_state=vis_seed,
+        random_state=seed,
         perplexity=20)
     pos = tsne_model.fit_transform(reduced_matrix)
 
@@ -404,19 +429,18 @@ def plot_topic_map(model, dic, freqs, fig=None):
     pos = (pos * 0.5) + 0.5
     pos = (pos * 0.9) + 0.05
 
-    if fig is None:
-        fig, ax = prepare_fig(2)
-
-    plt.xticks([])
-    plt.yticks([])
-    plt.xlim(0, 1)
-    plt.ylim(0, 1)
+    ax.set_xticks([])
+    ax.set_yticks([])
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1)
     zorder = 0
+
+    avg = np.average(model.doc2topic, axis=0)
 
     # Draw dots
     for i in np.random.permutation(len(model.doc2topic)):
-        topic_id = np.argmax(model.doc2topic[i])
-        draw_dot(model, pos[i], topic_id, zorder)
+        topic_id = np.argmax(model.doc2topic[i] - avg)
+        draw_dot(ax, model, pos[i], topic_id, zorder)
         zorder += 2
 
     # Draw legend
@@ -424,6 +448,6 @@ def plot_topic_map(model, dic, freqs, fig=None):
         y = 0.95 - i * 0.05
         label = ', '.join(dic[w] for w in np.argsort(model.topic2token[i])[::-1][:3])
 
-        draw_dot(model, [0.015, y], i)
-        plt.text(0.03, y, label, ha='left', va='center', fontsize=8, zorder=zorder)
+        draw_dot(ax, model, [0.015, y], i)
+        ax.text(0.03, y, label, ha='left', va='center', fontsize=8, zorder=zorder)
         zorder += 1
