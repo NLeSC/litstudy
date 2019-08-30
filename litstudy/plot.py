@@ -150,7 +150,7 @@ def merge_author_affiliation(doc):
     authors_plus_aff = []
     for author in doc.authors:
         if author.affiliations is None:
-            authors_plus_aff.append(author.name)
+            authors_plus_aff.append(author.name + ', Unknown')
         else:
             merged = [author.name + ', ' + affiliation.name for affiliation in author.affiliations]
             authors_plus_aff += merged
@@ -168,7 +168,8 @@ def plot_year_histogram(docset, ax=None):
     year_count = defaultdict(int)
 
     for d in docset.docs:
-        year_count[d.year] += 1
+        if d.year is not None:
+            year_count[d.year] += 1
     
     min_year = min(year_count.keys())
     max_year = max(year_count.keys())
