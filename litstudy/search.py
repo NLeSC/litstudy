@@ -199,28 +199,9 @@ def search_dblp(query, docs=None):
         return DocumentSet(docs=documents)
 
 
-def query_semanticscholar(documents):
-    for document in tqdm(documents):
-        request = requests.get("http://api.semanticscholar.org/v1/paper/{}".format(quote_plus(document.id.id)))
-        results = request.json()
-        try:
-            document.abstract = results["abstract"]
-        except KeyError:
-            pass
-        try:
-            document.citation_count = len(results["citations"])
-        except KeyError:
-            pass
-        try:
-            references = []
-            for reference in results["references"]:
-                references.append(reference["title"])
-            document.references = references
-        except KeyError:
-            pass
-
-
 def load_bibtex(file, lookup_authors=False):
+    """Load the content of a BibTex file."""
+
     documents = []
     with open(file) as bibtex_file:
         bibtex_data = load(bibtex_file)
@@ -257,13 +238,14 @@ def load_bibtex(file, lookup_authors=False):
             pass
         authors = []
         if lookup_authors:
-            request = requests.get("http://api.semanticscholar.org/v1/paper/{}".format(quote_plus(document.id.id)))
-            results = request.json()
-            try:
-                for author in results["authors"]:
-                    authors.append(Author(name=author["name"]))
-            except KeyError:
-                pass
+            if document.id.is_doi:
+                request = requests.get("http://api.semanticscholar.org/v1/paper/{}".format(quote_plus(document.id.id)))
+                results = request.json()
+                try:
+                    for author in results["authors"]:
+                        authors.append(Author(name=author["name"]))
+                except KeyError:
+                    pass
         else:
             try:
                 for author in paper["author"].split("and"):
@@ -275,23 +257,47 @@ def load_bibtex(file, lookup_authors=False):
     return documents
 
 
+def query_semanticscholar(documents):
+    for document in tqdm(documents):
+        if document.id.is_doi:
+            request = requests.get("http://api.semanticscholar.org/v1/paper/{}".format(quote_plus(document.id.id)))
+            results = request.json()
+            if not document.abstract:
+                try:
+                    document.abstract = results["abstract"]
+                except KeyError:
+                    pass
+            try:
+                document.citation_count = len(results["citations"])
+            except KeyError:
+                pass
+            try:
+                references = []
+                for reference in results["references"]:
+                    references.append(reference["title"])
+                document.references = references
+            except KeyError:
+                pass
+
+
 def query_crossref(documents):
     for document in tqdm(documents):
-        request = requests.get("https://api.crossref.org/v1/works/{}".format(quote_plus(document.id.id)))
-        results = request.json()
-        try:
-            document.language = results["message"]["language"]
-        except KeyError:
-            pass
-        try:
-            document.citation_count = results["message"]["is-referenced-by-count"]
-        except KeyError:
-            pass
-        try:
-            document.source_type = results["message"]["type"]
-        except KeyError:
-            pass
-        try:
-            document.publisher = results["message"]["publisher"]
-        except KeyError:
-            pass
+        if document.id.is_doi:
+            request = requests.get("https://api.crossref.org/v1/works/{}".format(quote_plus(document.id.id)))
+            results = request.json()
+            try:
+                document.language = results["message"]["language"]
+            except KeyError:
+                pass
+            try:
+                document.citation_count = results["message"]["is-referenced-by-count"]
+            except KeyError:
+                pass
+            try:
+                document.source_type = results["message"]["type"]
+            except KeyError:
+                pass
+            try:
+                document.publisher = results["message"]["publisher"]
+            except KeyError:
+                pass
