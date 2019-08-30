@@ -34,7 +34,30 @@
 <h1>Welcome to Automated Literature Study Tool’s documentation!<a class="headerlink" href="#welcome-to-automated-literature-study-tool-s-documentation" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
-<span class="target" id="module-litstudy.common"></span><dl class="class">
+<div class="section" id="module-litstudy.search">
+<span id="litstudy-search"></span><h2>litstudy.search<a class="headerlink" href="#module-litstudy.search" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="litstudy.search.load_bibtex">
+<code class="sig-prename descclassname">litstudy.search.</code><code class="sig-name descname">load_bibtex</code><span class="sig-paren">(</span><em class="sig-param">file</em>, <em class="sig-param">lookup_authors=False</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.search.load_bibtex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the content of a BibTex file.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="litstudy.search.search_dblp">
+<code class="sig-prename descclassname">litstudy.search.</code><code class="sig-name descname">search_dblp</code><span class="sig-paren">(</span><em class="sig-param">query</em>, <em class="sig-param">docs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.search.search_dblp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search DBLP.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="litstudy.search.search_scopus">
+<code class="sig-prename descclassname">litstudy.search.</code><code class="sig-name descname">search_scopus</code><span class="sig-paren">(</span><em class="sig-param">query</em>, <em class="sig-param">docs=None</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.search.search_scopus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Search Scopus.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-litstudy.common">
+<span id="litstudy-common"></span><h2>litstudy.common<a class="headerlink" href="#module-litstudy.common" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
 <dt id="litstudy.common.Affiliation">
 <em class="property">class </em><code class="sig-prename descclassname">litstudy.common.</code><code class="sig-name descname">Affiliation</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.common.Affiliation" title="Permalink to this definition">¶</a></dt>
 <dd><p>The affiliation of the <cite>Author</cite> of a <cite>Document</cite>.</p>
@@ -236,7 +259,10 @@ same method as <cite>filter_duplicates</cite>.</p>
 
 </dd></dl>
 
-<span class="target" id="module-litstudy.plot"></span><dl class="function">
+</div>
+<div class="section" id="module-litstudy.plot">
+<span id="litstudy-plot"></span><h2>litstudy.plot<a class="headerlink" href="#module-litstudy.plot" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
 <dt id="litstudy.plot.generate_topic_cloud">
 <code class="sig-prename descclassname">litstudy.plot.</code><code class="sig-name descname">generate_topic_cloud</code><span class="sig-paren">(</span><em class="sig-param">model</em>, <em class="sig-param">topicid</em>, <em class="sig-param">cmap=None</em>, <em class="sig-param">max_font_size=75</em>, <em class="sig-param">background_color='white'</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.generate_topic_cloud" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate the word cloud for the word distributions of a single topic from a topic model.</p>
@@ -490,7 +516,47 @@ the x keys with highest counts are plotted.</p>
 </dl>
 </dd></dl>
 
-<span class="target" id="module-litstudy.nlp"></span></div>
+</div>
+<div class="section" id="module-litstudy.nlp">
+<span id="litstudy-nlp"></span><h2>litstudy.nlp<a class="headerlink" href="#module-litstudy.nlp" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-litstudy.network">
+<span id="litstudy-network"></span><h2>litstudy.network<a class="headerlink" href="#module-litstudy.network" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="litstudy.network.plot_citation_network">
+<code class="sig-prename descclassname">litstudy.network.</code><code class="sig-name descname">plot_citation_network</code><span class="sig-paren">(</span><em class="sig-param">docs</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.network.plot_citation_network" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the citation network of the given <cite>DocumentSet</cite> where nodes
+represent document and edges represents citations between documents.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>docs</strong> – The <cite>DocumentSet</cite></p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments passed to <cite>networkx.draw</cite></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="litstudy.network.plot_coauthor_network">
+<code class="sig-prename descclassname">litstudy.network.</code><code class="sig-name descname">plot_coauthor_network</code><span class="sig-paren">(</span><em class="sig-param">docs</em>, <em class="sig-param">top_k=25</em>, <em class="sig-param">min_degree=1</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.network.plot_coauthor_network" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the citation network of the given <cite>DocumentSet</cite> where nodes
+represent author and edges represents collaborations (e.g. number of
+shared documents between two authors.)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>docs</strong> – The <cite>DocumentSet</cite></p></li>
+<li><p><strong>min_degree</strong> – Only show nodes of at least this degree, defaults to 1</p></li>
+<li><p><strong>top_k</strong> – Only show labels for the top k nodes.</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments passed to <cite>networkx.draw</cite></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
 <div class="section" id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
