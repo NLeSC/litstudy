@@ -1,0 +1,566 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Welcome to Automated Literature Study Tool’s documentation! &#8212; Automated Literature Study Tool 0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-automated-literature-study-tool-s-documentation">
+<h1>Welcome to Automated Literature Study Tool’s documentation!<a class="headerlink" href="#welcome-to-automated-literature-study-tool-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-litstudy.common"></span><dl class="class">
+<dt id="litstudy.common.Affiliation">
+<em class="property">class </em><code class="sig-prename descclassname">litstudy.common.</code><code class="sig-name descname">Affiliation</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.common.Affiliation" title="Permalink to this definition">¶</a></dt>
+<dd><p>The affiliation of the <cite>Author</cite> of a <cite>Document</cite>.</p>
+<dl class="attribute">
+<dt id="litstudy.common.Affiliation.city">
+<code class="sig-name descname">city</code><em class="property"> = None</em><a class="headerlink" href="#litstudy.common.Affiliation.city" title="Permalink to this definition">¶</a></dt>
+<dd><p>The city where the institution is, or <cite>None</cite> if unavailable.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="litstudy.common.Affiliation.country">
+<code class="sig-name descname">country</code><em class="property"> = None</em><a class="headerlink" href="#litstudy.common.Affiliation.country" title="Permalink to this definition">¶</a></dt>
+<dd><p>The country where the institution is, or <cite>None</cite> if unavailable.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="litstudy.common.Affiliation.name">
+<code class="sig-name descname">name</code><em class="property"> = None</em><a class="headerlink" href="#litstudy.common.Affiliation.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the institution.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="litstudy.common.Author">
+<em class="property">class </em><code class="sig-prename descclassname">litstudy.common.</code><code class="sig-name descname">Author</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.common.Author" title="Permalink to this definition">¶</a></dt>
+<dd><p>Author of <cite>Document</cite>.</p>
+<dl class="attribute">
+<dt id="litstudy.common.Author.affiliations">
+<code class="sig-name descname">affiliations</code><em class="property"> = None</em><a class="headerlink" href="#litstudy.common.Author.affiliations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Affiliations of the author as list of <cite>Affiliation</cite> objects, or <cite>None</cite> if unavailable.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="litstudy.common.Author.name">
+<code class="sig-name descname">name</code><em class="property"> = None</em><a class="headerlink" href="#litstudy.common.Author.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name and surname of the author.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="litstudy.common.Author.orcid">
+<code class="sig-name descname">orcid</code><em class="property"> = None</em><a class="headerlink" href="#litstudy.common.Author.orcid" title="Permalink to this definition">¶</a></dt>
+<dd><p>The ORCID of the author, or <cite>None</cite> if unavailable.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="litstudy.common.Document">
+<em class="property">class </em><code class="sig-prename descclassname">litstudy.common.</code><code class="sig-name descname">Document</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.common.Document" title="Permalink to this definition">¶</a></dt>
+<dd><p>Meta data of academic document.</p>
+<dl class="attribute">
+<dt id="litstudy.common.Document.abstract">
+<code class="sig-name descname">abstract</code><em class="property"> = None</em><a class="headerlink" href="#litstudy.common.Document.abstract" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract of document, or <cite>None</cite> if unavailable.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="litstudy.common.Document.authors">
+<code class="sig-name descname">authors</code><em class="property"> = None</em><a class="headerlink" href="#litstudy.common.Document.authors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Authors of document as list of <cite>Author</cite> objects, or <cite>None</cite> if unavailable.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="litstudy.common.Document.citation_count">
+<code class="sig-name descname">citation_count</code><em class="property"> = None</em><a class="headerlink" href="#litstudy.common.Document.citation_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of received citations, or <cite>None</cite> if unavailable.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="litstudy.common.Document.id">
+<code class="sig-name descname">id</code><em class="property"> = None</em><a class="headerlink" href="#litstudy.common.Document.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The platform transparent <cite>DocumentID</cite>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="litstudy.common.Document.keywords">
+<code class="sig-name descname">keywords</code><em class="property"> = None</em><a class="headerlink" href="#litstudy.common.Document.keywords" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of author specified keywords, or <cite>None</cite> if unavailable.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="litstudy.common.Document.language">
+<code class="sig-name descname">language</code><em class="property"> = None</em><a class="headerlink" href="#litstudy.common.Document.language" title="Permalink to this definition">¶</a></dt>
+<dd><p>Language of the document, or <cite>None</cite> if unavailable.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="litstudy.common.Document.publisher">
+<code class="sig-name descname">publisher</code><em class="property"> = None</em><a class="headerlink" href="#litstudy.common.Document.publisher" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the publisher, or <cite>None</cite> if unavailable.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="litstudy.common.Document.references">
+<code class="sig-name descname">references</code><em class="property"> = None</em><a class="headerlink" href="#litstudy.common.Document.references" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of titles of referenced papers.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="litstudy.common.Document.source">
+<code class="sig-name descname">source</code><em class="property"> = None</em><a class="headerlink" href="#litstudy.common.Document.source" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of source (for example: 
+‘The International Conference on Knowledge Discovery and Data Mining’) 
+or <cite>None</cite> if unavailable.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="litstudy.common.Document.source_type">
+<code class="sig-name descname">source_type</code><em class="property"> = None</em><a class="headerlink" href="#litstudy.common.Document.source_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Type of source (for example:  ‘Conference Proceedings’) or <cite>None</cite> if unavailable.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="litstudy.common.Document.title">
+<code class="sig-name descname">title</code><em class="property"> = None</em><a class="headerlink" href="#litstudy.common.Document.title" title="Permalink to this definition">¶</a></dt>
+<dd><p>Title of document.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="litstudy.common.Document.year">
+<code class="sig-name descname">year</code><em class="property"> = None</em><a class="headerlink" href="#litstudy.common.Document.year" title="Permalink to this definition">¶</a></dt>
+<dd><p>Year of publication as integer.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="litstudy.common.DocumentID">
+<em class="property">class </em><code class="sig-prename descclassname">litstudy.common.</code><code class="sig-name descname">DocumentID</code><span class="sig-paren">(</span><em class="sig-param">doc_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.common.DocumentID" title="Permalink to this definition">¶</a></dt>
+<dd><p>The platform transparent ID of a <cite>Document</cite>.</p>
+<dl class="method">
+<dt id="litstudy.common.DocumentID.parse_bibtex">
+<code class="sig-name descname">parse_bibtex</code><span class="sig-paren">(</span><em class="sig-param">bibtex_entry</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.common.DocumentID.parse_bibtex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the ID of a document from a BibTex entry.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="litstudy.common.DocumentID.parse_dblp">
+<code class="sig-name descname">parse_dblp</code><span class="sig-paren">(</span><em class="sig-param">dblp_result</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.common.DocumentID.parse_dblp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the ID of a document from the DBLP entry.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="litstudy.common.DocumentID.parse_scopus">
+<code class="sig-name descname">parse_scopus</code><span class="sig-paren">(</span><em class="sig-param">scopus_abstract</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.common.DocumentID.parse_scopus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieve the ID of a document from a Scopus abstract.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="litstudy.common.DocumentSet">
+<em class="property">class </em><code class="sig-prename descclassname">litstudy.common.</code><code class="sig-name descname">DocumentSet</code><span class="sig-paren">(</span><em class="sig-param">docs</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.common.DocumentSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set of documents from retrieved from search query.</p>
+<dl class="attribute">
+<dt id="litstudy.common.DocumentSet.docs">
+<code class="sig-name descname">docs</code><em class="property"> = None</em><a class="headerlink" href="#litstudy.common.DocumentSet.docs" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of documents as <cite>Document</cite> objects.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="litstudy.common.DocumentSet.filter">
+<code class="sig-name descname">filter</code><span class="sig-paren">(</span><em class="sig-param">predicate</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.common.DocumentSet.filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new <cite>DocumentSet</cite> object which includes only documents
+for which the given predicates returns true.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>predicate</strong> – The predicate to check.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <cite>DocumentSet</cite> instance</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="litstudy.common.DocumentSet.filter_duplicates">
+<code class="sig-name descname">filter_duplicates</code><span class="sig-paren">(</span><em class="sig-param">key=None</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.common.DocumentSet.filter_duplicates" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove duplicate documents from this <cite>DocumentSet</cite>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>key</strong> – lambda which takes a document and returns a unique key.</p>
+</dd>
+</dl>
+<p>This key is used as an identifier to check if two documents are identical.
+By default, equivalence is determined based on DOI (if available) or
+title (if available).
+:return: A <cite>DocumentSet</cite> instance</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="litstudy.common.DocumentSet.union">
+<code class="sig-name descname">union</code><span class="sig-paren">(</span><em class="sig-param">other</em>, <em class="sig-param">key=None</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.common.DocumentSet.union" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the union of this <cite>DocumentSet</cite> and another <cite>DocumentSet</cite> and
+remove duplicate entries. By default, equivalence is checked using the
+same method as <cite>filter_duplicates</cite>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-litstudy.plot"></span><dl class="function">
+<dt id="litstudy.plot.generate_topic_cloud">
+<code class="sig-prename descclassname">litstudy.plot.</code><code class="sig-name descname">generate_topic_cloud</code><span class="sig-paren">(</span><em class="sig-param">model</em>, <em class="sig-param">topicid</em>, <em class="sig-param">cmap=None</em>, <em class="sig-param">max_font_size=75</em>, <em class="sig-param">background_color='white'</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.generate_topic_cloud" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the word cloud for the word distributions of a single topic from a topic model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – The <cite>TopicModel</cite>.</p></li>
+<li><p><strong>topicid</strong> – The topic index within the topic model.</p></li>
+<li><p><strong>cmap</strong> – The color map to use for the foreground colors, defaults to “Blues”.</p></li>
+<li><p><strong>background_color</strong> – The background color, defaults to “white”.</p></li>
+<li><p><strong>max_font_size</strong> – The maximum font size.</p></li>
+<li><p><strong>**kwargs</strong> – Additional parameters passed to <cite>wordcloud.WordCloud</cite>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A <cite>wordcloud.WordCloud</cite> instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="litstudy.plot.plot_affiliation_histogram">
+<code class="sig-prename descclassname">litstudy.plot.</code><code class="sig-name descname">plot_affiliation_histogram</code><span class="sig-paren">(</span><em class="sig-param">docset</em>, <em class="sig-param">top_k=10</em>, <em class="sig-param">ax=None</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_affiliation_histogram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a histogram of the number of documents published by each affiliation. Note that
+this is done on a best-effort basis since one affiliation could have multiple spellings
+(e.g., “University of Amsterdam”, “Universiteit van Amsterdam”, or “UvA”).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>docset</strong> – The <cite>DocumentSet</cite>.</p></li>
+<li><p><strong>ax</strong> – The axis on which to plot the histogram, defaults to current axis.</p></li>
+<li><p><strong>top_k</strong> – Limit results to the top k institutes.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="litstudy.plot.plot_affiliation_type_histogram">
+<code class="sig-prename descclassname">litstudy.plot.</code><code class="sig-name descname">plot_affiliation_type_histogram</code><span class="sig-paren">(</span><em class="sig-param">docset</em>, <em class="sig-param">x=10</em>, <em class="sig-param">ax=None</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_affiliation_type_histogram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a histogram of the number of documents published by each type
+of affiliation (e.g., research institutes, academic institute, company, etc.)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>docset</strong> – The <cite>DocumentSet</cite>.</p></li>
+<li><p><strong>ax</strong> – The axis on which to plot the histogram, defaults to current axis.</p></li>
+<li><p><strong>top_k</strong> – Limit results to the top k entries.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="litstudy.plot.plot_author_affiliation_histogram">
+<code class="sig-prename descclassname">litstudy.plot.</code><code class="sig-name descname">plot_author_affiliation_histogram</code><span class="sig-paren">(</span><em class="sig-param">docset</em>, <em class="sig-param">top_k=30</em>, <em class="sig-param">ax=None</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_author_affiliation_histogram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a histogram of the number of documents published by each combination 
+of author + affiliation. This helps to reduce the name number of collisions for
+different persons having the same name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>docset</strong> – The <cite>DocumentSet</cite>.</p></li>
+<li><p><strong>ax</strong> – The axis on which to plot the histogram, defaults to current axis.</p></li>
+<li><p><strong>top_k</strong> – Limit results to the top k combinations.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="litstudy.plot.plot_author_histogram">
+<code class="sig-prename descclassname">litstudy.plot.</code><code class="sig-name descname">plot_author_histogram</code><span class="sig-paren">(</span><em class="sig-param">docset</em>, <em class="sig-param">top_k=20</em>, <em class="sig-param">ax=None</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_author_histogram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a histogram of the number of documents published by each author. Note that
+this is done on a best-effort basis since one author could have published under
+multiple spellings of the same name (e.g., “Alan Turing”, “A. Turing”, or “A. M. Turing”)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>docset</strong> – The <cite>DocumentSet</cite>.</p></li>
+<li><p><strong>ax</strong> – The axis on which to plot the histogram, defaults to current axis.</p></li>
+<li><p><strong>top_k</strong> – Limit results to the top k authors.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="litstudy.plot.plot_bigram_histogram">
+<code class="sig-prename descclassname">litstudy.plot.</code><code class="sig-name descname">plot_bigram_histogram</code><span class="sig-paren">(</span><em class="sig-param">freqs</em>, <em class="sig-param">dic</em>, <em class="sig-param">top_k=25</em>, <em class="sig-param">ax=None</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_bigram_histogram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a histogram of bigram frequency in the documents.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>docset</strong> – The <cite>DocumentSet</cite>.</p></li>
+<li><p><strong>ax</strong> – The axis on which to plot the histogram, defaults to current axis.</p></li>
+<li><p><strong>top_k</strong> – Limit results to the top k entries.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="litstudy.plot.plot_country_histogram">
+<code class="sig-prename descclassname">litstudy.plot.</code><code class="sig-name descname">plot_country_histogram</code><span class="sig-paren">(</span><em class="sig-param">docset</em>, <em class="sig-param">top_k=10</em>, <em class="sig-param">ax=None</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_country_histogram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a histogram of the number of documents published by each country based
+on author affiliation. Note that the country is not always available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>docset</strong> – The <cite>DocumentSet</cite>.</p></li>
+<li><p><strong>ax</strong> – The axis on which to plot the histogram, defaults to current axis.</p></li>
+<li><p><strong>top_k</strong> – Limit results to the top k country.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="litstudy.plot.plot_language_histogram">
+<code class="sig-prename descclassname">litstudy.plot.</code><code class="sig-name descname">plot_language_histogram</code><span class="sig-paren">(</span><em class="sig-param">docset</em>, <em class="sig-param">ax=None</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_language_histogram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a histogram of the number of documents published for each language
+(e.g., English, German, Chinese, etc.)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>docset</strong> – The <cite>DocumentSet</cite>.</p></li>
+<li><p><strong>ax</strong> – The axis on which to plot the histogram, defaults to current axis.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="litstudy.plot.plot_number_authors_histogram">
+<code class="sig-prename descclassname">litstudy.plot.</code><code class="sig-name descname">plot_number_authors_histogram</code><span class="sig-paren">(</span><em class="sig-param">docset</em>, <em class="sig-param">ax=None</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_number_authors_histogram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a histogram of the number of authors per document.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>docset</strong> – The <cite>DocumentSet</cite>.</p></li>
+<li><p><strong>ax</strong> – The axis on which to plot the histogram, defaults to current axis.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="litstudy.plot.plot_source_histogram">
+<code class="sig-prename descclassname">litstudy.plot.</code><code class="sig-name descname">plot_source_histogram</code><span class="sig-paren">(</span><em class="sig-param">docset</em>, <em class="sig-param">top_k=10</em>, <em class="sig-param">ax=None</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_source_histogram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a histogram of the document source. Note that this done on a best-effort basis since
+one publication venue could have multiple spellings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>docset</strong> – The <cite>DocumentSet</cite>.</p></li>
+<li><p><strong>ax</strong> – The axis on which to plot the histogram, defaults to current axis.</p></li>
+<li><p><strong>top_k</strong> – Limit results to the top k sources.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="litstudy.plot.plot_source_type_histogram">
+<code class="sig-prename descclassname">litstudy.plot.</code><code class="sig-name descname">plot_source_type_histogram</code><span class="sig-paren">(</span><em class="sig-param">docset</em>, <em class="sig-param">ax=None</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_source_type_histogram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a histogram of the document source types (e.g., Journal, conference proceedings, etc.)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>docset</strong> – The <cite>DocumentSet</cite>.</p></li>
+<li><p><strong>ax</strong> – The axis on which to plot the histogram, defaults to current axis.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="litstudy.plot.plot_statistic">
+<code class="sig-prename descclassname">litstudy.plot.</code><code class="sig-name descname">plot_statistic</code><span class="sig-paren">(</span><em class="sig-param">fun</em>, <em class="sig-param">docset</em>, <em class="sig-param">x=None</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">x_label=''</em>, <em class="sig-param">count=None</em>, <em class="sig-param">vertical=False</em>, <em class="sig-param">title=None</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_statistic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot statistics of some sort in a bar plot. If x is not given,
+(None) all keys with a count &gt; 0 are plotted. If x is a list, the
+counts of all list elements are included. If x is an integer,
+the x keys with highest counts are plotted.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="litstudy.plot.plot_topic_cloud">
+<code class="sig-prename descclassname">litstudy.plot.</code><code class="sig-name descname">plot_topic_cloud</code><span class="sig-paren">(</span><em class="sig-param">model</em>, <em class="sig-param">topicid</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_topic_cloud" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the word distributions of a single topic from a topic model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – The <cite>TopicModel</cite>.</p></li>
+<li><p><strong>topicid</strong> – The topic index within the topic model.</p></li>
+<li><p><strong>ax</strong> – The axis on which to plot the histogram, defaults to current axis.</p></li>
+<li><p><strong>**kwargs</strong> – Additional parameters passed to <cite>generate_topic_cloud</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="litstudy.plot.plot_topic_clouds">
+<code class="sig-prename descclassname">litstudy.plot.</code><code class="sig-name descname">plot_topic_clouds</code><span class="sig-paren">(</span><em class="sig-param">model</em>, <em class="sig-param">cols=3</em>, <em class="sig-param">fig=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_topic_clouds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the word distributions of a topic model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> – The <cite>TopicModel</cite>.</p></li>
+<li><p><strong>cols</strong> – Number of columns (e.g., word clouds per row).</p></li>
+<li><p><strong>fig</strong> – The figure on which to plot the results, defaults to current figure.</p></li>
+<li><p><strong>**kwargs</strong> – Additional parameters passed to <cite>plot_topic_cloud</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="litstudy.plot.plot_topic_map">
+<code class="sig-prename descclassname">litstudy.plot.</code><code class="sig-name descname">plot_topic_map</code><span class="sig-paren">(</span><em class="sig-param">model</em>, <em class="sig-param">dic</em>, <em class="sig-param">freqs</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">seed=0</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_topic_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Embeds the documents onto a 2D plane.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="litstudy.plot.plot_words_histogram">
+<code class="sig-prename descclassname">litstudy.plot.</code><code class="sig-name descname">plot_words_histogram</code><span class="sig-paren">(</span><em class="sig-param">freqs</em>, <em class="sig-param">dic</em>, <em class="sig-param">top_k=25</em>, <em class="sig-param">ax=None</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_words_histogram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a histogram of word frequencies in the documents.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>docset</strong> – The <cite>DocumentSet</cite>.</p></li>
+<li><p><strong>ax</strong> – The axis on which to plot the histogram, defaults to current axis.</p></li>
+<li><p><strong>top_k</strong> – Limit results to the top k entries.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="litstudy.plot.plot_year_histogram">
+<code class="sig-prename descclassname">litstudy.plot.</code><code class="sig-name descname">plot_year_histogram</code><span class="sig-paren">(</span><em class="sig-param">docset</em>, <em class="sig-param">ax=None</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_year_histogram" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a histogram of the number of documents published for each year.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>docset</strong> – The <cite>DocumentSet</cite>.</p></li>
+<li><p><strong>ax</strong> – The axis on which to plot the histogram, defaults to current axis.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<span class="target" id="module-litstudy.nlp"></span></div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">Automated Literature Study Tool</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, S. Heldens, H. Dreuning, A. Sclocco.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -12,3 +12,4 @@ requests
 bibtexparser
 networkx>=2.3
 iso-639>=0.4
+sphinx
