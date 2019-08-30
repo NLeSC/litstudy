@@ -12,7 +12,8 @@ from .plot import \
         plot_words_histogram, \
         plot_topic_clouds, \
         plot_topic_cloud, \
-        plot_topic_map
+        plot_topic_map, \
+        prepare_plot
 
 from .search import \
         search_mockup, \
@@ -23,7 +24,9 @@ from .search import \
 
 from .network import \
         build_citation_network, \
-        build_coauthor_network
+        build_coauthor_network, \
+        plot_citation_network, \
+        plot_coauthor_network
 
 from .nlp import \
         train_nmf_model, \
