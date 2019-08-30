@@ -307,6 +307,8 @@ def query_crossref(documents):
     for document in tqdm(documents):
         if document.id.is_doi:
             request = requests.get("https://api.crossref.org/v1/works/{}".format(quote_plus(document.id.id)))
+            if request.status_code != 200:
+                continue
             results = request.json()
 
             if not document.title:
