@@ -182,16 +182,16 @@ def search_dblp(query, docs=None):
             document.publisher = paper["info"]["publisher"]
         except KeyError:
             pass
+        authors = []
         try:
-            authors = []
             if type(paper["info"]["authors"]["author"]) is str:
                 authors.append(Author(name=paper["info"]["authors"]["author"]))
             else:
                 for author in paper["info"]["authors"]["author"]:
                     authors.append(Author(name=author))
-            document.authors = authors
         except KeyError:
             pass
+        document.authors = authors
         documents.append(document)
     if docs:
         return DocumentSet(docs=documents).union(docs)
@@ -262,22 +262,45 @@ def query_semanticscholar(documents):
         if document.id.is_doi:
             request = requests.get("http://api.semanticscholar.org/v1/paper/{}".format(quote_plus(document.id.id)))
             results = request.json()
+            if not document.title:
+                try:
+                    document.title = results["title"]
+                except KeyError:
+                    pass
+            if len(document.authors) == 0:
+                try:
+                    for author in results["authors"]:
+                        document.authors.append(Author(name=author["name"]))
+                except KeyError:
+                    pass
             if not document.abstract:
                 try:
                     document.abstract = results["abstract"]
                 except KeyError:
                     pass
-            try:
-                document.citation_count = len(results["citations"])
-            except KeyError:
-                pass
-            try:
-                references = []
-                for reference in results["references"]:
-                    references.append(reference["title"])
-                document.references = references
-            except KeyError:
-                pass
+            if not document.references or len(document.references) == 0:
+                try:
+                    references = []
+                    for reference in results["references"]:
+                        references.append(reference["title"])
+                    document.references = references
+                except KeyError:
+                    pass
+            if not document.year:
+                try:
+                    document.year = int(results["year"])
+                except KeyError:
+                    pass
+            if not document.source:
+                try:
+                    document.source = results["venue"]
+                except KeyError:
+                    pass
+            if not document.citation_count:
+                try:
+                    document.citation_count = len(results["citations"])
+                except KeyError:
+                    pass
 
 
 def query_crossref(documents):
