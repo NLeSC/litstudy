@@ -19,6 +19,12 @@ def build_citation_network(docs):
                 
 
 def plot_citation_network(docs, **kwargs):
+    """ Plot the citation network of the given `DocumentSet` where nodes
+    represent document and edges represents citations between documents.
+
+    :param docs: The `DocumentSet`
+    :param \**kwargs: Additional arguments passed to `networkx.draw`
+    """
     g = build_citation_network(docs)
 
     if len(g.edges) == 0:
@@ -68,6 +74,15 @@ def build_coauthor_network(docs):
     return g
 
 def plot_coauthor_network(docs, top_k=25, min_degree=1, **kwargs):
+    """ Plot the citation network of the given `DocumentSet` where nodes
+    represent author and edges represents collaborations (e.g. number of
+    shared documents between two authors.)
+
+    :param docs: The `DocumentSet`
+    :param min_degree: Only show nodes of at least this degree, defaults to 1
+    :param top_k: Only show labels for the top k nodes.
+    :param \**kwargs: Additional arguments passed to `networkx.draw`
+    """
     g = build_coauthor_network(docs)
 
     deg = dict(g.degree())
