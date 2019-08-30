@@ -255,6 +255,7 @@ def load_bibtex(file, lookup_authors=False):
                 pass
         document.authors = authors
         documents.append(document)
+<<<<<<< HEAD
     return documents
 
 
@@ -353,3 +354,4 @@ def query_crossref(documents):
                     document.publisher = results["message"]["publisher"]
                 except KeyError:
                     pass
+    return DocumentSet(documents)
