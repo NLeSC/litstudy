@@ -3,7 +3,7 @@ from pybliometrics.scopus.exception import ScopusQueryError
 from tqdm import tqdm
 import requests
 from urllib.parse import quote_plus
-from bibtexparser import load
+import bibtexparser
 import iso639
 
 from .common import Document, DocumentID, DocumentSet, Author, Affiliation
@@ -204,7 +204,8 @@ def load_bibtex(file, lookup_authors=False):
 
     documents = []
     with open(file) as bibtex_file:
-        bibtex_data = load(bibtex_file)
+        parser = bibtexparser.bparser.BibTexParser(common_strings=True)
+        bibtex_data = bibtexparser.load(bibtex_file, parser=parser)
     bibtex_file.close()
     for paper in tqdm(bibtex_data.entries):
         doc_id = DocumentID()
