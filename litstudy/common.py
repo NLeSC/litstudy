@@ -86,8 +86,8 @@ class DocumentID:
 
         try:
             self.id = bibtex_entry["doi"]
-            self.id = str.replace("http://doi.org/", "")
-            self.id = str.replace("http://doi.ieeecomputersociety.org/", "")
+            self.id = self.id.replace("http://doi.org/", "")
+            self.id = self.id.replace("http://doi.ieeecomputersociety.org/", "")
         except KeyError:
             self.id = bibtex_entry["title"]
 
