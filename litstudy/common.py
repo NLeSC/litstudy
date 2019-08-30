@@ -62,12 +62,14 @@ class DocumentID:
     def __init__(self, doc_id=None):
         """Initialize the ID of a document."""
         self.id = doc_id
+        self.is_doi = False
 
     def parse_scopus(self, scopus_abstract):
         """Retrieve the ID of a document from a Scopus abstract."""
 
         if scopus_abstract.doi:
             self.id = scopus_abstract.doi
+            self.is_doi = True
         elif scopus_abstract.eid:
             self.id = scopus_abstract.eid
         else:
@@ -78,6 +80,7 @@ class DocumentID:
 
         try:
             self.id = dblp_result["info"]["doi"]
+            self.is_doi = True
         except KeyError:
             self.id = dblp_result["info"]["title"]
 
@@ -88,6 +91,7 @@ class DocumentID:
             self.id = bibtex_entry["doi"]
             self.id = self.id.replace("http://doi.org/", "")
             self.id = self.id.replace("http://doi.ieeecomputersociety.org/", "")
+            self.is_doi = True
         except KeyError:
             self.id = bibtex_entry["title"]
 
