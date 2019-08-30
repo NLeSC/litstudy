@@ -128,7 +128,7 @@ def search_scopus(query, docs=None):
                             abstract=paper.description,
                             source=paper.publicationName,
                             source_type=paper.aggregationType,
-                            citation_count=paper.citedby_count,
+                            citation_count=int(paper.citedby_count),
                             language=language,
                             year=int(paper.coverDate.split("-")[0]),
                             authors=authors,
@@ -273,3 +273,25 @@ def load_bibtex(file, lookup_authors=False):
         document.authors = authors
         documents.append(document)
     return documents
+
+
+def query_crossref(documents):
+    for document in tqdm(documents):
+        request = requests.get("https://api.crossref.org/v1/works/{}".format(quote_plus(document.id.id)))
+        results = request.json()
+        try:
+            document.language = results["message"]["language"]
+        except KeyError:
+            pass
+        try:
+            document.citation_count = results["message"]["is-referenced-by-count"]
+        except KeyError:
+            pass
+        try:
+            document.source_type = results["message"]["type"]
+        except KeyError:
+            pass
+        try:
+            document.publisher = results["message"]["publisher"]
+        except KeyError:
+            pass
