@@ -45,7 +45,7 @@ def train_nmf_model(dic, freqs, num_topics, seed=0, max_iter=500, **kwargs):
 	random_state=seed,
 	tol=1e-9,
 	max_iter=max_iter,
-    # verbose=True,
+        verbose=True,
         **kwargs)
 
     # Train model
@@ -75,6 +75,18 @@ def train_lda_model(dic, freqs, num_topics, **kwargs):
 
 
 def build_corpus_simple(docs, stopwords=[], bigrams={}, min_length=2):
+    if type(stopwords) is str:
+        with open(stopwords, 'r') as f:
+            stopwords = [w for w in f.read().split() if w]
+
+    if type(bigrams) is str:
+        with open(bigrams, 'r') as f:
+            bigrams = dict()
+            for line in f:
+                if line.strip():
+                    a, b, c = line.split()
+                    bigrams[a, b] = c
+
     filters = [
         partial(merge_bigrams, bigrams=bigrams),
         strip_default_stopwords,
@@ -114,7 +126,7 @@ def merge_bigrams(texts, bigrams):
         while index + 1 < len(new_text):
             a, b = new_text[index], new_text[index + 1]
             if (a, b) in bigrams:
-                new_text[index:index + 2] = bigrams
+                new_text[index:index + 2] = [bigrams[a, b]]
             else:
                 index += 1
 
@@ -123,12 +135,6 @@ def merge_bigrams(texts, bigrams):
 def strip_short(texts, min_length=3):
     for text in texts:
         yield [token for token in text if len(token) >= min_length]
-
-def strip_numeric(texts):
-    return map(gensim.parsing.preprocessing.strip_numeric, texts)
-
-def strip_non_alphanum(texts):
-    return map(gensim.parsing.preprocessing.strip_non_alphanum, texts)
 
 def strip_stopwords(texts, stopwords):
     for text in texts:
