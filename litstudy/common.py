@@ -13,7 +13,7 @@ class DocumentSet:
         :param predicate: The predicate to check.
         :return: A `DocumentSet` instance
         """
-        return filter(predicate, self.docs)
+        return DocumentSet([d for d in self.docs if predicate(d)])
 
     def filter_duplicates(self, key=None):
         """ Remove duplicate documents from this `DocumentSet`.
