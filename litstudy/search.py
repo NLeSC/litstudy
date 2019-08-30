@@ -308,19 +308,45 @@ def query_crossref(documents):
         if document.id.is_doi:
             request = requests.get("https://api.crossref.org/v1/works/{}".format(quote_plus(document.id.id)))
             results = request.json()
-            try:
-                document.language = results["message"]["language"]
-            except KeyError:
-                pass
-            try:
-                document.citation_count = results["message"]["is-referenced-by-count"]
-            except KeyError:
-                pass
-            try:
-                document.source_type = results["message"]["type"]
-            except KeyError:
-                pass
-            try:
-                document.publisher = results["message"]["publisher"]
-            except KeyError:
-                pass
+
+            if not document.title:
+                try:
+                    document.title = results["message"]["title"][0]
+                except KeyError:
+                    pass
+            if len(document.authors) == 0:
+                try:
+                    for author in results["message"]["author"]:
+                        document.authors.append(Author(name=(author["message"]["given"] + author["message"]["family"])))
+                except KeyError:
+                    pass
+            if not document.year:
+                try:
+                    document.year = int(results["message"]["published-print"]["date-parts"][0])
+                except KeyError:
+                    pass
+            if not document.source:
+                try:
+                    document.source = results["message"]["container-title"][0]
+                except KeyError:
+                    pass
+            if not document.source_type:
+                try:
+                    document.source_type = results["message"]["published-print"]["type"]
+                except KeyError:
+                    pass
+            if not document.citation_count:
+                try:
+                    document.citation_count = int(results["message"]["is-referenced-by-count"])
+                except KeyError:
+                    pass
+            if not document.language:
+                try:
+                    document.language = results["message"]["language"]
+                except KeyError:
+                    pass
+            if not document.publisher:
+                try:
+                    document.publisher = results["message"]["publisher"]
+                except KeyError:
+                    pass
