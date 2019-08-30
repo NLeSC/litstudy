@@ -8,6 +8,7 @@ import numpy as np
 import math
 
 from .nlp import generate_topic_cloud, create_tfidf
+from .clean import read_translation_file, replace_affiliation_names, clean_affiliations
 
 sns.set('paper')
 
@@ -60,23 +61,6 @@ def plot_statistic(fun, docset, x=None, ax=None, x_label="", count=None):
 
     plt.show()
 
-def clean_affiliation(name):
-    name = str(name).title()
-    pairs = [
-        ['University', 'U'],
-        ['Universitat', 'U'],
-        ['Laboratories', 'Lab'],
-        ['Laboratory', 'Lab'],
-        ['National', 'Nat'],
-        ['Corporation', 'Corp'],
-        ['Technology', 'Tech'],
-        ['Institute', 'Inst'],
-    ]
-    
-    for needle, replacement in pairs:
-        name = name.replace(needle, replacement)
-    return name
-
 def affiliation_to_type(name):
     name = name.lower()
     pairs = [
@@ -126,9 +110,6 @@ def get_affiliations(doc, attribute='name'):
     else:
         # Get affiliation names
         affiliations = [af.name for af in affiliations]
-
-    # Clean affiliation names
-    # affiliations = [clean_affiliation(af) for af in affiliations]
 
     # Remove duplicates (2 authors with same affiliation/country
     # results in 1 count for that affiliation/country).
@@ -190,9 +171,12 @@ def plot_source_type_histogram(docset, ax=None):
 def plot_source_histogram(docset, x=10, ax=None):
     plot_statistic(lambda p: [clean_source(p.source)], x=x, docset=docset, ax=ax, x_label="No. publications")
 
-def plot_affiliation_histogram(docset, x=10, ax=None):
+def plot_affiliation_histogram(docset, x=10, ax=None, filename=None, clean=True):
     # Publications per institute
-    plot_statistic(lambda p: get_affiliations(p), x=x, docset=docset, ax=ax, x_label="No. publications")
+    if not clean:
+        plot_statistic(lambda p: get_affiliations(p), x=x, docset=docset, ax=ax, x_label="No. publications")
+    else:
+        clean_affiliations(plot_affiliation_histogram, docset, x, ax, filename)
 
 def plot_country_histogram(docset, x=10, ax=None):
     # Publications per institute
