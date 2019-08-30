@@ -255,7 +255,6 @@ def load_bibtex(file, lookup_authors=False):
                 pass
         document.authors = authors
         documents.append(document)
-<<<<<<< HEAD
     return documents
 
 
