@@ -285,16 +285,19 @@ same method as <cite>filter_duplicates</cite>.</p>
 
 <dl class="function">
 <dt id="litstudy.plot.plot_affiliation_histogram">
-<code class="sig-prename descclassname">litstudy.plot.</code><code class="sig-name descname">plot_affiliation_histogram</code><span class="sig-paren">(</span><em class="sig-param">docset</em>, <em class="sig-param">top_k=10</em>, <em class="sig-param">ax=None</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_affiliation_histogram" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">litstudy.plot.</code><code class="sig-name descname">plot_affiliation_histogram</code><span class="sig-paren">(</span><em class="sig-param">docset</em>, <em class="sig-param">top_k=10</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">filename='translations_affiliations.yml'</em>, <em class="sig-param">clean=True</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_affiliation_histogram" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot a histogram of the number of documents published by each affiliation. Note that
 this is done on a best-effort basis since one affiliation could have multiple spellings
-(e.g., “University of Amsterdam”, “Universiteit van Amsterdam”, or “UvA”).</p>
+(e.g., “University of Amsterdam”, “Universiteit van Amsterdam”, or “UvA”). The user is
+presented with the option to merge potential duplicate affiliation names.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>docset</strong> – The <cite>DocumentSet</cite>.</p></li>
 <li><p><strong>ax</strong> – The axis on which to plot the histogram, defaults to current axis.</p></li>
 <li><p><strong>top_k</strong> – Limit results to the top k institutes.</p></li>
+<li><p><strong>filename</strong> – Filename to read from/write to (previous) affiliation name cleaning decisions.</p></li>
+<li><p><strong>clean</strong> – Switch off the cleaning process.</p></li>
 </ul>
 </dd>
 </dl>
@@ -412,7 +415,7 @@ on author affiliation. Note that the country is not always available.</p>
 
 <dl class="function">
 <dt id="litstudy.plot.plot_source_histogram">
-<code class="sig-prename descclassname">litstudy.plot.</code><code class="sig-name descname">plot_source_histogram</code><span class="sig-paren">(</span><em class="sig-param">docset</em>, <em class="sig-param">top_k=10</em>, <em class="sig-param">ax=None</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_source_histogram" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">litstudy.plot.</code><code class="sig-name descname">plot_source_histogram</code><span class="sig-paren">(</span><em class="sig-param">docset</em>, <em class="sig-param">top_k=10</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">filename='translations_sources.yml'</em>, <em class="sig-param">clean=True</em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_source_histogram" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot a histogram of the document source. Note that this done on a best-effort basis since
 one publication venue could have multiple spellings.</p>
 <dl class="field-list simple">
@@ -421,6 +424,8 @@ one publication venue could have multiple spellings.</p>
 <li><p><strong>docset</strong> – The <cite>DocumentSet</cite>.</p></li>
 <li><p><strong>ax</strong> – The axis on which to plot the histogram, defaults to current axis.</p></li>
 <li><p><strong>top_k</strong> – Limit results to the top k sources.</p></li>
+<li><p><strong>filename</strong> – Filename to read from/write to (previous) source cleaning decisions.</p></li>
+<li><p><strong>clean</strong> – Switch off the cleaning process.</p></li>
 </ul>
 </dd>
 </dl>

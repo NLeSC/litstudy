@@ -9,7 +9,7 @@ import math
 import wordcloud
 
 from .nlp import create_tfidf
-from .clean import read_translation_file, replace_affiliation_names, clean_affiliations
+from .clean import clean_attributes, get_affiliations_doc
 
 sns.set('paper')
 
@@ -68,61 +68,6 @@ def plot_statistic(fun, docset, x=None, ax=None, x_label="", count=None, vertica
         ax.bar(keys,
             [count[str(a)] for a in keys],
             tick_label=[str(key)[:50] for key in keys])
-
-
-def affiliation_to_type(name):
-    name = name.lower()
-    pairs = [
-        ['universi', 'Academic institute'],
-        ['hochschule', 'Academic institute'],
-        ['school', 'Academic institute'],
-        ['ecole', 'Academic institute'],
-        ['institute', 'Academic institute'],
-        ['research center', 'Academic institute'],
-        ['laboratories', 'Laboratory'],
-        ['laboratory', 'Laboratory'],
-        ['corporation', 'Corporation'],
-        ['corp', 'Corporation'],
-        ['ltd', 'Corporation'],
-        ['limited', 'Corporation'],
-        ['gmbh', 'Corporation'],
-        ['ministry', 'Ministry'],
-        ['school of', ''],
-    ]
-    
-    for word, affiliation_type in pairs:
-        if word in name:
-            return affiliation_type
-    
-    return 'Unknown'
-
-def clean_source(name):
-    return name
-
-def get_affiliations(doc, attribute='name'):
-    # Put affiliations of all authors in one list.
-    affiliation_lists = [a.affiliations for a in doc.authors]
-
-    # Remove 'None' affialiations
-    affiliations = [x for x in affiliation_lists if x is not None]
-
-    # Flatten lists
-    affiliations = [y for x in affiliations for y in x]
-
-    if attribute == 'country':
-        # Get affiliation countries and remove 'None' values
-        affiliations = [af.country for af in affiliations if af.country is not None]
-    elif attribute == 'affiliation_type':
-        # Get affiliation names
-        affiliations = [af.name for af in affiliations]
-        affiliations = [affiliation_to_type(x) for x in affiliations]
-    else:
-        # Get affiliation names
-        affiliations = [af.name for af in affiliations]
-
-    # Remove duplicates (2 authors with same affiliation/country
-    # results in 1 count for that affiliation/country).
-    return set(affiliations)
 
 def merge_author_affiliation(doc):
     if doc.authors is None:
@@ -196,17 +141,23 @@ def plot_source_type_histogram(docset, ax=None):
     """
     plot_statistic(lambda p: [p.source_type], docset=docset, ax=ax, x_label="No. publications", title="Publication per source type")
 
-def plot_source_histogram(docset, top_k=10, ax=None):
+def plot_source_histogram(docset, top_k=10, ax=None, filename="translations_sources.yml", clean=True):
     """Plot a histogram of the document source. Note that this done on a best-effort basis since
     one publication venue could have multiple spellings.
 
     :param docset: The `DocumentSet`.
     :param ax: The axis on which to plot the histogram, defaults to current axis.
     :param top_k: Limit results to the top k sources.
+    :param filename: Filename to read from/write to (previous) source cleaning decisions.
+    :param clean: Switch off the cleaning process.
     """
-    plot_statistic(lambda p: [clean_source(p.source)], x=top_k, docset=docset, ax=ax, x_label="No. publications", title="Publications per source")
+    if not clean:
+        plot_statistic(lambda p: [p.source], x=top_k, docset=docset, ax=ax, x_label="No. publications", title="Publications per source")
+    else:
+        clean_attributes(plot_source_histogram, docset, top_k, ax, filename, cleaning_type='sources')
 
-def plot_affiliation_histogram(docset, top_k=10, ax=None, filename="translations.yml", clean=True):
+
+def plot_affiliation_histogram(docset, top_k=10, ax=None, filename="translations_affiliations.yml", clean=True):
     """Plot a histogram of the number of documents published by each affiliation. Note that
     this is done on a best-effort basis since one affiliation could have multiple spellings
     (e.g., "University of Amsterdam", "Universiteit van Amsterdam", or "UvA"). The user is
@@ -219,9 +170,9 @@ def plot_affiliation_histogram(docset, top_k=10, ax=None, filename="translations
     :param clean: Switch off the cleaning process.
     """
     if not clean:
-        plot_statistic(lambda p: get_affiliations(p), x=top_k, docset=docset, ax=ax, x_label="No. publications", title="Publications per affiliation")
+        plot_statistic(lambda p: get_affiliations_doc(p), x=top_k, docset=docset, ax=ax, x_label="No. publications", title="Publications per affiliation")
     else:
-        clean_affiliations(plot_affiliation_histogram, docset, top_k, ax, filename)
+        clean_attributes(plot_affiliation_histogram, docset, top_k, ax, filename, cleaning_type='affiliations')
 
 def plot_country_histogram(docset, top_k=10, ax=None):
     """Plot a histogram of the number of documents published by each country based
@@ -231,7 +182,7 @@ def plot_country_histogram(docset, top_k=10, ax=None):
     :param ax: The axis on which to plot the histogram, defaults to current axis.
     :param top_k: Limit results to the top k country.
     """
-    plot_statistic(lambda p: get_affiliations(p, attribute='country'), x=top_k, docset=docset, ax=ax, x_label="No. publications", title="Publications per country of affiliations")
+    plot_statistic(lambda p: get_affiliations_doc(p, attribute='country'), x=top_k, docset=docset, ax=ax, x_label="No. publications", title="Publications per country of affiliations")
 
 def plot_affiliation_type_histogram(docset, x=10, ax=None):
     """Plot a histogram of the number of documents published by each type
@@ -241,7 +192,7 @@ def plot_affiliation_type_histogram(docset, x=10, ax=None):
     :param ax: The axis on which to plot the histogram, defaults to current axis.
     :param top_k: Limit results to the top k entries.
     """
-    plot_statistic(lambda p: get_affiliations(p, attribute='affiliation_type'), x=x, docset=docset, ax=ax, x_label="No. publications", title="Publications per type of affiliation")
+    plot_statistic(lambda p: get_affiliations_doc(p, attribute='affiliation_type'), x=x, docset=docset, ax=ax, x_label="No. publications", title="Publications per type of affiliation")
 
 def plot_language_histogram(docset, ax=None):
     """Plot a histogram of the number of documents published for each language
