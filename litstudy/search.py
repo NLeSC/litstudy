@@ -1,3 +1,5 @@
+from .common import Document, DocumentID, DocumentSet, Author, Affiliation
+
 from pybliometrics.scopus import ScopusSearch, AbstractRetrieval, AuthorRetrieval, ContentAffiliationRetrieval
 from pybliometrics.scopus.exception import ScopusQueryError
 from tqdm import tqdm
@@ -9,8 +11,6 @@ import os
 import pickle
 import logging
 logger = logging.getLogger(__name__)
-
-from .common import Document, DocumentID, DocumentSet, Author, Affiliation
 
 
 def search_mockup():
@@ -122,7 +122,10 @@ def search_scopus(query, docs=None):
                     references.append(reference.title)
 
         if paper.language:
-            language = iso639.languages.get(part2b=paper.language).name
+            try:
+                language = iso639.languages.get(part2b=paper.language).name
+            except KeyError:
+                language = None
         else:
             language = None
 
@@ -151,6 +154,7 @@ def path_cache(directory, key):
     safe_key = ''.join(c if c in valid else '_{}_'.format(ord(c)) for c in key)
     return os.path.join(directory, '.' + safe_key)
 
+
 def read_cache(directory, key):
     path = path_cache(directory, key)
 
@@ -161,8 +165,9 @@ def read_cache(directory, key):
         with open(path, 'rb') as f:
             return pickle.load(f)
     except Exception as e:
-        logger.warn(e)
+        logger.warning(e)
         return None
+
 
 def write_cache(directory, key, data):
     path = path_cache(directory, key)
@@ -174,8 +179,9 @@ def write_cache(directory, key, data):
         with open(path, 'wb') as f:
             pickle.dump(data, f)
     except Exception as e:
-        logger.warn(e)
+        logger.warning(e)
         return None
+
 
 def search_dblp(query, docs=None):
     """Search DBLP."""
@@ -186,6 +192,12 @@ def search_dblp(query, docs=None):
     request = requests.get("http://dblp.org/search/publ/api?format=json&h=1000&f=0&q={}".format(query))
     results = request.json()
     expected_documents = int(results["result"]["hits"]["@total"])
+    if expected_documents == 0:
+        if docs:
+            return docs
+        else:
+            return DocumentSet(docs=documents)
+        return DocumentSet(docs=documents)
     for paper in results["result"]["hits"]["hit"]:
         retrieved_papers.append(paper)
     while len(retrieved_papers) < expected_documents:
