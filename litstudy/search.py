@@ -192,6 +192,12 @@ def search_dblp(query, docs=None):
     request = requests.get("http://dblp.org/search/publ/api?format=json&h=1000&f=0&q={}".format(query))
     results = request.json()
     expected_documents = int(results["result"]["hits"]["@total"])
+    if expected_documents == 0:
+        if docs:
+            return docs
+        else:
+            return DocumentSet(docs=documents)
+        return DocumentSet(docs=documents)
     for paper in results["result"]["hits"]["hit"]:
         retrieved_papers.append(paper)
     while len(retrieved_papers) < expected_documents:
