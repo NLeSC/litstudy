@@ -122,7 +122,10 @@ def search_scopus(query, docs=None):
                     references.append(reference.title)
 
         if paper.language:
-            language = iso639.languages.get(part2b=paper.language).name
+            try:
+                language = iso639.languages.get(part2b=paper.language).name
+            except KeyError:
+                language = None
         else:
             language = None
 
