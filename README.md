@@ -1,4 +1,6 @@
 # Automated Literature Analysis 
+[![DOI](https://zenodo.org/badge/206312286.svg)](https://zenodo.org/badge/latestdoi/206312286)
+
 This repository shows an example of how to perform an automated analysis of academic literature using Jupyter notebooks and online citation databases such as Scopus, DBLP, and Semantic Scholar. This analysis detects the number of publications over time, popular authors, popular venues, popular affiliations, and popular "topics" that appear within the documents' abstracts (detected using natural language processing).
 
 
