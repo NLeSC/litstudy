@@ -139,13 +139,14 @@ def search_scopus(query, docs=None, retrieve_orcid=True):
                             abstract=paper.description,
                             source=paper.publicationName,
                             source_type=paper.aggregationType,
-                            citation_count=int(paper.citedby_count),
                             language=language,
                             year=int(paper.coverDate.split("-")[0]),
                             authors=authors,
                             references=references,
                             publisher=paper.publisher,
                             internal=paper)
+        if paper.citedby_count:
+            document.citation_count = int(paper.citedby_count)
         documents.append(document)
     if docs:
         return DocumentSet(docs=documents).union(docs)
