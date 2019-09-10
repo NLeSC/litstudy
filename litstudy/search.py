@@ -70,7 +70,7 @@ def search_mockup():
     return DocumentSet([a, b, c, d])
 
 
-def search_scopus(query, docs=None):
+def search_scopus(query, docs=None, retrieve_orcid=True):
     """Search Scopus."""
 
     documents = []
@@ -96,14 +96,19 @@ def search_scopus(query, docs=None):
         if paper.authors:
             for author in paper.authors:
                 author_affiliations = []
-                if author.auid in authors_cache:
-                    authors.append(Author(name=author.indexed_name,
-                                          orcid=authors_cache[author.auid],
-                                          affiliations=author_affiliations))
+                if retrieve_orcid:
+                    if author.auid in authors_cache:
+                        authors.append(Author(name=author.indexed_name,
+                                              orcid=authors_cache[author.auid],
+                                              affiliations=author_affiliations))
+                    else:
+                        authors_cache[author.auid] = AuthorRetrieval(author.auid).orcid
+                        authors.append(Author(name=author.indexed_name,
+                                              orcid=authors_cache[author.auid],
+                                              affiliations=author_affiliations))
                 else:
-                    authors_cache[author.auid] = AuthorRetrieval(author.auid).orcid
                     authors.append(Author(name=author.indexed_name,
-                                          orcid=authors_cache[author.auid],
+                                          orcid=None,
                                           affiliations=author_affiliations))
                 if author.affiliation:
                     for affiliation_id in author.affiliation:
