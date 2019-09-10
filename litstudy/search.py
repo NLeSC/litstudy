@@ -121,11 +121,10 @@ def search_scopus(query, docs=None, retrieve_orcid=True):
                                                                city=affiliation.city,
                                                                country=affiliation.country))
         references = []
-        if paper.refcount and int(paper.refcount) > 0:
+        if paper.refcount and int(paper.refcount) > 0 and paper.references:
             for reference in paper.references:
                 if reference.title:
                     references.append(reference.title)
-
         if paper.language:
             try:
                 language = iso639.languages.get(part2b=paper.language).name
