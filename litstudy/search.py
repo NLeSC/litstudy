@@ -251,7 +251,7 @@ def search_dblp(query, docs=None):
         return DocumentSet(docs=documents)
 
 
-def load_bibtex(file, lookup_authors=False):
+def load_bibtex(file, docs=None, lookup_authors=False):
     """Load the content of a BibTex file."""
 
     documents = []
@@ -307,7 +307,10 @@ def load_bibtex(file, lookup_authors=False):
                 pass
         document.authors = authors
         documents.append(document)
-    return DocumentSet(documents)
+    if docs:
+        return DocumentSet(docs=documents).union(docs)
+    else:
+        return DocumentSet(docs=documents)
 
 
 def query_semanticscholar(documents):
