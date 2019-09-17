@@ -262,10 +262,10 @@ def load_bibtex(file, docs=None, lookup_authors=False):
         doc_id = DocumentID()
         doc_id.parse_bibtex(paper)
         document = Document(id=doc_id,
-                            title=paper["title"],
+                            title=paper["title"].strip("{}"),
                             internal=paper)
         try:
-            document.abstract = paper["abstract"]
+            document.abstract = paper["abstract"].strip("{}")
         except KeyError:
             pass
         try:
@@ -273,19 +273,19 @@ def load_bibtex(file, docs=None, lookup_authors=False):
         except KeyError:
             pass
         try:
-            document.source = paper["journal"]
+            document.source = paper["journal"].strip("{}")
         except KeyError:
             pass
         try:
-            document.source_type = paper["ENTRYTYPE"]
+            document.source_type = paper["ENTRYTYPE"].strip("{}")
         except KeyError:
             pass
         try:
-            document.publisher = paper["publisher"]
+            document.publisher = paper["publisher"].strip("{}")
         except KeyError:
             pass
         try:
-            document.keywords = paper["keywords"]
+            document.keywords = paper["keywords"].strip("{}")
         except KeyError:
             pass
         authors = []
