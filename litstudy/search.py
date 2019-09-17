@@ -202,7 +202,6 @@ def search_dblp(query, docs=None):
             return docs
         else:
             return DocumentSet(docs=documents)
-        return DocumentSet(docs=documents)
     for paper in results["result"]["hits"]["hit"]:
         retrieved_papers.append(paper)
     while len(retrieved_papers) < expected_documents:
