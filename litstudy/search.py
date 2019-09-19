@@ -313,6 +313,7 @@ def load_bibtex(file, docs=None, lookup_authors=False):
 
 
 def query_semanticscholar(documents):
+    """Retrieve metadata for a `DocumentSet` from SemanticScholar, and modifies the current `DocumentSet` in place."""
     for document in tqdm(documents):
         if document.id.is_doi:
             results = read_cache(".semanticscholar", document.id.id)
@@ -363,6 +364,7 @@ def query_semanticscholar(documents):
 
 
 def query_crossref(documents):
+    """Retrieve metadata for a `DocumentSet` from Crossref, and modifies the current `DocumentSet` in place."""
     for document in tqdm(documents):
         if document.id.is_doi:
             request = requests.get("https://api.crossref.org/v1/works/{}".format(quote_plus(document.id.id)))
@@ -411,7 +413,6 @@ def query_crossref(documents):
                     document.publisher = results["message"]["publisher"]
                 except KeyError:
                     pass
-    return DocumentSet(documents)
 
 
 def query_scopus(documents):
