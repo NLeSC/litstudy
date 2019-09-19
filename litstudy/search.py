@@ -286,8 +286,12 @@ def load_bibtex(file, docs=None, lookup_authors=False):
             pass
         try:
             keywords = []
-            for keyword in paper["keywords"].strip("{}").split(","):
-                keywords.append(keyword)
+            if paper["keywords"].find(",") != -1:
+                for keyword in paper["keywords"].strip("{}").split(","):
+                    keywords.append(keyword.strip())
+            elif paper["keywords"].find(";") != -1:
+                for keyword in paper["keywords"].strip("{}").split(";"):
+                    keywords.append(keyword.strip())
             document.keywords = keywords
         except KeyError:
             pass
