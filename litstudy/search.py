@@ -412,3 +412,14 @@ def query_crossref(documents):
                 except KeyError:
                     pass
     return DocumentSet(documents)
+
+
+def query_scopus(documents):
+    """Retrieve metadata for a `DocumentSet` from Scopus, and returns another `DocumentSet`."""
+    retrieved_documents = DocumentSet([])
+    for document in documents:
+        if document.id.is_doi:
+            retrieved_document = search_scopus("DOI({})".format(document.id.id), retrieve_orcid=False)
+            if retrieved_document:
+                retrieved_documents = retrieved_documents.union(retrieved_document)
+    return retrieved_documents
