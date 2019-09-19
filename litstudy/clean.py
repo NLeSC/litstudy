@@ -4,10 +4,19 @@ import ipywidgets as widgets
 from IPython.display import display
 
 # ---------------------------------------
-# Affiliation cleaning functions
+# Cleaning functions
 # ---------------------------------------
+def get_sources(docset):
+    return [d.source for d in docset.docs if d.source is not None]
 
-def get_affiliations(doc, attribute='name'):
+def get_affiliations(docset, attribute='name'):
+    affiliations = []
+    for d in docset.docs:
+        affiliations += get_affiliations_doc(d, attribute)
+
+    return affiliations
+
+def get_affiliations_doc(doc, attribute='name'):
     # Put affiliations of all authors in one list.
     affiliation_lists = [a.affiliations for a in doc.authors]
 
@@ -32,6 +41,55 @@ def get_affiliations(doc, attribute='name'):
     # results in 1 count for that affiliation/country).
     return set(affiliations)
 
+def affiliation_to_type(name):
+    name = name.lower()
+    pairs = [
+        ['universi', 'Academic institute'],
+        ['hochschule', 'Academic institute'],
+        ['school', 'Academic institute'],
+        ['ecole', 'Academic institute'],
+        ['institute', 'Academic institute'],
+        ['research center', 'Academic institute'],
+        ['laboratories', 'Laboratory'],
+        ['laboratory', 'Laboratory'],
+        ['corporation', 'Corporation'],
+        ['corp', 'Corporation'],
+        ['ltd', 'Corporation'],
+        ['limited', 'Corporation'],
+        ['gmbh', 'Corporation'],
+        ['ministry', 'Ministry'],
+        ['school of', ''],
+    ]
+    
+    for word, affiliation_type in pairs:
+        if word in name:
+            return affiliation_type
+    
+    return 'Unknown'
+
+def clean_attributes(plot_callback, docset, x, ax, filename, cleaning_type='affiliations'):
+    if filename is not None:
+        translation = read_translation_file(filename)
+
+        # Perform translation
+        type2replace_f = {'sources': replace_sources, 'affiliations': replace_affiliation_names}
+        replace_f = type2replace_f[cleaning_type]
+        docset = replace_f(docset, translation)
+    else:
+        translation = {"translations" :{}, "rejects": []}
+
+    param_passthrough = {   'filename': filename,
+                            'cleaning_type': cleaning_type,
+                            'docset': docset,
+                            'translation': translation,
+                            'widgets':
+                                {'choice_widget': None, 'text_widget': None, 'custom_widget': None},
+                            'plot_params':
+                                {'plot_callback': plot_callback, 'x': x, 'ax': ax}
+                        }
+
+    start_cleaning(param_passthrough)
+
 def read_translation_file(filename):
     translation = {"translations" :{}, "rejects": []}
 
@@ -51,146 +109,225 @@ def write_translation_file(filename, translation):
     with open(filename, 'w') as f:
         yaml.dump(translation, f)#default_flow_style=False)
 
-def filter_rejects(rejects, pairs):
-    new_pairs = []
+def start_cleaning(param_passthrough):
+    if param_passthrough['cleaning_type'] == 'affiliations':
+        get_f = get_affiliations
+        remove = ['University', 'Universitat', 'Laboratories', 'Laboratory',
+            'National', 'Corporation', 'Technology', 'Science', 'Institute',
+            'Ltd.', 'of', 'and']    
+
+    elif param_passthrough['cleaning_type'] == 'sources':
+        get_f = get_sources
+        remove = ['IEEE', 'th', 'Conference', 'on', 'and', 'Symposium']
+
+    # Get attributes
+    attributes = get_f(param_passthrough['docset'])
     
-    for score, af, af2 in pairs:
-        if [af, af2] not in rejects and [af2, af] not in rejects:
-            new_pairs.append((score, af, af2))
-    
-    return new_pairs
+    # Remove duplicates and, for now, remove lists
+    attributes = [a for a in attributes if not isinstance(a, list)]
+    attributes = list(set(attributes))
 
-def clean_affiliations(plot_callback, docset, x, ax, filename):
-    if filename is not None:
-        translation = read_translation_file(filename)
-        docset = replace_affiliation_names(docset, translation)
-        start_clean_affiliations(docset, translation, filename, {'plot_callback': plot_callback, 'x': x, 'ax': ax})
-    else:
-        start_clean_affiliations(docset, {"translations" :{}, "rejects": []}, filename, {'plot_callback': plot_callback, 'x': x, 'ax': ax})
-
-def start_clean_affiliations(docset, translation, filename, plot_params):
-    # Get affiliation names
-    affiliation_names = []
-    for d in docset.docs:
-        affiliation_names += get_affiliations(d)
-    affiliation_names = list(set(affiliation_names))
-
-    remove = ['University', 'Universitat', 'Laboratories', 'Laboratory',
-        'National', 'Corporation', 'Technology', 'Science', 'Institute',
-        'Ltd.', 'of', 'and']
-
-    new_names = []
+    cleaned_attributes = []
 
     # Remove common words
-    for name in affiliation_names:
+    for value in attributes:
         for needle in remove:
-            name = name.replace(needle, '')
+            value = value.replace(needle, '')
         # Remove excessive whitespace
-        name = ' '.join(name.split())
-        new_names.append(name)
+        value = ' '.join(value.split())
+        cleaned_attributes.append(value)
 
-    # Create list of pairs of affiliation names with similarity score > 0.9
+    # Create list of pairs of attributes with similarity score > 0.8
     pairs = []
-    for i, af in enumerate(affiliation_names):
-        for j, af2 in enumerate(affiliation_names[i+1:]):
-            ratio = Levenshtein.ratio(new_names[i], new_names[i+1+j])
+    for i, at in enumerate(attributes):
+        for j, at2 in enumerate(attributes[i+1:]):
+            ratio = Levenshtein.ratio(cleaned_attributes[i], cleaned_attributes[i+1+j])
             if ratio > 0.8:
-                pairs.append((ratio, af, af2))
+                pairs.append((ratio, at, at2))
 
     # Sort on similarity score
     pairs = sorted(pairs, key=lambda x: x[0], reverse=True)
 
+    # Remove scores
+    pairs = [(at, at2) for (score, at, at2) in pairs]
+
     # Remove pairs that are already in the list of rejected merges.
-    pairs = filter_rejects(translation['rejects'], pairs)
+    pairs = filter_rejects(param_passthrough['translation']['rejects'], pairs)
 
     # Create choice widget or plot
     if len(pairs) > 0:
-        options = [pairs[0][1], pairs[0][2], "Don't merge", 'Stop']
-        create_widget(options, None, pairs, translation, filename, docset, plot_params)
+        options = [pairs[0][0], pairs[0][1], "Don't merge", 'Stop']
+        create_widgets(options, None, pairs, param_passthrough)
     else:
-        end_affiliation_cleaning(docset, translation, filename, plot_params)
+        end_cleaning(param_passthrough)
 
-def end_affiliation_cleaning(docset, translation, filename, plot_params):
-    docset = replace_affiliation_names(docset, translation)
-    write_translation_file(filename, translation)
-    plot_callback = plot_params['plot_callback']
-    plot_callback(docset, plot_params['x'], plot_params['ax'], clean=False)
+def filter_rejects(rejects, pairs):
+    new_pairs = []
+    
+    for at, at2 in pairs:
+        if [at, at2] not in rejects and [at2, at] not in rejects:
+            new_pairs.append((at, at2))
+    
+    return new_pairs
 
-def create_widget(options, data, pairs, translation, filename, docset, plot_params):
-    widget = widgets.ToggleButtons(
-        options=options,
-        description='Speed:',
-        disabled=False,
-        value=None
-    )
-    widget.style.button_width='100%'
-    display(widget)
-    widget.observe(lambda data: callback(data, pairs, translation, filename, docset, plot_params), 'value')
-    return widget
+def callback(data, pairs, param_passthrough):
+    if isinstance(data, widgets.widgets.widget_string.Text):
+        # 'Custom' choisen
+        widget = param_passthrough['widgets']['choice_widget']
+    else:
+        # One of options chosen
+        widget = data['owner']
+        choice = data['new']
 
-def remove_widget(widget):
-    widget.close()
-    del widget
-
-def replace_affiliation_names(docset, translation):
-    for old in translation['translations'].keys():
-        new = translation['translations'][old]
-        for doc in docset:
-            for author in doc.authors:
-                if author.affiliations is not None:
-                    for affiliation in author.affiliations:
-                        if affiliation is not None and affiliation.name == old:
-                            affiliation.name = new
-    return docset
-
-def add_translation(translation, old, new):
-    translation['translations'][old] = new
-
-    for key in translation['translations'].keys():
-        if translation['translations'][key] == old:
-            translation['translations'][key] = new
-
-    return translation
-
-def callback(data, pairs, translation, filename, docset, plot_params):
-    widget = data['owner']
-    choice = data['new']
+    translation = param_passthrough['translation']
     widget.visible = False
     stop = False
 
-    if choice == widget.options[0]:
+    # Remove this pair from the list
+    pairs = pairs[1:]
+
+    if isinstance(data, widgets.widgets.widget_string.Text):
+        # 'Custom' choisen
+        new = data.value
+        widget = param_passthrough['widgets']['choice_widget']
+
+        for old in [widget.options[0], widget.options[1]]:
+            translation = add_translation(translation, old, new)
+            # Replace pairs with 'old' in list with (new, old) and remove duplicates.
+            pairs = [(new, at2) if at == old else (at, at2) for at, at2 in pairs]
+            pairs = [(new, at) if at2 == old else (at, at2) for at, at2 in pairs]
+            pairs = list(dict.fromkeys(pairs))
+
+    elif choice == widget.options[0]:
         old = widget.options[1]
         new = widget.options[0]
         translation = add_translation(translation, old, new)
         
-        # Remove this pairs and pairs with 'old' from list
-        pairs = pairs[1:]
-        pairs = [(ratio, af, af2) for (ratio, af, af2) in pairs if (af != old and af2 != old)]
+        # Remove pairs with 'old' from list
+        pairs = [(at, at2) for (at, at2) in pairs if (at != old and at2 != old)]
+
     elif choice == widget.options[1]:
         old = widget.options[0]
         new = widget.options[1]
         translation = add_translation(translation, old, new)
 
-        pairs = pairs[1:]
-        pairs = [(ratio, af, af2) for (ratio, af, af2) in pairs if (af != old and af2 != old)]
+        pairs = [(at, at2) for (at, at2) in pairs if (at != old and at2 != old)]
+
     elif choice == widget.options[2]:
         old = widget.options[0]
         new = widget.options[1]
 
         # Add to rejects
         translation['rejects'].append([old, new])
-        pairs = pairs[1:]
     else:
         stop = True
 
-    if len(pairs) <= 0:
-        stop = True
+    param_passthrough['translation'] = translation
+    remove_widgets(param_passthrough)
 
-    remove_widget(widget)
-
-    if stop:
-        end_affiliation_cleaning(docset, translation, filename, plot_params)
+    if len(pairs) <= 0 or stop:
+        end_cleaning(param_passthrough)
     else:
-        new_options = [pairs[0][1], pairs[0][2], "Don't merge", 'Stop']
-        create_widget(new_options, data, pairs, translation, filename, docset, plot_params)
+        options = [pairs[0][0], pairs[0][1], "Don't merge", 'Stop']
+        create_widgets(options, data, pairs, param_passthrough)
 
+def add_translation(translation, old, new):
+    translation['translations'][old] = new
+
+    # If 'new' was translated to something else previously, immediately
+    # translate 'old' to that too now.
+    try:
+        new = translation['translations'][new]
+        translation['translations'][old] = new
+    except KeyError:
+        pass
+
+    # If something was translated to 'old' previously, now translate it to 'new'.
+    for key in translation['translations'].keys():
+        if translation['translations'][key] == old:
+            translation['translations'][key] = new
+
+    return translation
+
+def create_widgets(options, data, pairs, param_passthrough):
+    param_passthrough['widgets']['text_widget'] = create_text_widget(param_passthrough)
+    param_passthrough['widgets']['choice_widget'] = create_choice_widget(options, data, pairs, param_passthrough)
+    param_passthrough['widgets']['custom_widget'] = create_custom_widget(data, pairs, param_passthrough)
+
+def create_text_widget(param_passthrough):
+    text = """If the following two """ + param_passthrough['cleaning_type'] + \
+            """ are the same, please pick which way of writing you prefer.
+            <br>If the they are distinct, pick \"Don't merge\".
+            <br>If you wish to stop the cleaning process, click "Stop\".
+            <br>To use a new name for both options,
+            enter a new name in the text box and press 'enter'."""
+
+    widget = widgets.HTML(value=text)
+    display(widget)
+    return widget
+
+def create_choice_widget(options, data, pairs, param_passthrough):
+    widget = widgets.ToggleButtons(options=options, disabled=False, value=None)
+    widget.style.button_width='100%'
+    widget.observe(lambda data: callback(data, pairs, param_passthrough), 'value')
+    display(widget)
+    return widget
+
+def create_custom_widget(data, pairs, param_passthrough):
+    widget = widgets.Text(description='Custom:', disabled=False)
+    widget.on_submit(lambda data: callback(data, pairs, param_passthrough))
+    display(widget)
+    return widget
+
+def remove_widgets(param_passthrough):
+    remove_widget(param_passthrough['widgets']['text_widget'])
+    remove_widget(param_passthrough['widgets']['choice_widget'])
+    remove_widget(param_passthrough['widgets']['custom_widget'])
+    param_passthrough['widgets']['text_widget'] = None
+    param_passthrough['widgets']['choice_widget'] = None
+    param_passthrough['widgets']['custom_widget'] = None
+
+def remove_widget(widget):
+    widget.close()
+    del widget
+
+def end_cleaning(param_passthrough):
+    filename = param_passthrough['filename']
+    docset = param_passthrough['docset']
+    translation = param_passthrough['translation']
+
+    # Perform translation
+    type2replace_f = {'sources': replace_sources, 'affiliations': replace_affiliation_names}
+    replace_f = type2replace_f[param_passthrough['cleaning_type']]
+    param_passthrough['docset'] = replace_f(docset, translation)
+
+    write_translation_file(filename, translation)
+    
+    plot_params = param_passthrough['plot_params']
+    plot_callback = plot_params['plot_callback']
+    plot_callback(param_passthrough['docset'], param_passthrough['plot_params']['x'],
+        param_passthrough['plot_params']['ax'], clean=False)
+
+def replace_sources(docset, translation):
+    for doc in docset:
+        try:
+            new = translation['translations'][doc.source]
+            doc.source = new
+        except (KeyError, TypeError) as e:
+            # Source is None, list or no translation is found.
+            pass
+    return docset
+
+def replace_affiliation_names(docset, translation):
+    for doc in docset:
+        for author in doc.authors:
+            if author.affiliations is not None:
+                for affiliation in author.affiliations:
+                    try:
+                        new = translation['translations'][affiliation.name]
+                        affiliation.name = new
+                    except (KeyError, TypeError, AttributeError) as e:
+                        # Affiliation or name is None or a list or no
+                        # translation is found.
+                        pass
+    return docset

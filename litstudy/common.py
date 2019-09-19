@@ -46,6 +46,23 @@ class DocumentSet:
         same method as `filter_duplicates`."""
         return DocumentSet(self.docs + other.docs).filter_duplicates(key=key)
 
+    def difference(self, other, key=None):
+        """Returns the difference between this `DocumentSet` and another `DocumentSet`"""
+        def default_key(document):
+            return document.id.id
+
+        if key is None:
+            key = default_key
+
+        keys_other = set()
+        for doc in other.docs:
+            keys_other.add(key(doc))
+        result = []
+        for doc in self.docs:
+            if key(doc) not in keys_other:
+                result.append(doc)
+        return DocumentSet(result)
+
     def __len__(self):
         return len(self.docs)
 

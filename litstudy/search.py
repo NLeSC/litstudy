@@ -139,13 +139,14 @@ def search_scopus(query, docs=None, retrieve_orcid=True):
                             abstract=paper.description,
                             source=paper.publicationName,
                             source_type=paper.aggregationType,
-                            citation_count=int(paper.citedby_count),
                             language=language,
                             year=int(paper.coverDate.split("-")[0]),
                             authors=authors,
                             references=references,
                             publisher=paper.publisher,
                             internal=paper)
+        if paper.citedby_count:
+            document.citation_count = int(paper.citedby_count)
         documents.append(document)
     if docs:
         return DocumentSet(docs=documents).union(docs)
@@ -201,7 +202,6 @@ def search_dblp(query, docs=None):
             return docs
         else:
             return DocumentSet(docs=documents)
-        return DocumentSet(docs=documents)
     for paper in results["result"]["hits"]["hit"]:
         retrieved_papers.append(paper)
     while len(retrieved_papers) < expected_documents:
@@ -250,7 +250,7 @@ def search_dblp(query, docs=None):
         return DocumentSet(docs=documents)
 
 
-def load_bibtex(file, lookup_authors=False):
+def load_bibtex(file, docs=None, lookup_authors=False):
     """Load the content of a BibTex file."""
 
     documents = []
@@ -262,10 +262,10 @@ def load_bibtex(file, lookup_authors=False):
         doc_id = DocumentID()
         doc_id.parse_bibtex(paper)
         document = Document(id=doc_id,
-                            title=paper["title"],
+                            title=paper["title"].strip("{}"),
                             internal=paper)
         try:
-            document.abstract = paper["abstract"]
+            document.abstract = paper["abstract"].strip("{}")
         except KeyError:
             pass
         try:
@@ -273,19 +273,19 @@ def load_bibtex(file, lookup_authors=False):
         except KeyError:
             pass
         try:
-            document.source = paper["journal"]
+            document.source = paper["journal"].strip("{}")
         except KeyError:
             pass
         try:
-            document.source_type = paper["ENTRYTYPE"]
+            document.source_type = paper["ENTRYTYPE"].strip("{}")
         except KeyError:
             pass
         try:
-            document.publisher = paper["publisher"]
+            document.publisher = paper["publisher"].strip("{}")
         except KeyError:
             pass
         try:
-            document.keywords = paper["keywords"]
+            document.keywords = paper["keywords"].strip("{}")
         except KeyError:
             pass
         authors = []
@@ -306,7 +306,10 @@ def load_bibtex(file, lookup_authors=False):
                 pass
         document.authors = authors
         documents.append(document)
-    return DocumentSet(documents)
+    if docs:
+        return DocumentSet(docs=documents).union(docs)
+    else:
+        return DocumentSet(docs=documents)
 
 
 def query_semanticscholar(documents):
