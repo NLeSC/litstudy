@@ -115,9 +115,13 @@ def search_scopus(query, docs=None, retrieve_orcid=True):
                         if affiliation_id in affiliations_cache:
                             affiliation = affiliations_cache[affiliation_id]
                         else:
-                            affiliation = ContentAffiliationRetrieval(affiliation_id)
-                            affiliations_cache[affiliation_id] = affiliation
-                        author_affiliations.append(Affiliation(name=affiliation.affiliation_name,
+                            try:
+                                affiliation = ContentAffiliationRetrieval(affiliation_id)
+                                affiliations_cache[affiliation_id] = affiliation
+                            except:
+                                affiliation= None
+                        if affiliation:
+                            author_affiliations.append(Affiliation(name=affiliation.affiliation_name,
                                                                city=affiliation.city,
                                                                country=affiliation.country))
         references = []
