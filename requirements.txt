@@ -12,6 +12,6 @@ requests
 bibtexparser
 networkx>=2.3
 python-Levenshtein==0.12.0
-PyYAML==5.1.2
+PyYAML==5.4
 iso-639>=0.4
 sphinx
