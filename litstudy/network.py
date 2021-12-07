@@ -1,103 +1,113 @@
-import networkx
+import networkx as nx
+import pyvis
+import textwrap
+import math
+from .clean import canonical
+from collections import defaultdict
+
+
+class DocumentMapping:
+    def __init__(self, docs=None):
+        self.title = dict()
+        self.doi = dict()
+        self.eid = dict()
+
+    def add(self, doc, value):
+        if doc.eid:
+            self.eid[doc.eid] = value
+
+        if doc.doi:
+            self.doi[doc.doi] = value
+
+        if doc.title:
+            self.title[canonical(doc.title)] = value
+
+
+    def get(self, doc):
+        result = None
+
+        if result is None and doc.eid:
+            result = self.eid.get(doc.eid)
+
+        if result is None and doc.doi:
+            result = self.doi.get(doc.doi)
+
+        if result is None and doc.title:
+            result = self.title.get(canonical(doc.title))
+
+        return result
 
 
 def build_citation_network(docs):
-    title2index = dict()
-    g = networkx.DiGraph()
+    g = nx.DiGraph()
+    mapping = DocumentMapping()
 
     for i, doc in enumerate(docs):
-        g.add_node(i, document=doc, label=doc.title)
-        title2index[doc.title] = i
+        label = textwrap.fill(doc.title, width=20)
+        g.add_node(i, label=label)
+        mapping.add(doc.id, i)
 
     for i, doc in enumerate(docs):
-        if doc.references:
-            for ref in doc.references:
-                if ref in title2index:
-                    g.add_edge(title2index[ref], i)
+        for ref in doc.references or []:
+            j = mapping.get(ref)
+
+            if j is not None:
+                g.add_edge(i, j)
 
     return g
-                
-
-def plot_citation_network(docs, **kwargs):
-    """ Plot the citation network of the given `DocumentSet` where nodes
-    represent document and edges represents citations between documents.
-
-    :param docs: The `DocumentSet`
-    :param \**kwargs: Additional arguments passed to `networkx.draw`
-    """
-    g = build_citation_network(docs)
-
-    if len(g.edges) == 0:
-        print('Citations not available for given document set')
-        return
-
-    options = dict(
-    )
-    options.update(kwargs)
-    networkx.draw(g, **options)
 
 
-def build_coauthor_network(docs):
-    g = networkx.Graph()
-    n = 0
-    nodes = dict()
-    weights = []
-    edges = dict()
+def build_cocitation_network(docs, max_edges=1000):
+    g = nx.Graph()
+    mapping = DocumentMapping()
+    strength = defaultdict(int)
+
+    for i, doc in enumerate(docs):
+        label = textwrap.fill(doc.title, width=20)
+        g.add_node(i, label=label)
+        mapping.add(doc.id, i)
 
     for doc in docs:
-        authors = set()
+        refs = []
 
-        if doc.authors:
-            for author in doc.authors:
-                authors.add(author.name)
+        for ref in doc.references or []:
+            j = mapping.get(ref)
 
-        for author in authors:
-            if author not in nodes:
-                nodes[author] = n
-                weights.append(1)
-                n += 1
-            else:
-                weights[nodes[author]] += 1
+            if j is not None:
+                refs.append(j)
 
-        for a in authors:
-            for b in authors:
-                key = (nodes[a], nodes[b])
-                if key[0] < key[1]:
-                    if key not in edges:
-                        edges[key] = 1
-                    else:
-                        edges[key] += 1
+        for i in refs:
+            for j in refs:
+                if i < j:
+                    strength[i,j] += 1
 
-    g.add_nodes_from((i, dict(author=a, weight=weights[i])) for (a, i) in nodes.items())
-    g.add_edges_from((i, j, dict(weight=w)) for ((i, j), w) in edges.items())
+    if len(strength) > max_edges:
+        strength = list(strength.items())
+        strength.sort(key=lambda p: p[1], reverse=True)
+        strength = strength[:max_edges]
+        strength = dict(strength)
+
+    for (i, j), weight in strength.items():
+        g.add_edge(i, j, weight=weight)
 
     return g
 
-def plot_coauthor_network(docs, top_k=25, min_degree=1, **kwargs):
-    """ Plot the citation network of the given `DocumentSet` where nodes
-    represent author and edges represents collaborations (e.g. number of
-    shared documents between two authors.)
 
-    :param docs: The `DocumentSet`
-    :param min_degree: Only show nodes of at least this degree, defaults to 1
-    :param top_k: Only show labels for the top k nodes.
-    :param \**kwargs: Additional arguments passed to `networkx.draw`
-    """
-    g = build_coauthor_network(docs)
+def plot_network(g, **kwargs):
+    g.remove_nodes_from(list(nx.isolates(g)))
 
-    deg = dict(g.degree())
-    valid = [k for k in deg if deg[k] >= min_degree]
-    max_deg = float(max(deg.values()))
+    if len(g.edges) == 0:
+        print('no edges given')
+        return
 
-    top_authors = sorted(deg, key=lambda k: deg[k], reverse=True)[:top_k]
-    labels = dict((n, g.nodes[n]['author']) for n in top_authors if n in valid)
+    for n in g.nodes():
+        g.nodes[n]['size'] = math.sqrt(g.degree(n) + 1)
 
-    options = dict(
-            nodelist=valid,
-            node_size=[deg[k] + 1 for k in valid],
-            labels=labels,
-            edge_color='darkgray',
-    )
-    options.update(kwargs)
-    networkx.draw(g, **options)
-    
+    v = pyvis.network.Network(notebook=True, width='100%', height='750px')
+    v.from_nx(g)
+    v.show_buttons()
+    return v.show('citation.html')
+
+def plot_citation_network(docs, **kwargs):
+    return plot_network(build_citation_network(docs), **kwargs)
+

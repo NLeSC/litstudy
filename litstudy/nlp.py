@@ -1,169 +1,352 @@
-import numpy as np
 import gensim
-import sys
-import sklearn.feature_extraction.text
+import numpy as np
+import sklearn.feature_extraction
 import sklearn.decomposition
-import wordcloud
 import matplotlib.pyplot as plt
-from collections import defaultdict
+import wordcloud
+import math
+import seaborn
+from .plot import plot_bars
 from functools import partial
+from collections import defaultdict
+from .stopwords import STOPWORDS
+from gensim.matutils import corpus2dense
 
 
-class Corpus:
-    def __init__(self, texts):
-        self.texts = texts
-
-class TopicModel:
-    def __init__(self, corpus, doc2topic, topic2token):
-        self.corpus = corpus
-        self.dictionary = corpus
-        self.doc2topic = doc2topic
-        self.topic2token = topic2token
-        self.num_topics = len(topic2token)
-        self.num_documents = len(doc2topic)
-        self.num_tokens = len(topic2token.T)
-
-def create_tfidf(freqs, dic):
-    # Build dense matrix
-    matrix = np.zeros((len(freqs), len(dic)))
-    for i, vec in enumerate(freqs):
-        for j, f in vec:
-            matrix[i, j] = f
-
-    # Apply TFIDF
-    tfidf_model = sklearn.feature_extraction.text.TfidfTransformer()
-    tfidf_matrix = tfidf_model.fit_transform(matrix).toarray()
-
-    return tfidf_matrix
-
-def train_nmf_model(dic, freqs, num_topics, seed=0, max_iter=500, **kwargs):
-    tfidf_matrix = create_tfidf(freqs, dic)
-
-    # Train NMF model
-    nmf_model = sklearn.decomposition.NMF(
-	n_components=num_topics,
-	random_state=seed,
-	tol=1e-9,
-	max_iter=max_iter,
-        verbose=True,
-        **kwargs)
-
-    # Train model
-    doc2topic = nmf_model.fit_transform(tfidf_matrix)
-    topic2token = nmf_model.components_
-
-    # Normalize token distributions.
-    sums = np.sum(topic2token, axis=1) # k
-    topic2token /= sums.reshape(-1, 1) # k,m
-    doc2topic *= sums.reshape(1, -1) # n,k
-
-    # Normalize topic distributions.
-    doc2topic /= np.sum(doc2topic, axis=1).reshape(-1, 1) # n,k
-
-    return TopicModel(dic, doc2topic, topic2token)
-
-def train_lda_model(dic, freqs, num_topics, **kwargs):
-    model = gensim.models.LdaModel(freqs, num_topics, id2word=dic, **kwargs)
-    topic2token = model.get_topics()
-    doc2topic = np.zeros((len(freqs), num_topics))
-
-    for i in range(len(freqs)):
-        for j, f in model.get_document_topics(freqs[i]):
-            doc2topic[i, j] = f
-            
-    return TopicModel(dic, doc2topic, topic2token)
-
-
-def build_corpus_simple(docs, stopwords=[], bigrams={}, min_length=2):
-    if type(stopwords) is str:
-        with open(stopwords, 'r') as f:
-            stopwords = [w for w in f.read().split() if w]
-
-    if type(bigrams) is str:
-        with open(bigrams, 'r') as f:
-            bigrams = dict()
-            for line in f:
-                if line.strip():
-                    a, b, c = line.split()
-                    bigrams[a, b] = c
-
-    filters = [
-        partial(merge_bigrams, bigrams=bigrams),
-        strip_default_stopwords,
-        partial(strip_stopwords, stopwords=set(stopwords)),
-        partial(strip_short, min_length=min_length),
-        stem_smart,
-    ]
-
-    return build_corpus(docs, filters)
-
-def build_corpus(docs, filters):
-    corpus = []
-
-    for doc in docs:
-        tokens = gensim.utils.tokenize(
-                (doc.title or ' ') + ' ' + (doc.abstract or ' '),
-                lowercase=True,
-                deacc=True)
-
-        corpus.append(tokens)
-
-    for f in filters:
-        corpus = f(corpus)
-
-    corpus = list(map(list, corpus))
-    dic = gensim.corpora.Dictionary(corpus)
-    freqs = [dic.doc2bow(x) for x in corpus]
-
-    return dic, freqs
-
-def merge_bigrams(texts, bigrams):
+def filter_tokens(texts, predicate):
     for text in texts:
-        skip_next = True
-        new_text = list(text)
-        index = 0
+        yield [token for token in text if predicate(token)]
 
-        while index + 1 < len(new_text):
-            a, b = new_text[index], new_text[index + 1]
-            if (a, b) in bigrams:
-                new_text[index:index + 2] = [bigrams[a, b]]
+
+def preprocess_remove_short(texts, min_length=3):
+    yield from filter_tokens(texts, lambda token: len(token) >= min_length)
+
+
+def preprocess_remove_words(texts, stopwords):
+    stopwords = set(w.strip() for w in stopwords)
+    yield from filter_tokens(texts, lambda token: token not in STOPWORDS)
+
+
+def preprocess_stopwords(texts):
+    yield from preprocess_remove_words(texts, STOPWORDS)
+
+
+def preprocess_replace_words(texts, replace_words):
+    for text in texts:
+        yield [replace_words.get(token, token) for token in text]
+
+
+def preprocess_merge_bigrams(texts, bigrams):
+    for text in texts:
+        prev = None
+        new_text = []
+
+        for current in tokens:
+            replacement = bigrams.get((prev, current))
+
+            if replacement is not None:
+                new_text.append(replacement)
+                prev = None
             else:
-                index += 1
+                if prev is not None:
+                    new_text.append(prev)
+                prev = current
 
         yield new_text
 
-def strip_short(texts, min_length=3):
+
+def preprocess_merge_ngrams(texts, threshold):
+    texts = list(texts)
+    phrases = gensim.models.phrases.Phrases(texts, threshold=threshold)
+    return phrases[texts]
+
+
+def preprocess_outliers(texts, min_docs, max_docs):
+    texts = list(texts)
+    count = defaultdict(int)
+
     for text in texts:
-        yield [token for token in text if len(token) >= min_length]
+        for token in set(text):
+            count[token] += 1
 
-def strip_stopwords(texts, stopwords):
-    for text in texts:
-        yield [token for token in text if token not in stopwords]
+    unwanted = set()
+    for token, num_docs in count.items():
+        if num_docs < min_docs or num_docs > max_docs:
+            unwanted.add(token)
 
-def strip_default_stopwords(texts):
-    return strip_stopwords(texts, gensim.parsing.preprocessing.STOPWORDS)
+    yield from preprocess_remove_words(texts, unwanted)
 
-def stem_porter(texts):
-    stemmer = gensim.parsing.PorterStemmer()
-    for text in texts:
-        yield [stemmer.stem(token) for token in text]
 
-def stem_smart(texts):
+def preprocess_smart_stemming(texts):
     texts = list(texts)
     stemmer = gensim.parsing.PorterStemmer()
-    word_count = defaultdict(int)
-    stemming = dict()
-    unstemming = dict()
+    count = defaultdict(int)
 
     for text in texts:
         for token in text:
-            word_count[token] += 1
+            count[token] += 1
 
-    for token, _ in sorted(word_count.items(), key=lambda p: p[1]):
+    sorted_count = sorted(count.items(), key=lambda p: p[1], reverse=True)
+    unstemming = dict()
+    mapping = dict()
+
+    for token, _ in sorted_count:
         stem = stemmer.stem(token)
-        stemming[token] = stem
-        unstemming[stem] = token
+        if stem in unstemming:
+            mapping[token] = unstemming[stem]
+        else:
+            unstemming[stem] = token
+            mapping[token] = token
 
     for text in texts:
-        yield [unstemming[stemming[token]] for token in text]
-        
+        yield [mapping[token] for token in text]
+
+
+class Corpus:
+    def __init__(self, docs, filters, max_tokens):
+        corpus = []
+
+        for doc in docs:
+            text = (doc.title or '') + ' ' + (doc.abstract or ' ')
+            tokens = gensim.utils.tokenize(
+                    text,
+                    lowercase=True,
+                    deacc=True)
+
+            corpus.append(list(tokens))
+
+        for f in filters:
+            corpus = f(corpus)
+
+        corpus = list(corpus)
+        dic = gensim.corpora.Dictionary(corpus)
+        dic.filter_extremes(keep_n=max_tokens)
+
+        self.corpus = corpus
+        self.dictionary = dic
+        self.frequencies = [dic.doc2bow(x) for x in corpus]
+
+
+def build_corpus(docs, *, remove_words=None, min_word_length=3, min_docs=5,
+        max_docs_ratio=0.75, max_tokens=5000, replace_words=None,
+        custom_bigrams=None, ngram_threshold=None):
+
+    filters = []
+    if custom_bigrams:
+        filters.append(lambda w: preprocess_merge_bigrams(w, custom_bigrams))
+
+    if remove_words:
+        filters.append(lambda w: preprocess_remove_words(w, remove_words))
+
+    if ngram_threshold is not None:
+        filters.append(lambda w: preprocess_merge_ngrams(w, ngram_threshold))
+
+    if replace_words:
+        filters.append(lambda w: preprocess_replace_words(w, replace_words))
+
+    if min_word_length:
+        filters.append(lambda w: preprocess_remove_short(w, min_length=min_word_length))
+
+    if min_docs > 1 or max_docs_ratio < 1.0:
+        max_docs = int(len(docs) * max_docs_ratio)
+        filters.append(lambda w: preprocess_outliers(w, min_docs, max_docs))
+
+    filters.append(preprocess_stopwords)
+    filters.append(preprocess_smart_stemming)
+
+    return Corpus(docs, filters, max_tokens)
+
+
+def plot_word_distribution(corpus, top=25, **kwargs):
+    counter = defaultdict(int)
+    dic = corpus.dictionary
+    n = len(corpus.frequencies)
+
+    for vector in corpus.frequencies:
+        for i, freq in vector:
+            counter[i] += 1
+
+    best = sorted(counter, key=lambda k: counter[k], reverse=True)[:top]
+    keys = [dic[i] for i in best]
+    values = [counter[i] for i in best]
+
+    return plot_bars(keys, values, relative_to=n, **kwargs)
+
+
+class TopicModel:
+    def __init__(self, dictionary, doc2topic, topic2token):
+        self.dictionary = dictionary
+        self.doc2topic = doc2topic
+        self.topic2token = topic2token
+        self.num_topics = len(topic2token)
+
+
+def train_nmf_model(corpus, num_topics, seed=0, max_iter=500):
+    import gensim.models.nmf
+
+    dic = corpus.dictionary
+    freqs = corpus.frequencies
+
+    tfidf = gensim.models.tfidfmodel.TfidfModel(dictionary=dic)
+    model = gensim.models.nmf.Nmf(
+            list(tfidf[freqs]),
+            num_topics=num_topics,
+            passes=max_iter,
+            random_state=seed,
+            w_stop_condition=1e-9,
+            h_stop_condition=1e-9,
+            w_max_iter=50,
+            h_max_iter=50)
+
+    doc2topic = corpus2dense(model[freqs], num_topics)
+    topic2token = model.get_topics()
+
+    return TopicModel(dic, doc2topic, topic2token)
+
+
+def train_lda_model(corpus, num_topics, seed=0):
+    from gensim.models.lda import LdaModel
+
+    dic = corpus.dictionary
+    freqs = corpus.frequencies
+
+    model = LdaModel(list(corpus), **kwargs)
+
+    doc2topic = corpus2dense(model[freqs], num_topics)
+    topic2token = model.get_topics()
+
+    return TopicModel(dic, doc2topic, topic2token)
+
+
+def plot_topic_clouds(model, fig=None, ncols=3, **kwargs):
+    if fig is None:
+        plt.clf()
+        fig = plt.gcf()
+
+    nrows = math.ceil(model.num_topics / float(ncols))
+
+    for i in range(model.num_topics):
+        ax = fig.add_subplot(nrows, ncols, i + 1)
+        plot_topic_cloud(model, i, ax=ax, **kwargs)
+
+
+def plot_topic_cloud(model, topic_id, ax=None, **kwargs):
+    if ax is None:
+        ax = plot.gca()
+
+    ax.set_xticks([])
+    ax.set_yticks([])
+
+    im = generate_topic_cloud(model, topic_id, **kwargs).to_array()
+    ax.imshow(im, interpolation='bilinear')
+
+
+def generate_topic_cloud(model, topic_id, cmap=None, max_font_size=75, background_color='white'):
+    if cmap is None:
+        cmap = plt.get_cmap('Blues')
+
+    dic = model.dictionary
+    vec = model.topic2token[topic_id]
+    maximum = np.amax(vec)
+    words = dict()
+
+    for i in np.argsort(vec)[-100:]:
+        if vec[i] > 0:
+            words[dic[i]] = vec[i] / maximum
+
+    def get_color(word, **kwargs):
+        weight = kwargs['font_size'] / 75.0 * 0.7 + 0.3
+        r, g, b = np.array(cmap(weight)[:3]) * 255
+        return 'rgb({}, {}, {})'.format(int(r), int(g), int(b))
+
+    wc = wordcloud.WordCloud(
+            prefer_horizontal=True,
+            max_font_size=max_font_size,
+            background_color=background_color,
+            color_func=get_color,
+            scale=2,
+            relative_scaling=0.5)
+
+    wc.fit_words(words)
+
+    return wc
+
+
+def calculate_embedding(corpus, rank=2):
+    from gensim.models.tfidfmodel import TfidfModel
+    from sklearn.decomposition import TruncatedSVD
+    from sklearn.manifold import TSNE
+
+    dic = corpus.dictionary
+    freqs = corpus.frequencies
+    tfidf = corpus2dense(TfidfModel(dictionary=dic)[freqs], len(dic)).T
+
+    svd = TruncatedSVD(n_components=50)
+    components = svd.fit_transform(tfidf)
+    return TSNE(rank, metric='cosine').fit_transform(components)
+
+
+def plot_embedding(corpus, model, layout=None, ax=None):
+    if ax is None:
+        ax = plt.gca()
+
+    if layout is None:
+        layout = calculate_embedding(corpus)
+
+    dic = corpus.dictionary
+    freqs = corpus2dense(corpus.frequencies, len(dic))
+
+    num_topics = len(model.topic2token)
+    best_topic = np.argmax(model.doc2topic, axis=0)
+
+    colors = seaborn.color_palette('hls', num_topics)
+    colors = np.array(colors)[:,:3] * 0.9  # Mute colors a bit
+
+    for i in range(num_topics):
+        indices = best_topic == i
+        letter = 'ABCDEFGHIJLMNOPQRSTUVWXYZ'[i]
+
+        for j in np.argwhere(indices)[:,0]:
+            x,y = layout[j]
+            ax.scatter(
+                    x,
+                    y,
+                    marker='o',
+                    s=150,
+                    linewidth=0.5,
+                    color=colors[i],
+                    zorder=2*j,
+            )
+
+            ax.text(
+                x,
+                y,
+                letter,
+                fontsize=6,
+                color='1',
+                va='center',
+                ha='center',
+                fontweight='bold',
+                zorder=2*j + 1,
+            )
+
+        top_items = np.argsort(model.topic2token[i])[::-1]
+        label = f'Topic {letter}:' + ', '.join(dic[j] for j in top_items[:3])
+
+        center = np.median(layout[indices], axis=0)
+        ax.text(
+                center[0],
+                center[1],
+                label,
+                va='center',
+                ha='center',
+                color='1',
+                backgroundcolor=(0, 0, 0, .75),
+                zorder=10 * len(freqs),
+        )
+
+
+    ax.set_aspect('equal')
+    ax.set_xticks([])
+    ax.set_yticks([])
+
