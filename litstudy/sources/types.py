@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from datetime import date
 from typing import Optional, List
 import random
-from .clean import fuzzy_match
+from ..clean import fuzzy_match
 
 
 class DocumentSet:
@@ -109,16 +109,20 @@ class DocumentIdentifier:
         return self._attr.get('isbn')
 
     @property
-    def eissn(self):
-        return self._attr.get('eissn')
-
-    @property
-    def pubmmed(self):
+    def pubmed(self):
         return self._attr.get('pubmed')
 
     @property
-    def eid(self):
+    def arxivid(self):
+        return self._attr.get('arxivid')
+
+    @property
+    def scopusid(self):
         return self._attr.get('eid')
+
+    @property
+    def s2id(self):
+        return self._attr.get('s2id')
 
     def matches(self, other):
         n = 0
@@ -140,7 +144,6 @@ class DocumentIdentifier:
 
     def __repr__(self):
         return f'<{self.title}>'
-
 
 class Document(ABC):
     def __init__(self, identifier: DocumentIdentifier):
@@ -214,6 +217,10 @@ class Document(ABC):
     def references(self) -> Optional[List[DocumentIdentifier]]:
         return None
 
+    @property
+    def citations(self) -> Optional[List[DocumentIdentifier]]:
+        return None
+
 
 class Affiliation(ABC):
     @property
@@ -238,6 +245,10 @@ class Author(ABC):
 
     @property
     def orcid(self):
+        return None
+
+    @property
+    def s2id(self):
         return None
 
     @property

@@ -188,15 +188,23 @@ def train_nmf_model(corpus, num_topics, seed=0, max_iter=500):
     freqs = corpus.frequencies
 
     tfidf = gensim.models.tfidfmodel.TfidfModel(dictionary=dic)
-    model = gensim.models.nmf.Nmf(
-            list(tfidf[freqs]),
-            num_topics=num_topics,
-            passes=max_iter,
-            random_state=seed,
-            w_stop_condition=1e-9,
-            h_stop_condition=1e-9,
-            w_max_iter=50,
-            h_max_iter=50)
+
+    for n in range(1, 100):
+        errors = []
+
+        for seed in [0, 1,2 ,3, 4]:
+            model = gensim.models.nmf.Nmf(
+                    list(tfidf[freqs]),
+                    #num_topics=num_topics,
+                    num_topics=n,
+                    passes=max_iter,
+                    random_state=seed,
+                    w_stop_condition=1e-9,
+                    h_stop_condition=1e-9,
+                    w_max_iter=50,
+                    h_max_iter=50)
+            errors.append(model._w_error)
+        print(n, sum(errors)/len(errors))
 
     doc2topic = corpus2dense(model[freqs], num_topics)
     topic2token = model.get_topics()

@@ -4,6 +4,7 @@ import itertools
 from collections import defaultdict
 from datetime import date
 import random
+import logging
 
 try:
     from tqdm import tqdm
@@ -57,7 +58,6 @@ class ScopusDocument(Document):
                 doc.title,
                 doi=doc.doi,
                 isbn=doc.isbn,
-                eissn=doc.issn,
                 pubmed=doc.pubmed_id,
                 eid=doc.eid,
         )
@@ -137,7 +137,7 @@ class ScopusDocument(Document):
             try:
                 year, month, day = self.doc.coverDate.split('-')
                 return date(int(year), int(month), int(day))
-            except:
+            except Exception:
                 pass
 
         return None
@@ -162,15 +162,19 @@ def search_scopus(query: str, *, limit:int=None) -> DocumentSet:
 
     return DocumentSet(docs)
 
-def scopus_refine_documents(docs: DocumentSet) -> DocumentSet:
+def refine_scopus(originals: DocumentSet) -> DocumentSet:
     docs = []
 
-    for doc in docs:
+    for doc in tqdm(originals):
         if not isinstance(doc, ScopusDocument):
             id = doc.id
+            doi = id.doi
 
-            if id.doi is not None:
-                doc = ScopusDocument.from_doi(id.doi)
+            if doi is not None:
+                try:
+                    doc = ScopusDocument.from_doi(doi)
+                except Exception as e:
+                    logging.warn(f'no document found for DOI {doi}: {e}')
 
         docs.append(doc)
 
