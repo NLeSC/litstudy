@@ -47,7 +47,7 @@ class BibDocument(Document):
             return None
 
         content = re.sub('[ \r\n\t]+', ' ', content)
-        names = re.split(' (and|And|AND) ', content)
+        names = re.split(' (?:and|And|AND) ', content)
 
         if not names:
             return None

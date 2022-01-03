@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import wordcloud
 import math
 import seaborn
-from .plot import plot_bars
+# from .plot import plot_bars
 from functools import partial
 from collections import defaultdict
 from .stopwords import STOPWORDS

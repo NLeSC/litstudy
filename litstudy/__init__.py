@@ -5,15 +5,15 @@ from .sources.crossref import search_crossref, refine_crossref
 from .sources.semanticscholar import \
         search_semanticscholar, \
         refine_semanticscholar
-from .plot import \
-        plot_year_histogram, \
-        plot_author_histogram, \
-        plot_author_affiliation_histogram, \
-        plot_language_histogram, \
-        plot_number_authors_histogram, \
-        plot_source_histogram, \
-        plot_affiliation_histogram, \
-        plot_country_histogram
+from .stats import \
+        compute_year_histogram, \
+        compute_author_histogram, \
+        compute_author_affiliation_histogram, \
+        compute_language_histogram, \
+        compute_number_authors_histogram, \
+        compute_source_histogram, \
+        compute_affiliation_histogram, \
+        compute_country_histogram
 from .nlp import \
         build_corpus, \
         train_nmf_model, \
@@ -32,6 +32,15 @@ from .network import \
         plot_cocitation_network, \
         plot_coupling_network, \
         plot_network
+from .plot import \
+        plot_year_histogram, \
+        plot_author_histogram, \
+        plot_number_authors_histogram, \
+        plot_author_affiliation_histogram, \
+        plot_language_histogram, \
+        plot_source_histogram, \
+        plot_affiliation_histogram, \
+        plot_country_histogram
 
 
 __all__ = [
