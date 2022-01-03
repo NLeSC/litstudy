@@ -1,16 +1,14 @@
-from .types import Document, DocumentSet, DocumentIdentifier, Author, Affiliation
-from pybliometrics.scopus import AbstractRetrieval, ScopusSearch
-import itertools
+from ..common import progress_bar, canonical
+from .types import Document, DocumentSet, DocumentIdentifier, Author, \
+                   Affiliation
 from collections import defaultdict
 from datetime import date
-import random
+from pybliometrics.scopus import AbstractRetrieval, ScopusSearch
+from typing import Tuple
+import itertools
 import logging
+import random
 
-try:
-    from tqdm import tqdm
-except:
-    def tqdm(it):
-        return it
 
 class ScopusAuthor(Author):
     def __init__(self, name, affiliations):
@@ -24,6 +22,7 @@ class ScopusAuthor(Author):
     @property
     def affiliations(self):
         return self._affiliations
+
 
 class ScopusAffiliation(Affiliation):
     def __init__(self, affiliation):
@@ -40,10 +39,12 @@ class ScopusAffiliation(Affiliation):
     def __repr__(self):
         return f'<{self.name}>'
 
+
 class ScopusDocument(Document):
     @staticmethod
     def from_identifier(id, id_type, view='FULL'):
-        return ScopusDocument(AbstractRetrieval(id, id_type=id_type, view=view))
+        result = AbstractRetrieval(id, id_type=id_type, view=view)
+        return ScopusDocument(result)
 
     @staticmethod
     def from_eid(eid, **kwargs):
@@ -80,7 +81,8 @@ class ScopusDocument(Document):
             return [ScopusAuthor(a, f) for a, f in items.items()]
 
         if self.doc.authors is not None:
-            return [ScopusAuthor(a.indexed_name, None) for a in self.doc.authors]
+            at = self.doc.authors
+            return [ScopusAuthor(a.indexed_name, None) for a in at]
 
         return None
 
@@ -122,7 +124,6 @@ class ScopusDocument(Document):
 
         return refs
 
-
     @property
     def publication_source(self):
         return self.doc.confname or self.doc.publicationName or None
@@ -146,7 +147,7 @@ class ScopusDocument(Document):
         return f'<{self.title}>'
 
 
-def search_scopus(query: str, *, limit:int=None) -> DocumentSet:
+def search_scopus(query: str, *, limit: int = None) -> DocumentSet:
     search = ScopusSearch(query, view='STANDARD')
     eids = list(search.get_eids())
     docs = []
@@ -156,29 +157,51 @@ def search_scopus(query: str, *, limit:int=None) -> DocumentSet:
         random.shuffle(eids)
         eids = eids[:limit]
 
-    for eid in tqdm(eids):
+    for eid in progress_bar(eids):
         doc = ScopusDocument.from_eid(eid)
         docs.append(doc)
 
     return DocumentSet(docs)
 
-def refine_scopus(originals: DocumentSet) -> DocumentSet:
-    docs = []
 
-    for doc in tqdm(originals):
+def refine_by_id(id: DocumentIdentifier):
+    doi = id.doi
+    if doi:
+        try:
+            return ScopusDocument.from_doi(doi)
+        except Exception as e:
+            logging.warn(f'no document found for DOI {doi}: {e}')
+            return None
+
+    title = canonical(id.title)
+    if len(title) > 10:
+        query = f'TITLE({title})'
+        response = ScopusSearch(query, view='STANDARD', download=False)
+        nresults = response.get_results_size()
+
+        if nresults > 0 and nresults < 10:
+            response = ScopusSearch(query, view='STANDARD')
+
+            for record in response.results or []:
+                if canonical(record.title) == title:
+                    return ScopusDocument.from_eid(record.eid)
+
+    return None
+
+
+def refine_scopus(originals: DocumentSet) -> Tuple[DocumentSet, DocumentSet]:
+    original = []
+    replaced = []
+
+    for doc in progress_bar(originals):
+        new_doc = None
+
         if not isinstance(doc, ScopusDocument):
-            id = doc.id
-            doi = id.doi
+            new_doc = refine_by_id(doc.id)
 
-            if doi is not None:
-                try:
-                    doc = ScopusDocument.from_doi(doi)
-                except Exception as e:
-                    logging.warn(f'no document found for DOI {doi}: {e}')
+        if new_doc is not None:
+            replaced.append(new_doc)
+        else:
+            original.append(doc)
 
-        docs.append(doc)
-
-    return DocumentSet(docs)
-
-
-
+    return DocumentSet(replaced), DocumentSet(original)

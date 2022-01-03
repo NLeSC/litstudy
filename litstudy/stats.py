@@ -1,18 +1,18 @@
+from .common import FuzzyMatcher
 from collections import defaultdict, OrderedDict
-from .clean import FuzzyMatcher
-import pandas as pd
-import numpy as np
-
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 import seaborn as sns
 
 
-def plot_bars(data, *, title='', xlabel='', ylabel=None, ax=None, vertical=False):
+def plot_bars(data, *, title='', xlabel='', ylabel=None, ax=None,
+              vertical=False):
     if ax is None:
         ax = plt.gca()
 
     data = pd.DataFrame(data)
-    #sns.barplot(data=data, hue='')
+    # sns.barplot(data=data, hue='')
     data.plot.bar(ax=ax)
 
 
@@ -62,9 +62,6 @@ def histogram(docs, fun, sort_by_key=False, groups=None, limit=None):
             index=totals.index,
             columns=columns,
     )
-
-
-
 
 
 def plot_year_histogram(docs, **kwargs):
@@ -178,6 +175,7 @@ def default_mapper(mapper):
     else:
         return mapper
 
+
 def plot_source_histogram(docs, mapper=None, **kwargs):
     mapper = default_mapper(mapper)
 
@@ -211,6 +209,7 @@ def plot_affiliation_histogram(docs, mapper=None, **kwargs):
         return result
 
     return plot_histogram(docs, extract, **kwargs)
+
 
 def plot_country_histogram(docs, **kwargs):
     def extract(doc):

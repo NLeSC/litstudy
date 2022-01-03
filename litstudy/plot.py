@@ -1,11 +1,11 @@
 from collections import defaultdict
-from .clean import FuzzyMatcher
+from .common import FuzzyMatcher
 import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 
 
-
-def plot_bars(keys, values, *, title='', xlabel='', ylabel=None, relative_to=None, ax=None, vertical=False):
+def plot_bars(keys, values, *, title='', xlabel='', ylabel=None,
+              relative_to=None, ax=None, vertical=False):
     assert len(keys) == len(values)
 
     if ax is None:
@@ -165,6 +165,7 @@ def default_mapper(mapper):
     else:
         return mapper
 
+
 def plot_source_histogram(docs, mapper=None, **kwargs):
     mapper = default_mapper(mapper)
 
@@ -198,6 +199,7 @@ def plot_affiliation_histogram(docs, mapper=None, **kwargs):
         return result
 
     return plot_histogram(docs, extract, **kwargs)
+
 
 def plot_country_histogram(docs, **kwargs):
     def extract(doc):

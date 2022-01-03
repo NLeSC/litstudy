@@ -1,4 +1,6 @@
 from .types import Document, Author, DocumentSet, DocumentIdentifier
+from typing import Tuple
+from time import sleep
 from urllib.parse import quote_plus
 import logging
 import requests
@@ -10,7 +12,6 @@ except Exception:
     def tqdm(it):
         return it
 
-S2_URL = 'http://api.semanticscholar.org/v1/paper/'
 
 def extract_id(item):
     if item is None or not item.get('title'):
@@ -22,6 +23,7 @@ def extract_id(item):
             arxivid=item.get('arxivId'),
             s2id=item.get('paperId'),
     )
+
 
 def extract_ids(items):
     if not items:
@@ -95,9 +97,12 @@ class ScholarDocument(Document):
         return search_semanticscholar(id)
 
 
+S2_URL = 'http://api.semanticscholar.org/v1/paper/'
 CACHE_FILE = '.semantischolar'
+DEFAULT_TIMEOUT = 0.5
 
-def request(key):
+
+def request(key, timeout=DEFAULT_TIMEOUT):
     with shelve.open(CACHE_FILE) as cache:
         if key in cache:
             return cache[key]
@@ -105,6 +110,7 @@ def request(key):
         url = S2_URL + quote_plus(key)
 
         try:
+            sleep(timeout)
             data = requests.get(url).json()
         except Exception as e:
             logging.warn(f'failed to retreive {key}: {msg}')
@@ -142,16 +148,19 @@ def search_semanticscholar(key):
     return ScholarDocument(data)
 
 
-def refine_semanticscholar(originals: DocumentSet) -> DocumentSet:
-    docs = []
+def refine_semanticscholar(originals: DocumentSet
+                           ) -> Tuple[DocumentSet, DocumentSet]:
+    original = []
+    replaced = []
 
     for doc in tqdm(originals):
         if not isinstance(doc, ScholarDocument):
             new_doc = search_semanticscholar(doc.id)
+
             if new_doc is not None:
-                doc = new_doc
+                replaced.append(new_doc)
+                continue
 
-        docs.append(doc)
+        original.append(doc)
 
-    return DocumentSet(docs)
-
+    return DocumentSet(replaced), DocumentSet(original)

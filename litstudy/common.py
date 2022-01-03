@@ -1,23 +1,39 @@
 import re
 from unidecode import unidecode
 
+try:
+    from tqdm import tqdm
+
+    def progress_bar(it):
+        return tqdm(it)
+except ImportError:
+    def progress_bar(it):
+        return it
+
 STOPWORDS = set([
     '',
-    'on',
-    'the',
-    'of',
     'and',
-    'in',
     'at',
     'for',
+    'in',
+    'into',
+    'of',
+    'on',
+    'onto',
+    'over',
+    'the',
     'to',
     'ltd',
     'corporation',
     'corp',
 ])
 
+
 def canonical(key, aggresive=True):
-    tokens = re.split('[^0-9a-zA-Z]', key)
+    if aggresive:
+        key = unidecode(key).lower()
+
+    tokens = re.split(r'[\W]+', key)
     new_tokens = []
 
     for token in tokens:
@@ -26,12 +42,8 @@ def canonical(key, aggresive=True):
 
         original = token
 
-        if aggresive:
-            token = token.lower()
-            token = unidecode(token)
-
-            if token in STOPWORDS or len(token) <= 1:
-                continue
+        if aggresive and (token in STOPWORDS or len(token) <= 1):
+            continue
 
         new_tokens.append(token)
 

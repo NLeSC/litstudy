@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from datetime import date
 from typing import Optional, List
 import random
-from ..clean import fuzzy_match
+from ..common import fuzzy_match, canonical
 
 
 class DocumentSet:
@@ -27,23 +27,26 @@ class DocumentSet:
         return DocumentSet(result)
 
     def intersect(self, other):
+        haystack = [d.id for d in other]
         result = []
 
-        for a in self.docs:
-            found = False
+        for doc in self.docs:
+            needle = doc.id
+            if any(needle.matches(i) for i in haystack):
+                result.append(doc)
 
-            for b in other.docs:
-                if a.id.matches(b.id):
-                    found = True
-                    break
-
-            if found:
-                result.append(a)
-
-        return result
+        return DocumentSet(result)
 
     def union(self, other):
-        return DocumentSet(self.docs + other.docs).unique()
+        haystack = [d.id for d in self]
+        result = self.docs
+
+        for doc in other.docs:
+            needle = doc.id
+            if not any(needle.matches(i) for i in haystack):
+                result.append(doc)
+
+        return DocumentSet(result)
 
     def unique(self):
         result = []
@@ -56,6 +59,7 @@ class DocumentSet:
                 if other.id.matches(needle):
                     other._identifier = other._identifier.merge(needle)
                     found = True
+                    break
 
             if not found:
                 result.append(doc)
@@ -81,7 +85,8 @@ class DocumentSet:
         return len(self.docs)
 
     def __getitem__(self, key):
-        return self.docs[key]
+        result = self.docs[key]
+        return DocumentSet(result) if isinstance(result, list) else result
 
     def __iter__(self):
         return iter(self.docs)
@@ -144,6 +149,7 @@ class DocumentIdentifier:
 
     def __repr__(self):
         return f'<{self.title}>'
+
 
 class Document(ABC):
     def __init__(self, identifier: DocumentIdentifier):
@@ -255,3 +261,33 @@ class Author(ABC):
     def affiliations(self) -> 'Optional[list[Affiliation]]':
         return None
 
+
+class DocumentMapping:
+    def __init__(self, docs=None):
+        self.title = dict()
+        self.doi = dict()
+        self.eid = dict()
+
+    def add(self, doc, value):
+        if doc.scopusid:
+            self.eid[doc.scopusid] = value
+
+        if doc.doi:
+            self.doi[doc.doi] = value
+
+        if doc.title:
+            self.title[canonical(doc.title)] = value
+
+    def get(self, doc):
+        result = None
+
+        if result is None and doc.scopusid:
+            result = self.eid.get(doc.scopusid)
+
+        if result is None and doc.doi:
+            result = self.doi.get(doc.doi)
+
+        if result is None and doc.title:
+            result = self.title.get(canonical(doc.title))
+
+        return result

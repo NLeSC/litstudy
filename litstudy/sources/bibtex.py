@@ -24,7 +24,7 @@ class BibDocument(Document):
     def __init__(self, entry):
         title = entry.get('title')
         attr = dict(
-                doi=entry.get('doi'),
+                doi=entry.get('doi', entry.get('DOI')),
                 isbn=entry.get('isbn'),
                 pubmed=entry.get('pmid'),
         )

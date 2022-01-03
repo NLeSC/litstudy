@@ -128,8 +128,8 @@ class Corpus:
 
 
 def build_corpus(docs, *, remove_words=None, min_word_length=3, min_docs=5,
-        max_docs_ratio=0.75, max_tokens=5000, replace_words=None,
-        custom_bigrams=None, ngram_threshold=None):
+                 max_docs_ratio=0.75, max_tokens=5000, replace_words=None,
+                 custom_bigrams=None, ngram_threshold=None):
 
     filters = []
     if custom_bigrams:
@@ -145,7 +145,8 @@ def build_corpus(docs, *, remove_words=None, min_word_length=3, min_docs=5,
         filters.append(lambda w: preprocess_replace_words(w, replace_words))
 
     if min_word_length:
-        filters.append(lambda w: preprocess_remove_short(w, min_length=min_word_length))
+        filters.append(lambda w: preprocess_remove_short(w,
+                       min_length=min_word_length))
 
     if min_docs > 1 or max_docs_ratio < 1.0:
         max_docs = int(len(docs) * max_docs_ratio)
@@ -192,10 +193,10 @@ def train_nmf_model(corpus, num_topics, seed=0, max_iter=500):
     for n in range(1, 100):
         errors = []
 
-        for seed in [0, 1,2 ,3, 4]:
+        for seed in [0, 1, 2, 3, 4]:
             model = gensim.models.nmf.Nmf(
                     list(tfidf[freqs]),
-                    #num_topics=num_topics,
+                    # num_topics=num_topics,
                     num_topics=n,
                     passes=max_iter,
                     random_state=seed,
@@ -204,7 +205,6 @@ def train_nmf_model(corpus, num_topics, seed=0, max_iter=500):
                     w_max_iter=50,
                     h_max_iter=50)
             errors.append(model._w_error)
-        print(n, sum(errors)/len(errors))
 
     doc2topic = corpus2dense(model[freqs], num_topics)
     topic2token = model.get_topics()
@@ -249,7 +249,8 @@ def plot_topic_cloud(model, topic_id, ax=None, **kwargs):
     ax.imshow(im, interpolation='bilinear')
 
 
-def generate_topic_cloud(model, topic_id, cmap=None, max_font_size=75, background_color='white'):
+def generate_topic_cloud(model, topic_id, cmap=None, max_font_size=75,
+                         background_color='white'):
     if cmap is None:
         cmap = plt.get_cmap('Blues')
 
@@ -308,14 +309,14 @@ def plot_embedding(corpus, model, layout=None, ax=None):
     best_topic = np.argmax(model.doc2topic, axis=0)
 
     colors = seaborn.color_palette('hls', num_topics)
-    colors = np.array(colors)[:,:3] * 0.9  # Mute colors a bit
+    colors = np.array(colors)[:, :3] * 0.9  # Mute colors a bit
 
     for i in range(num_topics):
         indices = best_topic == i
         letter = 'ABCDEFGHIJLMNOPQRSTUVWXYZ'[i]
 
-        for j in np.argwhere(indices)[:,0]:
-            x,y = layout[j]
+        for j in np.argwhere(indices)[:, 0]:
+            x, y = layout[j]
             ax.scatter(
                     x,
                     y,
@@ -353,8 +354,6 @@ def plot_embedding(corpus, model, layout=None, ax=None):
                 zorder=10 * len(freqs),
         )
 
-
     ax.set_aspect('equal')
     ax.set_xticks([])
     ax.set_yticks([])
-

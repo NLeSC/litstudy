@@ -1,34 +1,58 @@
+from ..common import progress_bar
 from .types import Document, Author, DocumentSet, DocumentIdentifier
-from urllib.parse import quote_plus
 from datetime import date
+from time import sleep
+from typing import Tuple
+from urllib.parse import quote_plus
 import logging
+import re
 import requests
 import shelve
 
-try:
-    from tqdm import tqdm
-except Exception:
-    def tqdm(it):
-        return it
 
-CROSSREF_URL = 'https://api.crossref.org/works/'
+class CrossRefAuthor(Author):
+    def __init__(self, entry):
+        self.entry = entry
+
+    @property
+    def name(self):
+        given = self.entry.get('given', '')
+        family = self.entry.get('family', '')
+
+        if not given and not family:
+            return None
+
+        return f'{given} {family}'.strip()
+
+    @property
+    def orcid(self):
+        return self.entry.get('ORCID')
+
+    @property
+    def affiliations(self):
+        return None  # TODO
 
 
 class CrossRefDocument(Document):
     def __init__(self, entry):
-        todo()
+        title = entry.get('title')
+        doi = entry.get('DOI')
+
+        super().__init__(DocumentIdentifier(title, doi=doi))
+        self.entry = entry
 
     @property
     def title(self) -> str:
         title = self.entry.get('title')
         if title:
-            return title[0]
+            return re.sub(r'[\s]+', ' ', ' '.join(title))
         else:
             return None
 
     @property
     def authors(self):
-        pass
+        authors = self.entry.get('author', [])
+        return [CrossRefAuthor(a) for a in authors]
 
     @property
     def publisher(self):
@@ -50,10 +74,10 @@ class CrossRefDocument(Document):
 
     @property
     def publication_year(self):
-        date = self.publication_date
-        if date is None:
+        try:
+            return int(self.entry['published-print']['date-parts'][0])
+        except Exception as e:
             return None
-        return date.year
 
     @property
     def publication_source(self):
@@ -70,13 +94,22 @@ class CrossRefDocument(Document):
     @property
     def citation_count(self):
         try:
-            return int(self.entry.get('is-referenced-by-count'))
+            return int(self.entry['is-referenced-by-count'])
         except Exception as e:
             return None
 
     @property
     def references(self):
-        return None
+        output = []
+
+        for ref in self.entry.get('reference', []):
+            title = ref.get('unstructured')
+            doi = ref.get('DOI')
+
+            if title or doi:
+                output.append(DocumentIdentifier(title, doi=doi))
+
+        return output
 
     def __repr__(self):
         return f'<{self.title}>'
@@ -87,49 +120,64 @@ class CrossRefDocument(Document):
 
 
 CACHE_FILE = '.crossref'
+CROSSREF_URL = 'https://api.crossref.org/works/'
+
 
 def request(doi):
-    with shelve.open(CACHE_FILE) as cache:
-        url = CROSSREF_URL + quote_plus(doi)
-        print(url)
-        if doi in cache:
-            return cache[doi]
+    if not doi:
+        return False, None
 
-        from pprint import pprint
+    with shelve.open(CACHE_FILE) as cache:
+        if doi in cache:
+            return False, cache[doi]
+
+        url = CROSSREF_URL + quote_plus(doi)
 
         try:
-            data = requests.get(url).json()['message']
+            response = requests.get(url)
         except Exception as e:
-            logging.warn(f'failed to retreive {key}: {msg}')
-            return None
+            logging.warn(f'failed to retrieve {doi}: {e}')
+            return True, None
+
+        code = response.status_code
+        if code == 200:
+            try:
+                data = response.json()['message']
+            except Exception as e:
+                logging.warn(f'invalid output from {url}: {e}')
+                return True, None
+        elif code == 404:
+            logging.warn(f'failed to retrieve {doi}: resource not found')
+            data = None
+        else:
+            logging.warn(f'failed to retrieve {doi} ({code}): {response.text}')
+            return True, None
 
         cache[doi] = data
-        return data
+        return True, data
 
 
 def search_crossref(doi):
-    if not doi:
-        return None
-
-    data = request(doi)
-
-    if not data:
-        return None
-
-    return CrossRefDocument(data)
+    is_fresh, data = request(doi)  # include timeout?
+    return CrossRefDocument(data) if data else None
 
 
-def refine_crossref(originals: DocumentSet) -> DocumentSet:
-    docs = []
+def refine_crossref(originals: DocumentSet, timeout=0.5
+                    ) -> Tuple[DocumentSet, DocumentSet]:
+    original = []
+    replaced = []
 
-    for doc in tqdm(originals):
+    for doc in progress_bar(originals):
         if not isinstance(doc, CrossRefDocument):
-            new_doc = search_crossref(doc.id.doi)
+            is_fresh, data = request(doc.id.doi)
 
-            if new_doc is not None:
-                doc = new_doc
+            if is_fresh:  # Fresh request
+                sleep(timeout)
 
-        docs.append(doc)
+            if data:
+                replaced.append(CrossRefDocument(data))
+                continue
 
-    return DocumentSet(docs)
+        original.append(doc)
 
+    return replaced, original

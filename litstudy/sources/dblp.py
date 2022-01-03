@@ -40,6 +40,9 @@ class DBLPDocument(Document):
     def authors(self):
         return self._authors
 
+    def __repr__(self):
+        return f'<{self.title}>'
+
 
 class DBLPAuthor(Author):
     def __init__(self, pid, name):
@@ -70,11 +73,11 @@ def process_authors(entry, author_cache):
     if not inputs:
         return None
 
-    # Sometimes, inputs is str?
+    # Sometimes, inputs is str? (single author name)
     if isinstance(inputs, str):
         return [DBLPAuthor(None, inputs)]
 
-    # Sometimes, input is dict?
+    # Sometimes, input is dict? (single-item list)
     if isinstance(inputs, dict):
         inputs = [inputs]
 
@@ -90,10 +93,12 @@ def process_authors(entry, author_cache):
 
     return outputs
 
+
 CACHE_FILE = '.dblp'
+DBLP_URL = 'http://dblp.org/search/publ/api'
+
 
 def search_dblp(query):
-    DBLP_URL = 'http://dblp.org/search/publ/api'
     attr = dict(format='json', h=100, q=query, f=0)
     offset = 0
 
@@ -133,6 +138,5 @@ def search_dblp(query):
 
                 authors = process_authors(entry, author_cache)
                 docs.append(DBLPDocument(entry, authors))
-
 
     return DocumentSet(docs)
