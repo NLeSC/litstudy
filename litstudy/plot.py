@@ -164,5 +164,5 @@ def plot_affiliation_histogram(docs, **kwargs):
 
 
 def plot_country_histogram(docs, **kwargs):
-    default = dict(title='Countries')
+    default = dict(title='Countries', limit=25)
     return wrapper(docs, compute_country_histogram, default, **kwargs)

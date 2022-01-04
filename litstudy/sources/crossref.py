@@ -2,7 +2,7 @@ from ..common import progress_bar
 from .types import Document, Author, DocumentSet, DocumentIdentifier
 from datetime import date
 from time import sleep
-from typing import Tuple
+from typing import Tuple, Optional
 from urllib.parse import quote_plus
 import logging
 import re
@@ -123,61 +123,63 @@ CACHE_FILE = '.crossref'
 CROSSREF_URL = 'https://api.crossref.org/works/'
 
 
-def request(doi):
-    if not doi:
-        return False, None
+def search_crossref(doi: str) -> Optional[Document]:
+    """Fetch the metadata for the given DOI from CrossRef.
 
-    with shelve.open(CACHE_FILE) as cache:
-        if doi in cache:
-            return False, cache[doi]
+    :returns: The `Document` or `None` if the DOI was not available.
+    """
+    def request(doi, timeout=0.5):
+        if not doi:
+            return None
 
-        url = CROSSREF_URL + quote_plus(doi)
+        with shelve.open(CACHE_FILE) as cache:
+            if doi in cache:
+                return cache[doi]
 
-        try:
-            response = requests.get(url)
-        except Exception as e:
-            logging.warn(f'failed to retrieve {doi}: {e}')
-            return True, None
+            url = CROSSREF_URL + quote_plus(doi)
 
-        code = response.status_code
-        if code == 200:
             try:
-                data = response.json()['message']
+                response = requests.get(url)
             except Exception as e:
-                logging.warn(f'invalid output from {url}: {e}')
-                return True, None
-        elif code == 404:
-            logging.warn(f'failed to retrieve {doi}: resource not found')
-            data = None
-        else:
-            logging.warn(f'failed to retrieve {doi} ({code}): {response.text}')
-            return True, None
+                logging.warn(f'failed to retrieve {doi}: {e}')
+                return None
 
-        cache[doi] = data
-        return True, data
+            sleep(timeout)
 
+            code = response.status_code
+            if code == 200:
+                try:
+                    data = response.json()['message']
+                except Exception as e:
+                    logging.warn(f'invalid output from {url}: {e}')
+                    return None
+            elif code == 404:
+                logging.warn(f'failed to retrieve {doi}: resource not found')
+                data = None
+            else:
+                logging.warn(f'failed to retrieve {doi} ({code}): {response.text}')
+                return None
 
-def search_crossref(doi):
-    is_fresh, data = request(doi)  # include timeout?
+            cache[doi] = data
+            return data
+
+    data = request(doi)
     return CrossRefDocument(data) if data else None
 
 
-def refine_crossref(originals: DocumentSet, timeout=0.5
+def refine_crossref(docs: DocumentSet, timeout=0.5
                     ) -> Tuple[DocumentSet, DocumentSet]:
-    original = []
-    replaced = []
+    """Attempts to fetch metadata from CrossRef for each document in the given
+    set. Returns a tuple of two sets: the documents retrieved from CrossRef
+    and the remaining documents (i.e., without DOI or not found).
 
-    for doc in progress_bar(originals):
-        if not isinstance(doc, CrossRefDocument):
-            is_fresh, data = request(doc.id.doi)
+    :param timeout: Timeout in seconds between each request to throttle
+        server communication.
+    """
+    def callback(doc):
+        if isinstance(doc, CrossRefDocument):
+            return doc
 
-            if is_fresh:  # Fresh request
-                sleep(timeout)
+        return search_crossref(doc.id.doi, timeout)
 
-            if data:
-                replaced.append(CrossRefDocument(data))
-                continue
-
-        original.append(doc)
-
-    return replaced, original
+    return docs._refine_docs(callback)

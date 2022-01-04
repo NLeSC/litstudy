@@ -98,7 +98,13 @@ CACHE_FILE = '.dblp'
 DBLP_URL = 'http://dblp.org/search/publ/api'
 
 
-def search_dblp(query):
+def search_dblp(query: str, *, limit=None) -> DocumentSet:
+    """Perform the given `query` on the DBLP API and return the results
+    as a `DocumentSet`.
+
+    :param limit: The maximum number of documents to retrieve.
+    """
+
     attr = dict(format='json', h=100, q=query, f=0)
     offset = 0
 
@@ -138,5 +144,8 @@ def search_dblp(query):
 
                 authors = process_authors(entry, author_cache)
                 docs.append(DBLPDocument(entry, authors))
+
+            if limit is not None and len(docs) >= limit:
+                break
 
     return DocumentSet(docs)

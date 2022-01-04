@@ -1,5 +1,6 @@
 from .types import Document, DocumentSet, DocumentIdentifier, Author
 from bibtexparser.customization import convert_to_unicode
+from bibtexparser.latexenc import latex_to_unicode
 import bibtexparser
 from datetime import date
 import re
@@ -19,12 +20,41 @@ MONTHS = dict(
         dec=12, december=12,
 )
 
+def find_doi(entry):
+    def extract(val):
+        if isinstance(val, str):
+            # The following regex is recommended by crossref to detect DOIs
+            # http://crossref.org/blog/dois-and-matching-regular-expressions/
+            #   /^10.\d{4,9}/[-._;()/:A-Z0-9]+$/i
+            pattern = '10[.][0-9]{4,9}/[-._;()/:a-zA-Z0-9]{5,}'
+
+            if match := re.search(pattern, val):
+                return match[0]
+
+        return None
+
+    doi = None
+    for key in ['doi', 'link', 'url', 'howpublished']:
+        if key in entry:
+            if doi := extract(entry[key]):
+                break
+
+    if not doi:
+        return None
+
+    # Remove URL prefix
+    prefix = 'https://doi.org/'
+    if doi.startswith(prefix):
+        doi = doi[len(prefix):]
+
+    return doi
+
 
 class BibDocument(Document):
     def __init__(self, entry):
-        title = entry.get('title')
+        title = entry['title']
         attr = dict(
-                doi=entry.get('doi', entry.get('DOI')),
+                doi=find_doi(entry),
                 isbn=entry.get('isbn'),
                 pubmed=entry.get('pmid'),
         )
@@ -43,7 +73,7 @@ class BibDocument(Document):
     @property
     def authors(self):
         content = self.entry.get('author')
-        if content is None:
+        if not content:
             return None
 
         content = re.sub('[ \r\n\t]+', ' ', content)
@@ -56,7 +86,7 @@ class BibDocument(Document):
         if names[-1] == 'others':
             names = names[:-1]
 
-        return [BibAuthor(name.strip('{}"')) for name in names]
+        return [BibAuthor(name) for name in names]
 
     @property
     def publisher(self):
@@ -128,9 +158,25 @@ class BibAuthor(Author):
         return f'<{self._name}>'
 
 
-def load_bibtex(path):
+def load_bibtex(path: str) -> DocumentSet:
+    """Load the bibtex file at the given `path` as a `DocumentSet`.
+    """
+    def decode(entry):
+        if isinstance(entry, list):
+            return [decode(e) for e in entry]
+        elif isinstance(entry, dict):
+            return dict((k, decode(v)) for k, v in entry.items())
+        else:
+            # TODO: latex_to_unicode sometimes fails with exception. I do
+            # not understand why, but let's just sweep it under the rug
+            # for now ok? Great.
+            try:
+                return latex_to_unicode(entry)
+            except Exception:
+                return entry
+
     parser = bibtexparser.bparser.BibTexParser(common_strings=True)
-    # parser.customization = convert_to_unicode
+    parser.customization = decode
 
     with open(path) as f:
         data = bibtexparser.load(f, parser=parser)

@@ -1,57 +1,120 @@
+from __future__ import annotations
 from abc import ABC, abstractmethod
 from datetime import date
 from typing import Optional, List
 import random
-from ..common import fuzzy_match, canonical
+import pandas as pd
+from ..common import fuzzy_match, canonical, progress_bar
 
 
 class DocumentSet:
-    def __init__(self, docs):
-        self.docs = docs
-        """ List of documents as `Document` objects"""
+    def __init__(self, docs, data=None):
+        if data is None:
+            data = pd.DataFrame(index=range(len(docs)))
+        else:
+            data = pd.DataFrame(data)
 
-    def filter(self, predicate):
+        assert len(data) == len(docs)
+        self.data = data
+        self.docs = docs
+
+    def _refine_docs(self, callback):
+        flags = []
+        new_docs = []
+        old_docs = []
+
+        for i, doc in enumerate(progress_bar(self.docs)):
+            new_doc = callback(doc)
+            flags.append(new_doc is not None)
+
+            if new_doc is not None:
+                new_docs.append(new_doc)
+            else:
+                old_docs.append(doc)
+
+        new_data = self.data.iloc[flags]
+        old_data = self.data.iloc[[not f for f in flags]]
+
+        return DocumentSet(new_docs, new_data), DocumentSet(old_docs, old_data)
+
+    def add_column(self, name: str, values) -> DocumentSet:
+        assert len(values) == len(self.docs)
+        data = self.data.copy(deep=False)
+        data[name] = values
+        return DocumentSet(self.docs, data)
+
+    def remove_column(self, name: str) -> DocumentSet:
+        data = self.data.copy(deep=False)
+        data.drop(name)
+        return DocumentSet(self.docs, data)
+
+    def filter(self, predicate) -> DocumentSet:
+        return self.filter_meta(lambda doc, _: predicate(doc))
+
+    def filter_meta(self, predicate) -> DocumentSet:
         """Returns a new `DocumentSet` which contains only the documents for
         which the given predicate returned true."""
-        return DocumentSet([d for d in self.docs if predicate(d)])
+        indices = []
 
-    def difference(self, other):
+        for doc, record in zip(self.docs, self.data.itertuples()):
+            if predicate(doc, record):
+                indices.append(record.Index)
+
+        return self.select(indices)
+
+    def select(self, indices) -> DocumentSet:
+        data = self.data.iloc[indices]
+        docs = [self.docs[i] for i in data.index]
+        data = data.reset_index(drop=True)
+        return DocumentSet(docs, data)
+
+    def difference(self, other: DocumentSet) -> DocumentSet:
         haystack = [d.id for d in other]
-        result = []
+        indices = []
 
-        for doc in self.docs:
+        for i, doc in enumerate(self.docs):
             needle = doc.id
-            if not any(needle.matches(i) for i in haystack):
-                result.append(doc)
+            if not any(needle.matches(x) for x in haystack):
+                indices.append(i)
 
-        return DocumentSet(result)
+        return self.select(indices)
 
-    def intersect(self, other):
+    def intersect(self, other: DocumentSet) -> DocumentSet:
         haystack = [d.id for d in other]
-        result = []
+        indices = []
 
-        for doc in self.docs:
+        for i, doc in enumerate(self.docs):
             needle = doc.id
-            if any(needle.matches(i) for i in haystack):
-                result.append(doc)
+            if any(needle.matches(x) for x in haystack):
+                indices.append(i)
 
-        return DocumentSet(result)
+        return self.select(indices)
 
-    def union(self, other):
+    def concat(self, other: DocumentSet) -> DocumentSet:
+        # TODO: We need a better way to deal to handle the case where
+        # the columns are not equal in some way.
+        data = pd.concat([self.data, other.data])
+
+        docs = self.docs + other.docs
+        return DocumentSet(docs, data)
+
+    def union(self, other: DocumentSet) -> DocumentSet:
+        n = len(self)
+        indices = list(range(n))
         haystack = [d.id for d in self]
-        result = self.docs
 
-        for doc in other.docs:
+        for i, doc in enumerate(other.docs):
             needle = doc.id
-            if not any(needle.matches(i) for i in haystack):
-                result.append(doc)
 
-        return DocumentSet(result)
+            if not any(needle.matches(x) for x in haystack):
+                indices.append(n + i)
 
-    def unique(self):
-        result = []
+        return self.concat(other).select(indices)
 
-        for doc in self.docs:
+    def unique(self) -> DocumentSet:
+        indices = []
+
+        for i, doc in enumerate(self.docs):
             found = False
             needle = doc.id
 
@@ -62,18 +125,20 @@ class DocumentSet:
                     break
 
             if not found:
-                result.append(doc)
+                indices.append(i)
 
-        return DocumentSet(result)
+        return self.select(indices)
 
-    def sample(self, n, seed=0):
-        docs = self.docs
+    def sample(self, n, seed=0) -> DocumentSet:
+        if len(self) <= n:
+            return self
 
-        if len(docs) > n:
-            random.seed(seed)
-            docs = random.sample(docs, n)
+        indices = random.sample(len(self), n)
+        indices.sort()
+        return self.select(indices)
 
-        return DocumentSet(docs)
+    def itertuples(self):
+        return zip(self.docs, self.data.itertuples())
 
     def __or__(self, other):
         return self.union(other)
@@ -81,12 +146,22 @@ class DocumentSet:
     def __and__(self, other):
         return self.intersect(other)
 
+    def __add__(self, other):
+        return self.concat(other)
+
+    def __sub__(self, other):
+        return self.difference(other)
+
     def __len__(self):
         return len(self.docs)
 
     def __getitem__(self, key):
-        result = self.docs[key]
-        return DocumentSet(result) if isinstance(result, list) else result
+        if isinstance(key, str):
+            return self.data[key]
+        elif isinstance(key, int):
+            return self.docs[key]
+        else:
+            return self.select(key)
 
     def __iter__(self):
         return iter(self.docs)
@@ -139,7 +214,10 @@ class DocumentIdentifier:
                     return False
                 n += 1
 
-        return n > 0 or fuzzy_match(self._title, other._title)
+        if n > 0:
+            return True
+
+        return fuzzy_match(self._title, other._title)
 
     def merge(self, other) -> 'DocumentIdentifier':
         attr = dict()

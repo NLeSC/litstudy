@@ -148,6 +148,11 @@ class ScopusDocument(Document):
 
 
 def search_scopus(query: str, *, limit: int = None) -> DocumentSet:
+    ''' Submit the given query to the Scopus API.
+
+    :param limit: Restrict results the first `limit` documents.
+    '''
+
     search = ScopusSearch(query, view='STANDARD')
     eids = list(search.get_eids())
     docs = []
@@ -164,44 +169,45 @@ def search_scopus(query: str, *, limit: int = None) -> DocumentSet:
     return DocumentSet(docs)
 
 
-def refine_by_id(id: DocumentIdentifier):
-    doi = id.doi
-    if doi:
-        try:
-            return ScopusDocument.from_doi(doi)
-        except Exception as e:
-            logging.warn(f'no document found for DOI {doi}: {e}')
-            return None
-
-    title = canonical(id.title)
-    if len(title) > 10:
-        query = f'TITLE({title})'
-        response = ScopusSearch(query, view='STANDARD', download=False)
-        nresults = response.get_results_size()
-
-        if nresults > 0 and nresults < 10:
-            response = ScopusSearch(query, view='STANDARD')
-
-            for record in response.results or []:
-                if canonical(record.title) == title:
-                    return ScopusDocument.from_eid(record.eid)
-
-    return None
+def refine_scopus(docs: DocumentSet, *, search_title=True) -> Tuple[DocumentSet, DocumentSet]:
+    '''Attempt to fetch Scopus metadata for each document in the given
+    set. Returns a tuple containing two sets: the documents available on
+    Scopus and the remaining documents not found on Scopus.
 
 
-def refine_scopus(originals: DocumentSet) -> Tuple[DocumentSet, DocumentSet]:
-    original = []
-    replaced = []
+    Documents are retrieved based on their identifier (DOI, Pubmed ID, or
+    Scopus ID). Documents without a unique identifier are retrieved by
+    performing a fuzzy search based on their title. This is not ideal
+    and can lead to false positives (i.e., another document is found having
+    the same title), thus it can be disabled if necessary.
 
-    for doc in progress_bar(originals):
-        new_doc = None
+    :param search_title: Flag to toggle searching by title.'''
+    def callback(doc):
+        id = doc.id
+        if isinstance(doc, ScopusDocument):
+            return doc
 
-        if not isinstance(doc, ScopusDocument):
-            new_doc = refine_by_id(doc.id)
+        if doi := id.doi:
+            try:
+                return ScopusDocument.from_doi(doi)
+            except Exception as e:
+                logging.warn(f'no document found for DOI {doi}: {e}')
+                return None
 
-        if new_doc is not None:
-            replaced.append(new_doc)
-        else:
-            original.append(doc)
+        title = canonical(id.title)
+        if len(title) > 10 and search_title:
+            query = f'TITLE({title})'
+            response = ScopusSearch(query, view='STANDARD', download=False)
+            nresults = response.get_results_size()
 
-    return DocumentSet(replaced), DocumentSet(original)
+            if nresults > 0 and nresults < 10:
+                response = ScopusSearch(query, view='STANDARD')
+
+                for record in response.results or []:
+                    if canonical(record.title) == title:
+                        return ScopusDocument.from_eid(record.eid)
+
+        return None
+
+
+    return docs._refine_docs(callback)

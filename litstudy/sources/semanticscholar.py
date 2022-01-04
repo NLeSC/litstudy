@@ -1,16 +1,10 @@
 from .types import Document, Author, DocumentSet, DocumentIdentifier
-from typing import Tuple
+from typing import Tuple, Optional
 from time import sleep
 from urllib.parse import quote_plus
 import logging
 import requests
 import shelve
-
-try:
-    from tqdm import tqdm
-except Exception:
-    def tqdm(it):
-        return it
 
 
 def extract_id(item):
@@ -125,7 +119,21 @@ def request(key, timeout=DEFAULT_TIMEOUT):
             return None
 
 
-def search_semanticscholar(key):
+def search_semanticscholar(key: set) -> Optional[Document]:
+    """Fetch SemanticScholar metadata for the given key. The key can be
+    one of the following (`API reference <https://www.semanticscholar.org/product/api>`_):
+
+    * DOI
+    * S2 paper ID
+    * ArXiv ID (example: `arXiv:1705.10311`)
+    * MAG ID (example: `MAG:112218234`)
+    * ACL ID (example: `ACL:W12-3903`)
+    * PubMed ID (example: `PMID:19872477`)
+    * Corpus ID (example: `CorpusID:37220927`)
+
+    :returns: The `Document` if it was found and `None` otherwise.
+    """
+
     if isinstance(key, DocumentIdentifier):
         data = None
         if data is None and key.s2id:
@@ -148,19 +156,17 @@ def search_semanticscholar(key):
     return ScholarDocument(data)
 
 
-def refine_semanticscholar(originals: DocumentSet
+def refine_semanticscholar(docs: DocumentSet
                            ) -> Tuple[DocumentSet, DocumentSet]:
-    original = []
-    replaced = []
+    """Attempt to fetch SemanticScholar metadata for each document in the
+    given set based on their DOIs. Returns a tuple containing two sets: the
+    documents available on SemanticScholar and the remaining documents that
+    were not found or do not have a DOI.
+    """
+    def callback(doc):
+        if isinstance(doc, ScholarDocument):
+            return doc
 
-    for doc in tqdm(originals):
-        if not isinstance(doc, ScholarDocument):
-            new_doc = search_semanticscholar(doc.id)
+        return search_semantic_scholar(doc.id)
 
-            if new_doc is not None:
-                replaced.append(new_doc)
-                continue
-
-        original.append(doc)
-
-    return DocumentSet(replaced), DocumentSet(original)
+    return docs._refine_docs(callback)

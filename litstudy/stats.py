@@ -63,11 +63,11 @@ def histogram(docs, fun, keys=None, sort_by_key=False, groups=None,
 
 
 def compute_year_histogram(docs, **kwargs):
+    """ Returns data frame """
     years = [doc.publication_year for doc in docs]
     min_year = min(year for year in years if year)
     max_year = max(year for year in years if year)
     keys = list(range(min_year, max_year + 1))
-    print(keys)
 
     def extract(doc):
         y = doc.publication_year
@@ -148,7 +148,7 @@ def compute_affiliation_histogram(docs, mapper=None, **kwargs):
 
         return result
 
-    return plot_histogram(docs, extract, **kwargs)
+    return histogram(docs, extract, **kwargs)
 
 
 def compute_country_histogram(docs, **kwargs):

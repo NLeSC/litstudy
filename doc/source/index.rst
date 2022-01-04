@@ -10,36 +10,11 @@ Welcome to litstudy's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   Introduction <self>
+   api/index
 
-litstudy.stats
-------------------------------------------
-.. automodule:: litstudy.stats
-  :members:
 
-litstudy.sources
-------------------------------------------
-.. automodule:: litstudy.sources
-  :members:
 
-litstudy.common
-------------------------------------------
-.. automodule:: litstudy.common
-  :members:
-
-litstudy.plot
-------------------------------------------
-.. automodule:: litstudy.plot
-  :members:
-
-litstudy.nlp
-------------------------------------------
-.. automodule:: litstudy.nlp
-  :members:
-
-litstudy.network
-------------------------------------------
-.. automodule:: litstudy.network
-  :members:
 
 
 
