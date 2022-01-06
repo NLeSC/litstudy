@@ -1,8 +1,7 @@
-from .types import Document, DocumentSet, DocumentIdentifier, Author
-from datetime import date
-import re
+from ..types import Document, DocumentSet, DocumentIdentifier, Author
 import requests
 import shelve
+import logging
 
 
 class DBLPDocument(Document):
@@ -127,7 +126,7 @@ def search_dblp(query: str, *, limit=None) -> DocumentSet:
 
             status = data.get('status').get('text')
             if status != 'OK':
-                logger.warning(f'expecting status OK, got status {status}')
+                logging.warning(f'expecting status OK, got status {status}')
                 break
 
             if 'hits' not in data or 'hit' not in data['hits']:

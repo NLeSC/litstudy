@@ -2,9 +2,11 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from datetime import date
 from typing import Optional, List
-import random
 import pandas as pd
-from ..common import fuzzy_match, canonical, progress_bar
+import random
+import re
+
+from .common import fuzzy_match, canonical, progress_bar
 
 
 class DocumentSet:
@@ -48,12 +50,10 @@ class DocumentSet:
         data.drop(name)
         return DocumentSet(self.docs, data)
 
-    def filter(self, predicate) -> DocumentSet:
+    def filter_docs(self, predicate) -> DocumentSet:
         return self.filter_meta(lambda doc, _: predicate(doc))
 
-    def filter_meta(self, predicate) -> DocumentSet:
-        """Returns a new `DocumentSet` which contains only the documents for
-        which the given predicate returned true."""
+    def filter(self, predicate) -> DocumentSet:
         indices = []
 
         for doc, record in zip(self.docs, self.data.itertuples()):
@@ -118,7 +118,7 @@ class DocumentSet:
             found = False
             needle = doc.id
 
-            for other in result:
+            for other in self:
                 if other.id.matches(needle):
                     other._identifier = other._identifier.merge(needle)
                     found = True
@@ -304,6 +304,17 @@ class Document(ABC):
     @property
     def citations(self) -> Optional[List[DocumentIdentifier]]:
         return None
+
+    def mentions(self, term):
+        pattern = r'(^|\s)' + re.escape(term) + r'($|\s)'
+        flags = re.IGNORECASE
+        keywords = self.keywords or []
+
+        for text in [self.title, self.abstract] + keywords:
+            if text and re.find(pattern, text, flags=flags):
+                return True
+
+        return False
 
 
 class Affiliation(ABC):

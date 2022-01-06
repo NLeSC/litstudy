@@ -1,5 +1,3 @@
-from ..common import progress_bar
-from .types import Document, Author, DocumentSet, DocumentIdentifier
 from datetime import date
 from time import sleep
 from typing import Tuple, Optional
@@ -8,6 +6,8 @@ import logging
 import re
 import requests
 import shelve
+
+from ..types import Document, Author, DocumentSet, DocumentIdentifier
 
 
 class CrossRefAuthor(Author):
@@ -69,14 +69,14 @@ class CrossRefDocument(Document):
             year = int(parts[0])
             month = int(parts[1])
             return date(year, month, 1)
-        except Exception as e:
+        except Exception:
             return None
 
     @property
     def publication_year(self):
         try:
             return int(self.entry['published-print']['date-parts'][0])
-        except Exception as e:
+        except Exception:
             return None
 
     @property
@@ -95,7 +95,7 @@ class CrossRefDocument(Document):
     def citation_count(self):
         try:
             return int(self.entry['is-referenced-by-count'])
-        except Exception as e:
+        except Exception:
             return None
 
     @property
@@ -157,7 +157,8 @@ def search_crossref(doi: str) -> Optional[Document]:
                 logging.warn(f'failed to retrieve {doi}: resource not found')
                 data = None
             else:
-                logging.warn(f'failed to retrieve {doi} ({code}): {response.text}')
+                logging.warn(
+                        f'failed to retrieve {doi} ({code}): {response.text}')
                 return None
 
             cache[doi] = data

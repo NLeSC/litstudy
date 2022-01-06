@@ -1,4 +1,4 @@
-from .types import Document, DocumentSet, DocumentIdentifier, Author
+from ..types import Document, DocumentSet, DocumentIdentifier, Author
 from bibtexparser.customization import convert_to_unicode
 from bibtexparser.latexenc import latex_to_unicode
 import bibtexparser
@@ -19,6 +19,7 @@ MONTHS = dict(
         nov=11, november=11,
         dec=12, december=12,
 )
+
 
 def find_doi(entry):
     def extract(val):

@@ -40,8 +40,6 @@ def canonical(key, aggresive=True):
         if not token or token[0].isdigit():
             continue
 
-        original = token
-
         if aggresive and (token in STOPWORDS or len(token) <= 1):
             continue
 

@@ -1,10 +1,11 @@
-from .types import Document, Author, DocumentSet, DocumentIdentifier
-from typing import Tuple, Optional
 from time import sleep
+from typing import Tuple, Optional
 from urllib.parse import quote_plus
 import logging
 import requests
 import shelve
+
+from ..types import Document, Author, DocumentSet, DocumentIdentifier
 
 
 def extract_id(item):
@@ -26,7 +27,7 @@ def extract_ids(items):
     return list(filter(None, map(extract_id, items)))
 
 
-class ScholarAuthor(Document):
+class ScholarAuthor(Author):
     def __init__(self, entry):
         self.entry = entry
 
@@ -35,10 +36,6 @@ class ScholarAuthor(Document):
 
     @property
     def orcid(self):
-        return None
-
-    @property
-    def affiliations(self) -> 'Optional[list[Affiliation]]':
         return None
 
 
@@ -107,7 +104,7 @@ def request(key, timeout=DEFAULT_TIMEOUT):
             sleep(timeout)
             data = requests.get(url).json()
         except Exception as e:
-            logging.warn(f'failed to retreive {key}: {msg}')
+            logging.warn(f'failed to retreive {key}: {e}')
             return None
 
         if 'paperId' in data:
@@ -121,15 +118,16 @@ def request(key, timeout=DEFAULT_TIMEOUT):
 
 def search_semanticscholar(key: set) -> Optional[Document]:
     """Fetch SemanticScholar metadata for the given key. The key can be
-    one of the following (`API reference <https://www.semanticscholar.org/product/api>`_):
+    one of the following (see `API reference
+    <https://www.semanticscholar.org/product/api>`_):
 
     * DOI
     * S2 paper ID
-    * ArXiv ID (example: `arXiv:1705.10311`)
-    * MAG ID (example: `MAG:112218234`)
-    * ACL ID (example: `ACL:W12-3903`)
-    * PubMed ID (example: `PMID:19872477`)
-    * Corpus ID (example: `CorpusID:37220927`)
+    * ArXiv ID (example format: `arXiv:1705.10311`)
+    * MAG ID (example format: `MAG:112218234`)
+    * ACL ID (example format: `ACL:W12-3903`)
+    * PubMed ID (example format: `PMID:19872477`)
+    * Corpus ID (example format: `CorpusID:37220927`)
 
     :returns: The `Document` if it was found and `None` otherwise.
     """
@@ -167,6 +165,6 @@ def refine_semanticscholar(docs: DocumentSet
         if isinstance(doc, ScholarDocument):
             return doc
 
-        return search_semantic_scholar(doc.id)
+        return search_semanticscholar(doc.id)
 
     return docs._refine_docs(callback)

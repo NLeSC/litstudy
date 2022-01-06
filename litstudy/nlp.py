@@ -1,16 +1,14 @@
-import gensim
-import numpy as np
-import sklearn.feature_extraction
-import sklearn.decomposition
-import matplotlib.pyplot as plt
-import wordcloud
-import math
-import seaborn
-# from .plot import plot_bars
-from functools import partial
 from collections import defaultdict
-from .stopwords import STOPWORDS
 from gensim.matutils import corpus2dense
+import gensim
+import math
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn
+import wordcloud
+
+from .plot import plot_histogram
+from .stopwords import STOPWORDS
 
 
 def filter_tokens(texts, predicate):
@@ -41,7 +39,7 @@ def preprocess_merge_bigrams(texts, bigrams):
         prev = None
         new_text = []
 
-        for current in tokens:
+        for current in text:
             replacement = bigrams.get((prev, current))
 
             if replacement is not None:
@@ -171,7 +169,7 @@ def plot_word_distribution(corpus, top=25, **kwargs):
     keys = [dic[i] for i in best]
     values = [counter[i] for i in best]
 
-    return plot_bars(keys, values, relative_to=n, **kwargs)
+    return plot_histogram(keys, values, relative_to=n, **kwargs)
 
 
 class TopicModel:
@@ -212,7 +210,7 @@ def train_nmf_model(corpus, num_topics, seed=0, max_iter=500):
     return TopicModel(dic, doc2topic, topic2token)
 
 
-def train_lda_model(corpus, num_topics, seed=0):
+def train_lda_model(corpus, num_topics, seed=0, **kwargs):
     from gensim.models.lda import LdaModel
 
     dic = corpus.dictionary
@@ -240,7 +238,7 @@ def plot_topic_clouds(model, fig=None, ncols=3, **kwargs):
 
 def plot_topic_cloud(model, topic_id, ax=None, **kwargs):
     if ax is None:
-        ax = plot.gca()
+        ax = plt.gca()
 
     ax.set_xticks([])
     ax.set_yticks([])

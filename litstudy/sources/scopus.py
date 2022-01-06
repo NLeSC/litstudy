@@ -1,5 +1,5 @@
 from ..common import progress_bar, canonical
-from .types import Document, DocumentSet, DocumentIdentifier, Author, \
+from ..types import Document, DocumentSet, DocumentIdentifier, Author, \
                    Affiliation
 from collections import defaultdict
 from datetime import date
@@ -169,7 +169,8 @@ def search_scopus(query: str, *, limit: int = None) -> DocumentSet:
     return DocumentSet(docs)
 
 
-def refine_scopus(docs: DocumentSet, *, search_title=True) -> Tuple[DocumentSet, DocumentSet]:
+def refine_scopus(docs: DocumentSet, *, search_title=True
+                  ) -> Tuple[DocumentSet, DocumentSet]:
     '''Attempt to fetch Scopus metadata for each document in the given
     set. Returns a tuple containing two sets: the documents available on
     Scopus and the remaining documents not found on Scopus.
@@ -208,6 +209,5 @@ def refine_scopus(docs: DocumentSet, *, search_title=True) -> Tuple[DocumentSet,
                         return ScopusDocument.from_eid(record.eid)
 
         return None
-
 
     return docs._refine_docs(callback)

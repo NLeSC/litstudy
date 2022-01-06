@@ -1,17 +1,21 @@
 from .common import FuzzyMatcher
 from collections import defaultdict, OrderedDict
-import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
-import seaborn as sns
 
 
 def histogram(docs, fun, keys=None, sort_by_key=False, groups=None,
               limit=None):
-    if groups is None:
+    if isinstance(groups, list):
+        data = dict((v, docs.data.eval(v)) for v in groups)
+        groups = pd.DataFrame(data)
+    elif isinstance(groups, dict):
+        data = dict((name, docs.data.eval(expr))
+                    for name, expr in groups.items())
+        groups = pd.DataFrame(data)
+    elif groups is None:
         groups = pd.DataFrame(index=range(len(docs)))
-    else:
-        groups = pd.DataFrame(groups)
+    elif isinstance(groups, pd.DataFrame):
+        pass
 
     assert len(groups) == len(docs)
     totals = defaultdict(lambda: 0)
