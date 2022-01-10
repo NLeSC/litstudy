@@ -5,6 +5,7 @@ import logging
 import requests
 import shelve
 
+from ..common import progress_bar
 from ..types import Document, Author, DocumentSet, DocumentIdentifier
 
 
@@ -85,38 +86,55 @@ class ScholarDocument(Document):
 
     @staticmethod
     def load(id):
-        return search_semanticscholar(id)
+        return fetch_semanticscholar(id)
 
 
-S2_URL = 'http://api.semanticscholar.org/v1/paper/'
+S2_PAPER_URL = 'http://api.semanticscholar.org/v1/paper/'
+S2_QUERY_URL = 'https://api.semanticscholar.org/graph/v1/paper/search'
 CACHE_FILE = '.semantischolar'
-DEFAULT_TIMEOUT = 0.5
+DEFAULT_TIMEOUT = 3.05  # 100 requests per 5 minutes
+
+def request_results(query, offset, cache, timeout=DEFAULT_TIMEOUT):
+    cache_key = f'results={query};{offset}'
+    if cache_key in cache:
+        return cache[cache_key]
+
+    url = S2_QUERY_URL
+    params = dict(offset=offset, query=query)
+    response = requests.get(url, params=params)
+    data = response.json()
+
+    if 'error' in data:
+        raise Exception(f'error while fetching results: {data["error"]}')
+
+    cache[cache_key] = data
+    return data
 
 
-def request(key, timeout=DEFAULT_TIMEOUT):
-    with shelve.open(CACHE_FILE) as cache:
-        if key in cache:
-            return cache[key]
+def request_paper(key, cache, timeout=DEFAULT_TIMEOUT):
+    cache_key = f'paper={key}'
+    if cache_key in cache:
+        return cache[cache_key]
 
-        url = S2_URL + quote_plus(key)
+    url = S2_PAPER_URL + quote_plus(key)
 
-        try:
-            sleep(timeout)
-            data = requests.get(url).json()
-        except Exception as e:
-            logging.warn(f'failed to retreive {key}: {e}')
-            return None
+    try:
+        sleep(timeout)
+        data = requests.get(url).json()
+    except Exception as e:
+        logging.warn(f'failed to retreive {key}: {e}')
+        return None
 
-        if 'paperId' in data:
-            cache[key] = data
-            return data
-        else:
-            msg = data.get('error') or data.get('message') or 'unknown error'
-            logging.warn(f'failed to retreive {key}: {msg}')
-            return None
+    if 'paperId' in data:
+        cache[cache_key] = data
+        return data
+    else:
+        msg = data.get('error') or data.get('message') or 'unknown error'
+        logging.warn(f'failed to retreive {key}: {msg}')
+        return None
 
 
-def search_semanticscholar(key: set) -> Optional[Document]:
+def fetch_semanticscholar(key: set) -> Optional[Document]:
     """Fetch SemanticScholar metadata for the given key. The key can be
     one of the following (see `API reference
     <https://www.semanticscholar.org/product/api>`_):
@@ -132,21 +150,25 @@ def search_semanticscholar(key: set) -> Optional[Document]:
     :returns: The `Document` if it was found and `None` otherwise.
     """
 
-    if isinstance(key, DocumentIdentifier):
-        data = None
-        if data is None and key.s2id:
-            data = request(key.s2id)
+    if key is None:
+        return None
 
-        if data is None and key.doi:
-            data = request(key.doi)
+    with shelve.open(CACHE_FILE) as cache:
+        if isinstance(key, DocumentIdentifier):
+            data = None
+            if data is None and key.s2id:
+                data = request_paper(key.s2id, cache)
 
-        if data is None and key.pubmed:
-            data = request(f'PMID:{key.pubmed}')
+            if data is None and key.doi:
+                data = request_paper(key.doi, cache)
 
-        if data is None and key.arxivid:
-            data = request(f'arXiv:{key.arxivid}')
-    else:
-        data = request(key)
+            if data is None and key.pubmed:
+                data = request_paper(f'PMID:{key.pubmed}', cache)
+
+            if data is None and key.arxivid:
+                data = request_paper(f'arXiv:{key.arxivid}', cache)
+        else:
+            data = request_paper(key, cache)
 
     if data is None:
         return None
@@ -165,6 +187,41 @@ def refine_semanticscholar(docs: DocumentSet
         if isinstance(doc, ScholarDocument):
             return doc
 
-        return search_semanticscholar(doc.id)
+        return fetch_semanticscholar(doc.id)
 
     return docs._refine_docs(callback)
+
+
+def search_semanticscholar(query: str, *, limit: int = None) -> DocumentSet:
+    if not query:
+        raise Exception('invalid query: {query}')
+
+    docs = []
+
+    with shelve.open(CACHE_FILE) as cache:
+        offset = 0
+        paper_ids = []
+
+        while True:
+            response = request_results(query, offset, cache)
+            records = response['data']
+            if not records:
+                break
+
+            offset += len(records)
+
+            for record in records:
+                paper_ids.append(record['paperId'])
+
+            if limit is not None and len(paper_ids) > limit:
+                break
+
+        for paper_id in progress_bar(paper_ids):
+            doc = request_paper(paper_id, cache)
+
+            if doc:
+                docs.append(doc)
+            else:
+                logging.warn(f'could not find paper id {paper_id}')
+
+    return docs

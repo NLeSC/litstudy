@@ -65,6 +65,7 @@ class RISAuthor(Author):
 
 
 def load_ris_file(path: str) -> DocumentSet:
+    """ """
     docs = []
 
     with open(path, newline='') as f:

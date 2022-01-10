@@ -116,14 +116,14 @@ class CrossRefDocument(Document):
 
     @staticmethod
     def load(doi):
-        return search_crossref(doi)
+        return fetch_crossref(doi)
 
 
 CACHE_FILE = '.crossref'
 CROSSREF_URL = 'https://api.crossref.org/works/'
 
 
-def search_crossref(doi: str) -> Optional[Document]:
+def fetch_crossref(doi: str) -> Optional[Document]:
     """Fetch the metadata for the given DOI from CrossRef.
 
     :returns: The `Document` or `None` if the DOI was not available.
@@ -181,6 +181,6 @@ def refine_crossref(docs: DocumentSet, timeout=0.5
         if isinstance(doc, CrossRefDocument):
             return doc
 
-        return search_crossref(doc.id.doi, timeout)
+        return fetch_crossref(doc.id.doi, timeout)
 
     return docs._refine_docs(callback)
