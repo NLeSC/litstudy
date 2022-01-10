@@ -14,14 +14,16 @@ def plot_network(g: nx.Graph, *, height='1000px', smooth_edges=None,
     functions in this module. Plotting is done using the `pyvis` library.
 
 
-    :params height: Height of the plot.
-    :params smooth_edges: Enables curved ('smooth') edges. Looks nice but is
-        heavy on performance.
-    :min_node_size: The radius of the smallest node.
-    :max_node_size: The radius of the largest node.
-    :largest_component: Only plot the largest connected component of the graph.
+    :param height: Height of the plot.
+    :param smooth_edges: Enables curved ('smooth') edges. Looks nice but is
+                         heavy on performance.
+    :param min_node_size: The radius of the smallest node.
+    :param max_node_size: The radius of the largest node.
+    :param largest_component: Only plot the largest connected component of the graph.
     """
-    g.remove_nodes_from(list(nx.isolates(g)))
+    if isolates := list(nx.isolates(g)):
+        g = g.copy()
+        g.remove_nodes_from(isolates)
 
     if len(g.edges) == 0:
         print('no edges given')
