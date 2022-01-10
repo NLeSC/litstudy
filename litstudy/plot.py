@@ -128,41 +128,49 @@ def wrapper(docs, fun, default, **kwargs):
 
 
 def plot_year_histogram(docs, **kwargs):
+    """ """
     default = dict(title='Year of publications')
     return wrapper(docs, compute_year_histogram, default, **kwargs)
 
 
 def plot_author_histogram(docs, **kwargs):
+    """ """
     default = dict(title='Authors', limit=25)
     return wrapper(docs, compute_author_histogram, default, **kwargs)
 
 
 def plot_number_authors_histogram(docs, **kwargs):
+    """ """
     default = dict(title='No. of authors')
     return wrapper(docs, compute_number_authors_histogram, default, **kwargs)
 
 
 def plot_author_affiliation_histogram(docs, **kwargs):
+    """ """
     default = dict(title='Author + Affiliation', limit=25)
     return wrapper(docs, compute_author_affiliation_histogram, default,
                    **kwargs)
 
 
 def plot_language_histogram(docs, **kwargs):
+    """ """
     default = dict(title='Language')
     return wrapper(docs, compute_language_histogram, default, **kwargs)
 
 
 def plot_source_histogram(docs, **kwargs):
+    """ """
     default = dict(title='Publication source', limit=25)
     return wrapper(docs, compute_source_histogram, default, **kwargs)
 
 
 def plot_affiliation_histogram(docs, **kwargs):
+    """ """
     default = dict(title='Affiliations', limit=25)
     return wrapper(docs, compute_affiliation_histogram, default, **kwargs)
 
 
 def plot_country_histogram(docs, **kwargs):
+    """ """
     default = dict(title='Countries', limit=25)
     return wrapper(docs, compute_country_histogram, default, **kwargs)

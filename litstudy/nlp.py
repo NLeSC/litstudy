@@ -9,6 +9,7 @@ import wordcloud
 
 from .plot import plot_histogram
 from .stopwords import STOPWORDS
+from .types import DocumentSet
 
 
 def filter_tokens(texts, predicate):
@@ -101,6 +102,9 @@ def preprocess_smart_stemming(texts):
 
 
 class Corpus:
+    """ Contains the word-frequency vectors for a set of documents. See
+        `build_corpus` for more information.
+    """
     def __init__(self, docs, filters, max_tokens):
         corpus = []
 
@@ -120,14 +124,49 @@ class Corpus:
         dic = gensim.corpora.Dictionary(corpus)
         dic.filter_extremes(keep_n=max_tokens)
 
-        self.corpus = corpus
         self.dictionary = dic
+        """ The dictionary that maps indices to words
+            (`gensim.corpora.Dictionary`).
+        """
+
         self.frequencies = [dic.doc2bow(x) for x in corpus]
+        """ List of word frequency vectors. Each vector corresponds to one
+        document and consists of `(word_index, frequency)` tuples.
+        """
 
 
-def build_corpus(docs, *, remove_words=None, min_word_length=3, min_docs=5,
-                 max_docs_ratio=0.75, max_tokens=5000, replace_words=None,
-                 custom_bigrams=None, ngram_threshold=None):
+def build_corpus(docs: DocumentSet, *, remove_words=None, min_word_length=3,
+                 min_docs=5, max_docs_ratio=0.75, max_tokens=5000,
+                 replace_words=None, custom_bigrams=None, ngram_threshold=None
+                 ) -> Corpus:
+    """ Build a `Corpus` object.
+
+    This function takes the words from the title/abstract of the given
+    documents, preprocesses the tokens, and returns a corpus consisting of a
+    word frequency vector for each document. This preprocessing stage is
+    highly customizable, thus it is advised to experiment with the many
+    parameters.
+
+    :param remove_words: list of words that should be ignored while building
+                         the word frequency vectors.
+    :param min_word_length: Words shorter than this are ignored.
+    :param min_docs: Words that occur in fewer than this many documents are
+                     ignored.
+    :param max_docs_ratio: Words that occur in more than this document are
+                           ignored. Should be ratio between 0 and 1.
+    :param max_tokens: Only the top most common tokens are preserved.
+    :param replace_words: Replace words by other words. Must be a `dict`
+                          containing *original word* to *replacement word*
+                          pairs.
+    :param custom_bigrams: Add custom bigrams. Must be a `dict` where keys
+                           are `(first, second)` tuples and values are
+                           replacements. For example, the key can be
+                           `("Big", "Data")` and the value `"BigData"`.
+    :param ngram_threshold: Threshold used for n-gram detection. Is passed
+                            to `gensim.models.phrases.Phrases` to detect
+                            common n-grams.
+    :returns: a `Corpus object`.
+    """
 
     filters = []
     if custom_bigrams:
@@ -156,7 +195,71 @@ def build_corpus(docs, *, remove_words=None, min_word_length=3, min_docs=5,
     return Corpus(docs, filters, max_tokens)
 
 
+class TopicModel:
+    """ Topic model trained by one of the `train_*_model` functions. """
+
+    def __init__(self, dictionary, doc2topic, topic2token):
+        self.dictionary = dictionary
+        self.doc2topic = doc2topic
+        self.topic2token = topic2token
+        self.num_topics = len(topic2token)
+
+
+def train_nmf_model(corpus: Corpus, num_topics: int, seed=0, max_iter=500
+                    ) -> TopicModel:
+    """ Train a topic model using NMF.
+
+    :param num_topics: The number of topics to train.
+    :param seed: The seed used for random number generation.
+    :param max_iter: The maximum number of iterations to use for training.
+                     More iterations mean better results, but longer training
+                     times.
+    """
+    import gensim.models.nmf
+
+    dic = corpus.dictionary
+    freqs = corpus.frequencies
+
+    tfidf = gensim.models.tfidfmodel.TfidfModel(dictionary=dic)
+    model = gensim.models.nmf.Nmf(
+            list(tfidf[freqs]),
+            num_topics=num_topics,
+            passes=max_iter,
+            random_state=seed,
+            w_stop_condition=1e-9,
+            h_stop_condition=1e-9,
+            w_max_iter=50,
+            h_max_iter=50)
+
+    doc2topic = corpus2dense(model[freqs], num_topics)
+    topic2token = model.get_topics()
+
+    return TopicModel(dic, doc2topic, topic2token)
+
+
+def train_lda_model(corpus: Corpus, num_topics, seed=0, **kwargs
+                    ) -> TopicModel:
+    """ Train a topic model using LDA.
+
+    :param num_topics: The number of topics to train.
+    :param seed: The seed used for random number generation.
+    :param kwargs: Arguments passed to `gensim.models.lda.LdaModel`.
+    """
+    from gensim.models.lda import LdaModel
+
+    dic = corpus.dictionary
+    freqs = corpus.frequencies
+
+    model = LdaModel(list(corpus), **kwargs)
+
+    doc2topic = corpus2dense(model[freqs], num_topics)
+    topic2token = model.get_topics()
+
+    return TopicModel(dic, doc2topic, topic2token)
+
+
 def plot_word_distribution(corpus, top=25, **kwargs):
+    """ """
     counter = defaultdict(int)
     dic = corpus.dictionary
     n = len(corpus.frequencies)
@@ -172,59 +275,8 @@ def plot_word_distribution(corpus, top=25, **kwargs):
     return plot_histogram(keys, values, relative_to=n, **kwargs)
 
 
-class TopicModel:
-    def __init__(self, dictionary, doc2topic, topic2token):
-        self.dictionary = dictionary
-        self.doc2topic = doc2topic
-        self.topic2token = topic2token
-        self.num_topics = len(topic2token)
-
-
-def train_nmf_model(corpus, num_topics, seed=0, max_iter=500):
-    import gensim.models.nmf
-
-    dic = corpus.dictionary
-    freqs = corpus.frequencies
-
-    tfidf = gensim.models.tfidfmodel.TfidfModel(dictionary=dic)
-
-    for n in range(1, 100):
-        errors = []
-
-        for seed in [0, 1, 2, 3, 4]:
-            model = gensim.models.nmf.Nmf(
-                    list(tfidf[freqs]),
-                    # num_topics=num_topics,
-                    num_topics=n,
-                    passes=max_iter,
-                    random_state=seed,
-                    w_stop_condition=1e-9,
-                    h_stop_condition=1e-9,
-                    w_max_iter=50,
-                    h_max_iter=50)
-            errors.append(model._w_error)
-
-    doc2topic = corpus2dense(model[freqs], num_topics)
-    topic2token = model.get_topics()
-
-    return TopicModel(dic, doc2topic, topic2token)
-
-
-def train_lda_model(corpus, num_topics, seed=0, **kwargs):
-    from gensim.models.lda import LdaModel
-
-    dic = corpus.dictionary
-    freqs = corpus.frequencies
-
-    model = LdaModel(list(corpus), **kwargs)
-
-    doc2topic = corpus2dense(model[freqs], num_topics)
-    topic2token = model.get_topics()
-
-    return TopicModel(dic, doc2topic, topic2token)
-
-
-def plot_topic_clouds(model, fig=None, ncols=3, **kwargs):
+def plot_topic_clouds(model: TopicModel, fig=None, ncols=3, **kwargs):
+    """ """
     if fig is None:
         plt.clf()
         fig = plt.gcf()
@@ -236,7 +288,8 @@ def plot_topic_clouds(model, fig=None, ncols=3, **kwargs):
         plot_topic_cloud(model, i, ax=ax, **kwargs)
 
 
-def plot_topic_cloud(model, topic_id, ax=None, **kwargs):
+def plot_topic_cloud(model: TopicModel, topic_id, ax=None, **kwargs):
+    """ """
     if ax is None:
         ax = plt.gca()
 
@@ -294,6 +347,7 @@ def calculate_embedding(corpus, rank=2):
 
 
 def plot_embedding(corpus, model, layout=None, ax=None):
+    """ """
     if ax is None:
         ax = plt.gca()
 

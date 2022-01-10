@@ -142,7 +142,7 @@ def build_citation_network(docs: DocumentSet) -> nx.Graph:
 def plot_citation_network(docs: DocumentSet, **kwargs):
     """Plot a citation network.
 
-    This is a shorthand for `plot_network(build_citation_network(docs)`."""
+    This is a shorthand for `plot_network(build_citation_network(docs))`."""
     return plot_network(build_citation_network(docs), **kwargs)
 
 
@@ -191,7 +191,7 @@ def plot_cocitation_network(docs: DocumentSet, *, max_edges=None,
                             node_size=10, **kwargs):
     """Plot a citation network.
 
-    This is a shorthand for `plot_network(build_cocitation_network(docs)`."""
+    This is a shorthand for `plot_network(build_cocitation_network(docs))`."""
     return plot_network(
             build_cocitation_network(docs, max_edges),
             # min_node_size=node_size,
@@ -253,10 +253,11 @@ def build_coupling_network(docs: DocumentSet, max_edges=1000) -> nx.Graph:
     return g
 
 
-def plot_coupling_network(docs, max_edges=None, node_size=10, **kwargs):
+def plot_coupling_network(docs: DocumentSet, *, max_edges=None, node_size=10,
+                          **kwargs):
     """Plot a bibliographic coupling network.
 
-    This is a shorthand for `plot_network(build_coupling_network(docs)`."""
+    This is a shorthand for `plot_network(build_coupling_network(docs))`."""
     return plot_network(
             build_coupling_network(docs, max_edges),
             min_node_size=node_size,
@@ -314,7 +315,7 @@ def build_coauthor_network(docs: DocumentSet, *, max_authors=None) -> nx.Graph:
 def plot_coauthor_network(docs: DocumentSet, *, max_authors=None):
     """Plot a co-author network.
 
-    This is a shorthand for `plot_network(build_coauthor_network(docs)`."""
+    This is a shorthand for `plot_network(build_coauthor_network(docs))`."""
     return plot_network(
             build_coauthor_network(docs, max_authors),
     )

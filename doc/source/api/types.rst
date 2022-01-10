@@ -1,4 +1,5 @@
-Calculating Statistics
+Data Types
 ------------------------------------------
-.. automodule:: litstudy.stats
+.. automodule:: litstudy.types
   :members:
+

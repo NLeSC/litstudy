@@ -1,4 +1,4 @@
-Calculating Statistics
+Plotting Statistics
 ------------------------------------------
-.. automodule:: litstudy.stats
+.. automodule:: litstudy.plot
   :members:

@@ -5,7 +5,9 @@ API reference
    :maxdepth: 2
    :caption: Contents:
 
+   types
    sources
    stats
+   plot
    network
    nlp
