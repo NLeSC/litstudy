@@ -16,7 +16,8 @@ from .plot import \
         plot_language_histogram, \
         plot_source_histogram, \
         plot_affiliation_histogram, \
-        plot_country_histogram
+        plot_country_histogram, \
+        plot_continent_histogram
 from .network import \
         build_citation_network, \
         build_coauthor_network, \

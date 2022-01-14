@@ -32,6 +32,7 @@ class ScholarAuthor(Author):
     def __init__(self, entry):
         self.entry = entry
 
+    @property
     def name(self):
         return self.entry.get('name')
 
@@ -100,13 +101,15 @@ def request_results(query, offset, cache, timeout=DEFAULT_TIMEOUT):
         return cache[cache_key]
 
     url = S2_QUERY_URL
-    params = dict(offset=offset, query=query)
-    response = requests.get(url, params=params)
-    data = response.json()
+    params = dict(offset=offset, query=query, limit=100)
+    reply = requests.get(url, params=params)
+    response = reply.json()
 
-    if 'error' in data:
-        raise Exception(f'error while fetching results: {data["error"]}')
+    if 'data' not in response:
+        msg = response.get('error') or response.get('message') or 'unknown'
+        raise Exception(f'error while fetching {reply.url}: {msg}')
 
+    data = response['data']
     cache[cache_key] = data
     return data
 
@@ -203,8 +206,7 @@ def search_semanticscholar(query: str, *, limit: int = None) -> DocumentSet:
         paper_ids = []
 
         while True:
-            response = request_results(query, offset, cache)
-            records = response['data']
+            records = request_results(query, offset, cache)
             if not records:
                 break
 
@@ -214,14 +216,15 @@ def search_semanticscholar(query: str, *, limit: int = None) -> DocumentSet:
                 paper_ids.append(record['paperId'])
 
             if limit is not None and len(paper_ids) > limit:
+                paper_ids = paper_ids[:limit]
                 break
 
         for paper_id in progress_bar(paper_ids):
             doc = request_paper(paper_id, cache)
 
             if doc:
-                docs.append(doc)
+                docs.append(ScholarDocument(doc))
             else:
                 logging.warn(f'could not find paper id {paper_id}')
 
-    return docs
+    return DocumentSet(docs)
