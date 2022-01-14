@@ -7,7 +7,8 @@ from .stats import \
         compute_number_authors_histogram, \
         compute_source_histogram, \
         compute_affiliation_histogram, \
-        compute_country_histogram
+        compute_country_histogram, \
+        compute_groups_histogram
 from .plot import \
         plot_year_histogram, \
         plot_author_histogram, \

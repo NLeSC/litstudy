@@ -7,7 +7,8 @@ from .stats import \
         compute_source_histogram, \
         compute_affiliation_histogram, \
         compute_country_histogram, \
-        compute_continent_histogram
+        compute_continent_histogram, \
+        compute_groups_histogram
 import matplotlib.pyplot as plt
 import numpy as np
 import inspect
@@ -126,6 +127,12 @@ def wrapper(docs, fun, default, **kwargs):
 
     data = fun(docs, **kwargs)
     return plot_histogram(data, **plot_kwargs)
+
+
+def plot_groups_histogram(docs, **kwargs):
+    """ """
+    default = dict(title='Categories')
+    return wrapper(docs, lambda docs, **kwargs: compute_groups_histogram(docs, **kwargs).T, default, **kwargs)
 
 
 def plot_year_histogram(docs, **kwargs):

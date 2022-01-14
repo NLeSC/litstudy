@@ -75,6 +75,10 @@ def compute_histogram(docs, fun, keys=None, sort_by_key=False, groups=None,
     )
 
 
+def compute_groups_histogram(docs: DocumentSet, **kwargs) -> pd.DataFrame:
+    return compute_histogram(docs, lambda _: ['Frequency'], **kwargs).T
+
+
 def compute_year_histogram(docs: DocumentSet, **kwargs) -> pd.DataFrame:
     """ Compute a histogram of the number of documents published in each
     year. """
