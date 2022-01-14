@@ -1,0 +1,12 @@
+bibtexparser
+gensim
+matplotlib
+networkx
+numpy
+pandas
+pybliometrics
+pyvis
+seaborn
+sklearn
+unidecode
+wordcloud
