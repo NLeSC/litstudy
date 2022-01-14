@@ -6,7 +6,8 @@ from .stats import \
         compute_number_authors_histogram, \
         compute_source_histogram, \
         compute_affiliation_histogram, \
-        compute_country_histogram
+        compute_country_histogram, \
+        compute_continent_histogram
 import matplotlib.pyplot as plt
 import numpy as np
 import inspect
@@ -174,3 +175,9 @@ def plot_country_histogram(docs, **kwargs):
     """ """
     default = dict(title='Countries', limit=25)
     return wrapper(docs, compute_country_histogram, default, **kwargs)
+
+
+def plot_continent_histogram(docs, **kwargs):
+    """ """
+    default = dict(title='Continents', limit=25)
+    return wrapper(docs, compute_continent_histogram, default, **kwargs)

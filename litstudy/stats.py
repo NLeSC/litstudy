@@ -7,11 +7,19 @@ import pandas as pd
 def compute_histogram(docs, fun, keys=None, sort_by_key=False, groups=None,
                       limit=None):
     if isinstance(groups, list):
-        data = dict((v, docs.data.eval(v)) for v in groups)
-        groups = pd.DataFrame(data)
-    elif isinstance(groups, dict):
-        data = dict((name, docs.data.eval(expr))
-                    for name, expr in groups.items())
+        groups = dict((v, v) for v in groups)
+
+    if isinstance(groups, dict):
+        data = dict()
+
+        for name, value in groups.items():
+            if isinstance(value, str):
+                data[name] = docs.data.eval(value)
+            else:
+                values = list(value)
+                assert len(values) == len(docs)
+                data[name] = values
+
         groups = pd.DataFrame(data)
     elif groups is None:
         groups = pd.DataFrame(index=range(len(docs)))
@@ -182,9 +190,10 @@ def extract_country(aff):
 
     # Sometimes the country is in the affiliation name
     name = aff.name
-    for country in COUNTRY_TO_CONTINENT.keys():
-        if country in name:
-            return country
+    if name:
+        for country in COUNTRY_TO_CONTINENT.keys():
+            if country in name:
+                return country
 
     return None
 
@@ -221,6 +230,8 @@ def compute_continent_histogram(docs: DocumentSet, **kwargs) -> pd.DataFrame:
 
                     if continent := COUNTRY_TO_CONTINENT.get(country):
                         result.add(continent)
+                    else:
+                        result.add('Other')
 
         return result
 
