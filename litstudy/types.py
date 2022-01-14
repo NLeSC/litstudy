@@ -12,15 +12,15 @@ from .common import fuzzy_match, canonical, progress_bar
 class DocumentSet:
     """ Represents a set of documents.
 
-    `DocumentSet` stores a list of `Document` objects. Optionally, a pandas 
-    data frame can be provided which stores additional annotations on the 
+    `DocumentSet` stores a list of `Document` objects. Optionally, a pandas
+    data frame can be provided which stores additional annotations on the
     documents.
 
     All set operations are accepted by `DocumentSet` (union, intersection,
     difference), allowing for new sets to be created from existing sets.
 
     Note that a `DocumentSet` is immutable and its content cannot be changed.
-    Instead, most methods below return a new `DocumentSet` instead of 
+    Instead, most methods below return a new `DocumentSet` instead of
     performing modifications in-place.
     """
 
@@ -91,7 +91,7 @@ class DocumentSet:
         :param predicate: A function `Document -> bool`.
         :returns: The new document set.
         """
-        return self.filter_meta(lambda doc, _: predicate(doc))
+        return self.filter(lambda doc, _: predicate(doc))
 
     def filter(self, predicate) -> DocumentSet:
         """ Returns a new set for which the provided predicate returned `True`.
@@ -199,7 +199,7 @@ class DocumentSet:
             found = False
             needle = doc.id
 
-            for other in self:
+            for other in self[:i]:
                 if other.id.matches(needle):
                     other._identifier = other._identifier.merge(needle)
                     found = True
@@ -272,7 +272,7 @@ class DocumentSet:
         return bool(len(self))
 
     def __repr__(self):
-        return repr(self.docs)
+        return f'<{len(self)} documents>'
 
 
 class DocumentIdentifier:
@@ -359,7 +359,7 @@ class DocumentIdentifier:
         return DocumentIdentifier(self._title, **attr)
 
     def __repr__(self):
-        return f'<{self.title}>'
+        return f'<{self._title}, {self._attr}>'
 
 
 class Document(ABC):
@@ -472,7 +472,7 @@ class Document(ABC):
         keywords = self.keywords or []
 
         for text in [self.title, self.abstract] + keywords:
-            if text and re.find(pattern, text, flags=flags):
+            if text and re.search(pattern, text, flags=flags):
                 return True
 
         return False
