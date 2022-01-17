@@ -23,7 +23,7 @@ jobs:
         uses: actions/setup-python@v2
       - name: Setup dependencies
         run: |
-          python -m pip install --upgrade pip sphinx_rtd_theme
+          python -m pip install --upgrade pip sphinx_rtd_theme unidecode
           sudo apt-get update
           sudo apt-get install python3-sphinx
       - uses: actions/checkout@v2
@@ -34,6 +34,7 @@ jobs:
         uses: sphinx-notes/pages@v2
         with:
           documentation_path: './doc'
+          requirements_path: '.requirements'
       - name: Push documentation
         uses: ad-m/github-push-action@master
         with:
