@@ -4,11 +4,14 @@ from ..types import Document, DocumentSet, DocumentIdentifier, Author, \
 from collections import defaultdict
 from datetime import date
 from pybliometrics.scopus import AbstractRetrieval, ScopusSearch
+from pybliometrics.scopus.exception import Scopus404Error
 from typing import Tuple
 import itertools
 import logging
 import random
+import shelve
 
+SCOPUS_CACHE = '.scopus'
 
 class ScopusAuthor(Author):
     def __init__(self, name, affiliations):
@@ -43,8 +46,17 @@ class ScopusAffiliation(Affiliation):
 class ScopusDocument(Document):
     @staticmethod
     def from_identifier(id, id_type, view='FULL'):
-        result = AbstractRetrieval(id, id_type=id_type, view=view)
-        return ScopusDocument(result)
+        with shelve.open(SCOPUS_CACHE) as cache:
+            key = id  + '_found'
+            if cache.get(key) is False:
+                raise Scopus404Error()
+
+            try:
+                result = AbstractRetrieval(id, id_type=id_type, view=view)
+                return ScopusDocument(result)
+            except Scopus404Error as e:
+                cache[key] = False
+                raise
 
     @staticmethod
     def from_eid(eid, **kwargs):
@@ -127,6 +139,10 @@ class ScopusDocument(Document):
     @property
     def publication_source(self):
         return self.doc.confname or self.doc.publicationName or None
+
+    @property
+    def source_type(self):
+        return self.doc.aggregationType
 
     @property
     def publication_date(self):
