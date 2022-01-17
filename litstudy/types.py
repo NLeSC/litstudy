@@ -2,6 +2,7 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from datetime import date
 from typing import Optional, List
+import numpy as np
 import pandas as pd
 import random
 import re
@@ -70,7 +71,6 @@ class DocumentSet:
                        number of documents in this set.
         :returns: The new document set.
         """
-        assert len(values) == len(self.docs)
         data = self.data.copy(deep=False)
         data[name] = values
         return DocumentSet(self.docs, data)
@@ -122,37 +122,88 @@ class DocumentSet:
         data = data.reset_index(drop=True)
         return DocumentSet(docs, data)
 
-    def difference(self, other: DocumentSet) -> DocumentSet:
-        """ Returns a new set which does contain the documents provided in
-        `self` but not in `other`. This is also available as the `-` operator.
-
-        :returns: The new document set.
-        """
+    def _intersect_indices(self, other):
         haystack = [d.id for d in other]
-        indices = []
+        left = []
+        right = []
 
-        for i, doc in enumerate(self.docs):
+        for i, doc in enumerate(self):
             needle = doc.id
-            if not any(needle.matches(x) for x in haystack):
-                indices.append(i)
 
-        return self.select(indices)
+            for j, id in enumerate(haystack):
+                if id.matches(needle):
+                    left.append(i)
+                    right.append(j)
+                    break
+
+        return left, right
+
+    def _zip_with(self, left, other, right):
+        data = dict()
+
+        for key, column in self.data.iloc[left].items():
+            column = column.copy().reset_index(drop=True)
+            data[key] = column
+
+        for key, column in other.data.iloc[right].items():
+            column = column.copy().reset_index(drop=True)
+
+            if key in data:
+                data[key] = np.maximum(data[key], column)
+            else:
+                data[key] = column
+
+        return pd.DataFrame(data)
 
     def intersect(self, other: DocumentSet) -> DocumentSet:
-        """ Returns a new set which does contain the documents provided in
+        """ Returns a new set which contains the documents provided in
         both `self` and `other`. This is also available as the `&` operator.
 
         :returns: The new document set.
         """
-        haystack = [d.id for d in other]
-        indices = []
+        if not self or not other:
+            return DocumentSet([])
 
-        for i, doc in enumerate(self.docs):
-            needle = doc.id
-            if any(needle.matches(x) for x in haystack):
-                indices.append(i)
+        left, right = DocumentSet._intersect_indices(self, other)
 
-        return self.select(indices)
+        docs = [self.docs[i] for i in left]  # Select docs from left?
+        data = DocumentSet._zip_with(self, left, other, right)
+        return DocumentSet(docs, data)
+
+    def difference(self, other: DocumentSet) -> DocumentSet:
+        """ Returns a new set which contains the documents provided in
+        `self` but not in `other`. This is also available as the `-` operator.
+
+        :returns: The new document set.
+        """
+        if not other or not self:
+            return self
+
+        indices, _ = DocumentSet._intersect_indices(self, other)
+        return self.select(sorted(set(range(len(self))) - set(indices)))
+
+    def union(self, other: DocumentSet) -> DocumentSet:
+        """ Returns a new set which contains the documents provided in
+        either `self` and `other`. Duplicate documents in `other` that also
+        appear in `self` are discarded. This is also available as the `|`
+        operator.
+
+        :returns: The new document set.
+        """
+        if not other:
+            return self
+        if not self:
+            return other
+
+        left, right = DocumentSet._intersect_indices(self, other)
+        docs = [self.docs[i] for i in left]  # Select docs from left?
+        data = DocumentSet._zip_with(self, left, other, right)
+        middle = DocumentSet(docs, data)
+
+        left = self.select(sorted(set(range(len(self))) - set(left)))
+        right = other.select(sorted(set(range(len(other))) - set(right)))
+
+        return DocumentSet.concat(middle, DocumentSet.concat(left, right))
 
     def concat(self, other: DocumentSet) -> DocumentSet:
         """ Returns a new set which does contain the documents provided in
@@ -161,32 +212,41 @@ class DocumentSet:
 
         :returns: The new document set.
         """
-        # TODO: We need a better way to deal to handle the case where
-        # the columns are not equal in some way.
-        data = pd.concat([self.data, other.data])
+        def default_val(dtype):
+            c = dtype.char
+            if c == '?':
+                return False
+            if c in 'bBiu':
+                return 0
+            if c in 'fc':
+                return float('nan')
+            if c in 'SaU':
+                return ''
 
+            return None
+
+        if not self:
+            return other
+
+        if not other:
+            return self
+
+        left = self.data.copy()
+        right = other.data.copy()
+
+        for col in left:
+            if col not in right:
+                dtype = left[col].dtype
+                right[col] = np.array(default_val(dtype)).astype(dtype)
+
+        for col in right:
+            if col not in left:
+                dtype = right[col].dtype
+                left[col] = np.array(default_val(dtype)).astype(dtype)
+
+        data = pd.concat([left, right])
         docs = self.docs + other.docs
         return DocumentSet(docs, data)
-
-    def union(self, other: DocumentSet) -> DocumentSet:
-        """ Returns a new set which does contain the documents provided in
-        either `self` and `other`. Duplicate documents in `other` that also
-        appear in `self` are discarded. This is also available as the `|`
-        operator.
-
-        :returns: The new document set.
-        """
-        n = len(self)
-        indices = list(range(n))
-        haystack = [d.id for d in self]
-
-        for i, doc in enumerate(other.docs):
-            needle = doc.id
-
-            if not any(needle.matches(x) for x in haystack):
-                indices.append(n + i)
-
-        return self.concat(other).select(indices)
 
     def unique(self) -> DocumentSet:
         """ Returns a new set which has all duplicate documents removed.
