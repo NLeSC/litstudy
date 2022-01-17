@@ -76,8 +76,72 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="calculating-statistics">
-<h1>Calculating Statistics<a class="headerlink" href="#calculating-statistics" title="Permalink to this headline"></a></h1>
+  <section id="module-litstudy.stats">
+<span id="calculating-statistics"></span><h1>Calculating Statistics<a class="headerlink" href="#module-litstudy.stats" title="Permalink to this headline"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.stats.compute_year_histogram">
+<span class="sig-prename descclassname"><span class="pre">litstudy.stats.</span></span><span class="sig-name descname"><span class="pre">compute_year_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.core.frame.DataFrame</span></span></span><a class="headerlink" href="#litstudy.stats.compute_year_histogram" title="Permalink to this definition"></a></dt>
+<dd><p>Compute a histogram of the number of documents published in each
+year.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.stats.compute_number_authors_histogram">
+<span class="sig-prename descclassname"><span class="pre">litstudy.stats.</span></span><span class="sig-name descname"><span class="pre">compute_number_authors_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_authors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.core.frame.DataFrame</span></span></span><a class="headerlink" href="#litstudy.stats.compute_number_authors_histogram" title="Permalink to this definition"></a></dt>
+<dd><p>Compute a histogram of the number of authors per document.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>max_authors</strong> – If a document has more than <cite>max_author</cite> authors, it
+is it is listed as a special “max authors” category.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.stats.compute_language_histogram">
+<span class="sig-prename descclassname"><span class="pre">litstudy.stats.</span></span><span class="sig-name descname"><span class="pre">compute_language_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.core.frame.DataFrame</span></span></span><a class="headerlink" href="#litstudy.stats.compute_language_histogram" title="Permalink to this definition"></a></dt>
+<dd><p>Compute a histogram of number of documents by language.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.stats.compute_source_histogram">
+<span class="sig-prename descclassname"><span class="pre">litstudy.stats.</span></span><span class="sig-name descname"><span class="pre">compute_source_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mapper</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.core.frame.DataFrame</span></span></span><a class="headerlink" href="#litstudy.stats.compute_source_histogram" title="Permalink to this definition"></a></dt>
+<dd><p>Compute a histogram of number of documents by publication source.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.stats.compute_author_histogram">
+<span class="sig-prename descclassname"><span class="pre">litstudy.stats.</span></span><span class="sig-name descname"><span class="pre">compute_author_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.core.frame.DataFrame</span></span></span><a class="headerlink" href="#litstudy.stats.compute_author_histogram" title="Permalink to this definition"></a></dt>
+<dd><p>Compute a histogram of number of documents by author name.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.stats.compute_author_affiliation_histogram">
+<span class="sig-prename descclassname"><span class="pre">litstudy.stats.</span></span><span class="sig-name descname"><span class="pre">compute_author_affiliation_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.core.frame.DataFrame</span></span></span><a class="headerlink" href="#litstudy.stats.compute_author_affiliation_histogram" title="Permalink to this definition"></a></dt>
+<dd><p>Compute a histogram of number of documents by (author name,
+affiliation name) combinations. This can help reduce conflicts where there
+are many authors of the same name working for different affiliations.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.stats.compute_affiliation_histogram">
+<span class="sig-prename descclassname"><span class="pre">litstudy.stats.</span></span><span class="sig-name descname"><span class="pre">compute_affiliation_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">mapper</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.core.frame.DataFrame</span></span></span><a class="headerlink" href="#litstudy.stats.compute_affiliation_histogram" title="Permalink to this definition"></a></dt>
+<dd><p>Compute a histogram of number of documents by affiliation name.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.stats.compute_country_histogram">
+<span class="sig-prename descclassname"><span class="pre">litstudy.stats.</span></span><span class="sig-name descname"><span class="pre">compute_country_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.core.frame.DataFrame</span></span></span><a class="headerlink" href="#litstudy.stats.compute_country_histogram" title="Permalink to this definition"></a></dt>
+<dd><p>Compute a histogram of number of documents by affiliation country.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.stats.compute_continent_histogram">
+<span class="sig-prename descclassname"><span class="pre">litstudy.stats.</span></span><span class="sig-name descname"><span class="pre">compute_continent_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.core.frame.DataFrame</span></span></span><a class="headerlink" href="#litstudy.stats.compute_continent_histogram" title="Permalink to this definition"></a></dt>
+<dd><p>Compute a histogram of number of documents by affiliation 
+continent.</p>
+</dd></dl>
+
 </section>
 
 
