@@ -89,8 +89,7 @@ def load_ris_file(path: str) -> DocumentSet:
                 attr = dict()
                 authors = []
                 keywords = []
-
-            if key == 'KW':
+            elif key == 'KW':
                 keywords.append(value)
             elif key in ['A1', 'A2', 'A3', 'A4', 'AU']:
                 authors.append(RISAuthor(value))
