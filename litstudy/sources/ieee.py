@@ -99,4 +99,5 @@ def load_ieee_csv(path: str) -> DocumentSet:
     """ """
     with open(path, newline='') as f:
         lines = csv.DictReader(f)
-        return [IEEEDocument(line) for line in lines]
+        docs = [IEEEDocument(line) for line in lines]
+        return DocumentSet(docs)
