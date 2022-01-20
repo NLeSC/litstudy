@@ -143,6 +143,7 @@ class DocumentSet:
         return left, right
 
     def _zip_with(self, left, other, right):
+        assert len(left) == len(right)
         data = dict()
 
         for key, column in self.data.iloc[left].items():
@@ -200,6 +201,9 @@ class DocumentSet:
             return other
 
         left, right = DocumentSet._intersect_indices(self, other)
+        if not left:
+            return DocumentSet.concat(self, other)
+
         docs = [self.docs[i] for i in left]  # Select docs from left?
         data = DocumentSet._zip_with(self, left, other, right)
         middle = DocumentSet(docs, data)
@@ -497,6 +501,13 @@ class Document(ABC):
     def publication_source(self) -> Optional[str]:
         """ The name of the publication source (i.e., journal name,
         conference name, etc.)
+        """
+        return None
+
+    @property
+    def source_type(self) -> Optional[str]:
+        """ The type of publication source (i.e., journal, conference
+        proceedings, book, etc.)
         """
         return None
 
