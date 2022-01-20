@@ -157,7 +157,7 @@ class DocumentSet:
             else:
                 data[key] = column
 
-        return pd.DataFrame(data)
+        return pd.DataFrame(index=range(len(left)), data=data)
 
     def intersect(self, other: DocumentSet) -> DocumentSet:
         """ Returns a new set which contains the documents provided in
