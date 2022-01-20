@@ -61,6 +61,10 @@ class DocumentSet:
         new_data = self.data.iloc[flags]
         old_data = self.data.iloc[[not f for f in flags]]
 
+        # FIX: not forget to reset the index
+        new_data.reset_index(drop=True, inplace=True)
+        old_data.reset_index(drop=True, inplace=True)
+
         return DocumentSet(new_docs, new_data), DocumentSet(old_docs, old_data)
 
     def add_column(self, name: str, values) -> DocumentSet:
