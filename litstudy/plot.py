@@ -5,6 +5,7 @@ from .stats import \
         compute_language_histogram, \
         compute_number_authors_histogram, \
         compute_source_histogram, \
+        compute_source_type_histogram, \
         compute_affiliation_histogram, \
         compute_country_histogram, \
         compute_continent_histogram, \
@@ -20,6 +21,7 @@ def plot_histogram(
                    title='',
                    xlabel='',
                    ylabel='',
+                   label_rotation=None,
                    vertical=False,
                    bar_width=0.8,
                    max_label_length=100,
@@ -29,6 +31,12 @@ def plot_histogram(
                    ax=None):
     if ax is None:
         ax = plt.gca()
+
+    if label_rotation is None:
+        if vertical:
+            label_rotation = 90
+        else:
+            label_rotation = 0
 
     if title:
         ax.set_title(title)
@@ -102,11 +110,11 @@ def plot_histogram(
     if not vertical:
         ax.set_ylim((n - 0.5, -0.5))
         ax.set_yticks(range(n))
-        ax.set_yticklabels(labels)
+        ax.set_yticklabels(labels, rotation=label_rotation)
     else:
         ax.set_xlim((-0.5, n - 0.5))
         ax.set_xticks(range(n))
-        ax.set_xticklabels(labels)
+        ax.set_xticklabels(labels, rotation=label_rotation, ha='right')
 
     return ax
 
@@ -170,6 +178,12 @@ def plot_source_histogram(docs, **kwargs):
     """ """
     default = dict(title='Publication source', limit=25)
     return wrapper(docs, compute_source_histogram, default, **kwargs)
+
+
+def plot_source_type_histogram(docs, **kwargs):
+    """ """
+    default = dict(title='Publication source type', limit=25)
+    return wrapper(docs, compute_source_type_histogram, default, **kwargs)
 
 
 def plot_affiliation_histogram(docs, **kwargs):
