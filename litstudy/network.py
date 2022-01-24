@@ -144,13 +144,23 @@ def plot_network(g: nx.Graph, *, height='1000px', smooth_edges=None,
     return v.show('citation.html')
 
 
-def build_base_network(docs, directed, colors=None, cmap=None):
+def build_base_network(docs, directed, colors=None, cmap=None,
+        node_props=None):
     g = nx.DiGraph() if directed else nx.Graph()
     mapping = DocumentMapping()
 
+    if node_props is None:
+        node_props = docs.data.columns
+
     for i, doc in enumerate(docs):
-        g.add_node(i, title=doc.title, doc=doc)
+        attr = dict()
+
+        for prop in node_props:
+            attr[prop] = docs.data[prop][i]
+
+        g.add_node(i, title=doc.title, doc=doc, **attr)
         mapping.add(doc.id, i)
+
 
     if colors is not None and docs:
         # Column name
@@ -382,11 +392,11 @@ def build_coauthor_network(docs: DocumentSet, *, max_authors=None) -> nx.Graph:
     return g
 
 
-def plot_coauthor_network(docs: DocumentSet, *, max_authors=None):
+def plot_coauthor_network(docs: DocumentSet, *, max_authors=None, **kwargs):
     """Plot a co-author network.
 
     This is a shorthand for `plot_network(build_coauthor_network(docs))`."""
     b, p = split_kwargs(**kwargs)
     return plot_network(
-            build_coauthor_network(docs, max_authors, **b), **p
+            build_coauthor_network(docs, max_authors=max_authors, **b), **p
     )
