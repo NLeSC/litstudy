@@ -4,6 +4,7 @@ import gensim
 import math
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import seaborn
 import wordcloud
 
@@ -56,7 +57,8 @@ def preprocess_merge_bigrams(texts, bigrams):
 
 def preprocess_merge_ngrams(texts, threshold):
     texts = list(texts)
-    phrases = gensim.models.phrases.Phrases(texts, threshold=threshold)
+    phrases = gensim.models.phrases.Phrases(texts, threshold=threshold,
+                                            scoring='npmi')
     return phrases[texts]
 
 
@@ -175,9 +177,6 @@ def build_corpus(docs: DocumentSet, *, remove_words=None, min_word_length=3,
     if remove_words:
         filters.append(lambda w: preprocess_remove_words(w, remove_words))
 
-    if ngram_threshold is not None:
-        filters.append(lambda w: preprocess_merge_ngrams(w, ngram_threshold))
-
     if replace_words:
         filters.append(lambda w: preprocess_replace_words(w, replace_words))
 
@@ -185,12 +184,17 @@ def build_corpus(docs: DocumentSet, *, remove_words=None, min_word_length=3,
         filters.append(lambda w: preprocess_remove_short(w,
                        min_length=min_word_length))
 
+    filters.append(preprocess_stopwords)
+
+    if ngram_threshold is not None:
+        filters.append(lambda w: preprocess_merge_ngrams(w, ngram_threshold))
+
+    filters.append(preprocess_smart_stemming)
+
     if min_docs > 1 or max_docs_ratio < 1.0:
         max_docs = int(len(docs) * max_docs_ratio)
         filters.append(lambda w: preprocess_outliers(w, min_docs, max_docs))
 
-    filters.append(preprocess_stopwords)
-    filters.append(preprocess_smart_stemming)
 
     return Corpus(docs, filters, max_tokens)
 
@@ -203,6 +207,33 @@ class TopicModel:
         self.doc2topic = doc2topic
         self.topic2token = topic2token
         self.num_topics = len(topic2token)
+
+    def top_documents_for_topic(self, topic_id, limit=5):
+        return np.argsort(self.doc2topic[:,topic_id])[::-1][:limit]
+
+    def document_topics(self, doc_id):
+        return self.doc2topic[doc_id]
+
+    def document_topic_weight(self, doc_id, topic_id):
+        return self.doc2topic[doc_id, topic_id]
+
+    def top_topic_tokens_with_weights(self, topic_id, limit=5):
+        dic = self.dictionary
+        weights = self.topic2token[topic_id]
+
+        indices = np.argsort(self.topic2token[topic_id])[::-1][:limit]
+        return [(dic[i], weights[i]) for i in indices]
+
+    def top_topic_tokens(self, topic_id, limit=5):
+        results = self.top_topic_tokens_with_weights(topic_id, limit=limit)
+        return [w for w, _ in results]
+
+    def top_topic_token(self, topic_id):
+        return self.top_topic_tokens(topic_id, limit=1)[0]
+
+    def best_topic_for_token(self, token):
+        index = self.dictionary.token2id[token]
+        return np.argmax(self.topic2token[:, index])
 
 
 def train_nmf_model(corpus: Corpus, num_topics: int, seed=0, max_iter=500
@@ -231,7 +262,7 @@ def train_nmf_model(corpus: Corpus, num_topics: int, seed=0, max_iter=500
             w_max_iter=50,
             h_max_iter=50)
 
-    doc2topic = corpus2dense(model[freqs], num_topics)
+    doc2topic = corpus2dense(model[freqs], num_topics).T
     topic2token = model.get_topics()
 
     return TopicModel(dic, doc2topic, topic2token)
@@ -258,21 +289,23 @@ def train_lda_model(corpus: Corpus, num_topics, seed=0, **kwargs
     return TopicModel(dic, doc2topic, topic2token)
 
 
-def plot_word_distribution(corpus, top=25, **kwargs):
+def plot_word_distribution(corpus, *, limit=25, **kwargs):
     """ """
     counter = defaultdict(int)
     dic = corpus.dictionary
     n = len(corpus.frequencies)
 
     for vector in corpus.frequencies:
-        for i, freq in vector:
+        for i, _ in vector:
             counter[i] += 1
 
-    best = sorted(counter, key=lambda k: counter[k], reverse=True)[:top]
-    keys = [dic[i] for i in best]
-    values = [counter[i] for i in best]
+    best = sorted(counter, key=lambda k: counter[k], reverse=True)[:limit]
+    data = pd.DataFrame(
+            index=[dic[i] for i in best],
+            data=dict(count=[counter[i] for i in best])
+    )
 
-    return plot_histogram(keys, values, relative_to=n, **kwargs)
+    return plot_histogram(data, relative_to=n, **kwargs)
 
 
 def plot_topic_clouds(model: TopicModel, fig=None, ncols=3, **kwargs):
@@ -285,6 +318,7 @@ def plot_topic_clouds(model: TopicModel, fig=None, ncols=3, **kwargs):
 
     for i in range(model.num_topics):
         ax = fig.add_subplot(nrows, ncols, i + 1)
+        ax.set_title(f'Topic {i + 1}')
         plot_topic_cloud(model, i, ax=ax, **kwargs)
 
 
@@ -358,14 +392,15 @@ def plot_embedding(corpus, model, layout=None, ax=None):
     freqs = corpus2dense(corpus.frequencies, len(dic))
 
     num_topics = len(model.topic2token)
-    best_topic = np.argmax(model.doc2topic, axis=0)
+    best_topic = np.argmax(model.doc2topic.T, axis=0)
 
     colors = seaborn.color_palette('hls', num_topics)
     colors = np.array(colors)[:, :3] * 0.9  # Mute colors a bit
 
     for i in range(num_topics):
         indices = best_topic == i
-        letter = 'ABCDEFGHIJLMNOPQRSTUVWXYZ'[i]
+        #label = 'ABCDEFGHIJLMNOPQRSTUVWXYZ'[i]
+        label = i + 1
 
         for j in np.argwhere(indices)[:, 0]:
             x, y = layout[j]
@@ -382,7 +417,7 @@ def plot_embedding(corpus, model, layout=None, ax=None):
             ax.text(
                 x,
                 y,
-                letter,
+                label,
                 fontsize=6,
                 color='1',
                 va='center',
@@ -392,7 +427,7 @@ def plot_embedding(corpus, model, layout=None, ax=None):
             )
 
         top_items = np.argsort(model.topic2token[i])[::-1]
-        label = f'Topic {letter}:' + ', '.join(dic[j] for j in top_items[:3])
+        label = f'Topic {label}:' + ', '.join(dic[j] for j in top_items[:3])
 
         center = np.median(layout[indices], axis=0)
         ax.text(
