@@ -144,6 +144,15 @@ def compute_source_histogram(docs: DocumentSet, mapper=None, **kwargs
     return compute_histogram(docs, extract, **kwargs)
 
 
+def compute_source_type_histogram(docs: DocumentSet, **kwargs
+                             ) -> pd.DataFrame:
+    """ Compute a histogram of number of documents by source type. """
+    def extract(doc):
+        return [doc.source_type or '(unknown)']
+
+    return compute_histogram(docs, extract, **kwargs)
+
+
 def compute_author_histogram(docs: DocumentSet, **kwargs) -> pd.DataFrame:
     """ Compute a histogram of number of documents by author name. """
     def extract(doc):
@@ -178,7 +187,7 @@ def compute_affiliation_histogram(docs: DocumentSet, mapper=None, **kwargs
         for author in doc.authors or []:
             for aff in author.affiliations or []:
                 if aff.name:
-                    result.add(aff.name)
+                    result.add(mapper.get(aff.name))
 
         return result
 
