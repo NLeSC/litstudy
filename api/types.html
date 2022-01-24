@@ -168,9 +168,21 @@ as a list of integer.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="litstudy.types.DocumentSet.intersect">
+<span class="sig-name descname"><span class="pre">intersect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.types.DocumentSet.intersect" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a new set which contains the documents provided in
+both <cite>self</cite> and <cite>other</cite>. This is also available as the <cite>&amp;</cite> operator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The new document set.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="litstudy.types.DocumentSet.difference">
 <span class="sig-name descname"><span class="pre">difference</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.types.DocumentSet.difference" title="Permalink to this definition"></a></dt>
-<dd><p>Returns a new set which does contain the documents provided in
+<dd><p>Returns a new set which contains the documents provided in
 <cite>self</cite> but not in <cite>other</cite>. This is also available as the <cite>-</cite> operator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
@@ -180,10 +192,12 @@ as a list of integer.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="litstudy.types.DocumentSet.intersect">
-<span class="sig-name descname"><span class="pre">intersect</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.types.DocumentSet.intersect" title="Permalink to this definition"></a></dt>
-<dd><p>Returns a new set which does contain the documents provided in
-both <cite>self</cite> and <cite>other</cite>. This is also available as the <cite>&amp;</cite> operator.</p>
+<dt class="sig sig-object py" id="litstudy.types.DocumentSet.union">
+<span class="sig-name descname"><span class="pre">union</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.types.DocumentSet.union" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a new set which contains the documents provided in
+either <cite>self</cite> and <cite>other</cite>. Duplicate documents in <cite>other</cite> that also
+appear in <cite>self</cite> are discarded. This is also available as the <cite>|</cite>
+operator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>The new document set.</p>
@@ -197,20 +211,6 @@ both <cite>self</cite> and <cite>other</cite>. This is also available as the <ci
 <dd><p>Returns a new set which does contain the documents provided in
 either <cite>self</cite> and <cite>other</cite>. Duplicate documents are not removed, see
 <cite>union</cite> instead. This is also available as the <cite>+</cite> operator.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>The new document set.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="litstudy.types.DocumentSet.union">
-<span class="sig-name descname"><span class="pre">union</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.types.DocumentSet.union" title="Permalink to this definition"></a></dt>
-<dd><p>Returns a new set which does contain the documents provided in
-either <cite>self</cite> and <cite>other</cite>. Duplicate documents in <cite>other</cite> that also
-appear in <cite>self</cite> are discarded. This is also available as the <cite>|</cite>
-operator.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>The new document set.</p>
@@ -380,6 +380,13 @@ in case that method is not overridden.</p>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">publication_source</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#litstudy.types.Document.publication_source" title="Permalink to this definition"></a></dt>
 <dd><p>The name of the publication source (i.e., journal name,
 conference name, etc.)</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="litstudy.types.Document.source_type">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">source_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#litstudy.types.Document.source_type" title="Permalink to this definition"></a></dt>
+<dd><p>The type of publication source (i.e., journal, conference
+proceedings, book, etc.)</p>
 </dd></dl>
 
 <dl class="py property">
