@@ -88,7 +88,8 @@ class ScopusDocument(Document):
             items = defaultdict(list)
 
             for aff in self.doc.authorgroup:
-                items[aff.indexed_name].append(ScopusAffiliation(aff))
+                name = f'{aff.indexed_name} (AUID: {aff.auid})'
+                items[name].append(ScopusAffiliation(aff))
 
             return [ScopusAuthor(a, f) for a, f in items.items()]
 
