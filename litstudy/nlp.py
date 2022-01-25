@@ -378,7 +378,7 @@ def generate_topic_cloud(model, topic_id, cmap=None, max_font_size=75,
     return wc
 
 
-def calculate_embedding(corpus, rank=2):
+def calculate_embedding(corpus, rank=2, svd_dims=50, perplexity=30):
     from gensim.models.tfidfmodel import TfidfModel
     from sklearn.decomposition import TruncatedSVD
     from sklearn.manifold import TSNE
@@ -387,9 +387,15 @@ def calculate_embedding(corpus, rank=2):
     freqs = corpus.frequencies
     tfidf = corpus2dense(TfidfModel(dictionary=dic)[freqs], len(dic)).T
 
-    svd = TruncatedSVD(n_components=50)
-    components = svd.fit_transform(tfidf)
-    return TSNE(rank, metric='cosine').fit_transform(components)
+    if svd_dims is not None:
+        svd = TruncatedSVD(n_components=svd_dims)
+        components = svd.fit_transform(tfidf)
+    else:
+        components = tfidf
+
+    model = TSNE(rank, metric='cosine', square_distances=True,
+                perplexity=perplexity)
+    return model.fit_transform(components)
 
 
 def plot_embedding(corpus, model, layout=None, ax=None):
