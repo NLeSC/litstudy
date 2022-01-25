@@ -14,7 +14,7 @@ class DocumentSet:
     """ Represents a set of documents.
 
     `DocumentSet` stores a list of `Document` objects. Optionally, a pandas
-    data frame can be provided which stores additional annotations on the
+    data frame can be provided which stores additional properties on the
     documents.
 
     All set operations are accepted by `DocumentSet` (union, intersection,
@@ -67,10 +67,10 @@ class DocumentSet:
 
         return DocumentSet(new_docs, new_data), DocumentSet(old_docs, old_data)
 
-    def add_column(self, name: str, values) -> DocumentSet:
-        """ Returns a new set which has an additional column added.
+    def add_property(self, name: str, values) -> DocumentSet:
+        """ Returns a new set which has an additional property added.
 
-        :param name: Name of the new column.
+        :param name: Name of the new property.
         :param values: List of values. Should be the same length as the
                        number of documents in this set.
         :returns: The new document set.
@@ -79,10 +79,10 @@ class DocumentSet:
         data[name] = values
         return DocumentSet(self.docs, data)
 
-    def remove_column(self, name: str) -> DocumentSet:
-        """ Returns a new set which has the given column removed.
+    def remove_property(self, name: str) -> DocumentSet:
+        """ Returns a new set which has the given property removed.
 
-        :param name: Name of the column.
+        :param name: Name of the property.
         :returns: The new document set.
         """
         data = self.data.copy(deep=False)
@@ -101,7 +101,7 @@ class DocumentSet:
         """ Returns a new set for which the provided predicate returned `True`.
 
         :param predicate: A function `Document, dict -> bool`. The provided
-                          dict stores the annotations of the document.
+                          dict stores the properties of the document.
         :returns: The new document set.
         """
         indices = []
@@ -295,7 +295,7 @@ class DocumentSet:
 
     def itertuples(self):
         """ Returns an iterator over `(Document, dict)` tuples, where the
-        `dict` contains the annotations of this document.
+        `dict` contains the properties of this document.
         """
         return zip(self.docs, self.data.itertuples())
 
@@ -322,7 +322,7 @@ class DocumentSet:
     def __getitem__(self, key):
         """ Returns different things depending on the key type:
 
-        * `str`: The column named `key` is returned.
+        * `str`: The property named `key` is returned.
         * `int`: The document at position `key` is returned.
         * otherwise: The call is forwarded to `DocumentSet.select`.
         """
