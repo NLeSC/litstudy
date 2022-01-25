@@ -33,7 +33,7 @@ jobs:
       - name: Build and commit
         uses: sphinx-notes/pages@v2
         with:
-          documentation_path: './doc'
+          documentation_path: './docs'
           requirements_path: '.requirements'
       - name: Push documentation
         uses: ad-m/github-push-action@master
