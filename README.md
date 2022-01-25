@@ -1,17 +1,31 @@
-# Automated Literature Analysis 
+# litstudy
 [![DOI](https://zenodo.org/badge/206312286.svg)](https://zenodo.org/badge/latestdoi/206312286)
+[![License](https://img.shields.io/github/license/nlesc/litstudy)](https://github.com/NLeSC/litstudy/blob/master/LICENSE)
 
-This repository shows an example of how to perform an automated analysis of academic literature using Jupyter notebooks and online citation databases such as Scopus, DBLP, and Semantic Scholar. This analysis detects the number of publications over time, popular authors, popular venues, popular affiliations, and popular "topics" that appear within the documents' abstracts (detected using natural language processing).
+litstudy is a Python package that allows analysis of scientific literature from the comfort of a Jypyter notebook.
+It enables selecting scientific publications and study their metadata using visualizations, network analysis, and natural language processing.
 
+In essense, this package offers five features
+
+* Extract metadata of scientific documents from various sources. The data is unitied by a standard interface, allowing data from different sources to be combined.
+* Filter, select, dudplibcate, and annotate collections of documents.
+* Compute and plot general statistics of document sets (e.g., statistics on authors, venues, publication years, etc.)
+* Generate and plot various bibliographic networks as an interactive visualization.
+* Topic discovery based on natural language processing (NLP) allows automatic discovery of popular topics.
+
+## Documentation
+
+Document is available [here](https://nlesc.github.io/litstudy/).
 
 ## Requirements
-The required Python packages can be found in `requirements.txt`. Creating a virtual Python environment is recommended (for example, `virtualenv` or `conda`). The notebook has been tested using Python 3.6. 
+The package has been tested for Python 3.6. Required packages are available in `requirements.txt`.
 
-Scopus is a citation database of peer-reviewed literature from scientific journals, books, and conference proceedings.
-To utilize the Scopus API, you (or your institute) needs a Scopus subscription and you must request an Elsevier Developer API key (see [Elsevier Developers](https://dev.elsevier.com/sc_apis.html) and [Scopus Python API](https://scopus.readthedocs.io/en/latest/) for more information). 
+To access the `Scopus` API using `litstudy`, you (or your institute) needs a Scopus subscription and you need to request an Elsevier Developer API key (see [Elsevier Developers](https://dev.elsevier.com/index.jsp).
 
+## Example
+An example notebook is available in `notebooks/example.ipynb` and [here](https://nlesc.github.io/litstudy/example.html).
 
-# Running using virtualenv
+## Running using virtualenv
 Installation using `virtualenv` is can be using the following commands:
 
 Create virtualenv environment named myenv:
@@ -36,35 +50,24 @@ ipython kernel install --user --name=myenv
 
 Run Jupyter and select `myenv` as kernel. Remaining instructions can be found within the notebook itself.
 ```
-jupyter notebook literature_analysis.ipynb --MappingKernelManager.default_kernel_name=myenv
+jupyter notebook --MappingKernelManager.default_kernel_name=myenv
 ```
 
+## License
+Apache 2.0. See [LICENSE](https://github.com/NLeSC/litstudy/blob/master/LICENSE).
 
+## Change log
+See [CHANGELOG.md](https://github.com/NLeSC/litstudy/blob/master/CHANGELOG.md).
 
-## Examples
-Below are examples of the notebook's output for the query `title-abs-key("predictive maintenance")`.
+## Contributing
+See [CONTRIBUTING.md](https://github.com/NLeSC/litstudy/blob/master/CONTRIBUTING.md).
 
+## Related work
 
-![Publications per year](img/years.png)
+Don't forget to check out these amazing software packages!
 
-*Publications per year.*
-
-
-![Top 50 authors](img/authors.png)
-
-*Top 50 authors.*
-
-
-![Top 50 publication venues](img/venues.png)
-
-*Top 50 publication venues.*
-
-
-![Detected topics visualized as word clouds.](img/cloud.png)
-
-*Detected topics visualized as word clouds.*
-
-
-![Publications embedded into 2D space based on text similarity. Each publication is labeled with its dominant topic.](img/embedding.png)
-
-*Publications embedded into 2D space based on text similarity. Each publication is labeled with its dominant topic.*
+* [ScientoPy](https://www.scientopy.com/): Open-source Python based scientometric analysis tool.
+* [pybliometrics](https://github.com/pybliometrics-dev/pybliometrics): API-Wrapper to access Scopus.
+* [metaknowledge](https://github.com/UWNETLAB/metaknowledge): Python library for doing bibliometric and network analysis in science.
+* [tethne](https://github.com/diging/tethne): Python module for bibliographic network analysis.
+* [VOSviewer](https://www.vosviewer.com/): Software tool for constructing and visualizing bibliometric networks.
