@@ -1,0 +1,853 @@
+TY  - JOUR
+TI  - The European Approach to the Exascale Challenge
+T2  - Computing in Science & Engineering
+SP  - 42
+EP  - 47
+AU  - G. Kalbe
+AU  - G. Kalbe
+PY  - 2019
+KW  - Exascale computing
+KW  - Industries
+KW  - Investment
+KW  - Technological innovation
+KW  - Ecosystems
+KW  - High performance computing
+DO  - 10.1109/MCSE.2018.2884139
+JO  - Computing in Science & Engineering
+IS  - 1
+SN  - 1558-366X
+VO  - 21
+VL  - 21
+JA  - Computing in Science & Engineering
+Y1  - 1 Jan.-Feb. 2019
+AB  - An integrated European exascale computing and data infrastructure and ecosystem are key to building a vibrant data economy and enabling Europe to stay at the forefront of scientific discovery and industrial leadership. An ambitious legal and funding framework at the European level, the European High-Performance Computing (HPC) joint undertaking, has been agreed upon between EU countries and will be operational by the end of 2018. Its purpose is to stimulate investment in the area of HPC, with two objectives: making Europe one of the top three HPC powers in the world and acquiring two exascale systems by 2023, with at least one based on European technology. The joint undertaking will combine public and private investments to develop innovative European exascale hardware and software technology components, integrate them into prototype systems co-designed with extreme scale applications, and use public procurement at the European level to invest in operational HPC technologies.
+ER  - 
+
+TY  - CONF
+TI  - Reference Exascale Architecture
+T2  - 2019 15th International Conference on eScience (eScience)
+SP  - 479
+EP  - 487
+AU  - M. Bobák
+AU  - L. Hluchy
+AU  - A. S. Z. Belloum
+AU  - R. Cushing
+AU  - J. Meizner
+AU  - P. Nowakowski
+AU  - V. Tran
+AU  - O. Habala
+AU  - J. Maassen
+AU  - B. Somosköi
+AU  - M. Graziani
+AU  - M. Heikkurinen
+AU  - M. Höb
+AU  - J. Schmidt
+PY  - 2019
+KW  - exascale computing
+KW  - architecture
+KW  - functional design
+KW  - qualitative analysis
+DO  - 10.1109/eScience.2019.00063
+JO  - 2019 15th International Conference on eScience (eScience)
+IS  - 
+SN  - 
+VO  - 
+VL  - 
+JA  - 2019 15th International Conference on eScience (eScience)
+Y1  - 24-27 Sept. 2019
+AB  - While political commitments for building exascale systems have been made, turning these systems into platforms for a wide range of exascale applications faces several technical, organisational and skills-related challenges. The key technical challenges are related to the availability of data. While the first exascale machines are likely to be built within a single site, the input data is in many cases impossible to store within a single site. Alongside handling of extreme-large amount of data, the exascale system has to process data from different sources, support accelerated computing, handle high volume of requests per day, minimize the size of data flows, and be extensible in terms of continuously increasing data as well as increase in parallel requests being sent. These technical challenges are addressed by the general reference exascale architecture. It is divided into three main blocks: virtualization layer, distributed virtual file system, and manager of computing resources. Its main property is modularity which is achieved by containerization at two levels: 1) application containers - containerization of scientific workflows, 2) micro-infrastructure - containerization of extreme-large data service-oriented infrastructure. The paper also presents an instantiation of the reference architecture - the architecture of the PROCESS project (PROviding Computing solutions for ExaScale ChallengeS) and discuss its relation to the reference exascale architecture. The PROCESS architecture has been used as an exascale platform within various exascale pilot applications. This work will present the requirements and the derived architecture as well as the 5 use cases pilots that it made possible.
+ER  - 
+
+TY  - JOUR
+TI  - Brief introduction of TianHe exascale prototype system
+T2  - Tsinghua Science and Technology
+SP  - 361
+EP  - 369
+AU  - R. Wang
+AU  - K. Lu
+AU  - J. Chen
+AU  - W. Zhang
+AU  - J. Li
+AU  - Y. Yuan
+AU  - P. Lu
+AU  - L. Huang
+AU  - S. Li
+AU  - X. Fan
+PY  - 2021
+KW  - Monitoring
+KW  - Computer architecture
+KW  - Optical switches
+KW  - Prototypes
+KW  - Supercomputers
+KW  - Microprocessors
+KW  - Network topology
+KW  - TianHe exascale system
+KW  - prototype
+KW  - proprietary CPU
+KW  - Matrix-2000+
+DO  - 10.26599/TST.2020.9010009
+JO  - Tsinghua Science and Technology
+IS  - 3
+SN  - 1007-0214
+VO  - 26
+VL  - 26
+JA  - Tsinghua Science and Technology
+Y1  - June 2021
+AB  - Facing the challenges of the next generation exascale computing, National University of Defense Technology has developed a prototype system to explore opportunities, solutions, and limits toward the next generation Tianhe system. This paper briefly introduces the prototype system, which is deployed at the National Supercomputer Center in Tianjin and has a theoretical peak performance of 3.15 Pflops. A total of 512 compute nodes are found where each node has three proprietary CPUs called Matrix-2000+. The system memory is 98.3 TB, and the storage is 1.4 PB in total.
+ER  - 
+
+TY  - CONF
+TI  - Challenges for Benchmarking, profiling and performance evaluation in the era of Exascale
+T2  - 2014 International Conference on High Performance Computing & Simulation (HPCS)
+SP  - 1035
+EP  - 1036
+AU  - D. R. C. Hill
+PY  - 2014
+KW  - Benchmark testing
+KW  - Monitoring
+KW  - High performance computing
+KW  - Educational institutions
+KW  - Computer architecture
+KW  - Power demand
+KW  - Hardware
+KW  - Exascale
+KW  - resiliency
+KW  - benchmarking
+KW  - monitoring
+KW  - energy profiling
+DO  - 10.1109/HPCSim.2014.6903809
+JO  - 2014 International Conference on High Performance Computing & Simulation (HPCS)
+IS  - 
+SN  - 
+VO  - 
+VL  - 
+JA  - 2014 International Conference on High Performance Computing & Simulation (HPCS)
+Y1  - 21-25 July 2014
+AB  - New challenges will arise with the emergence or Exascale systems. Such challenges are linked power consumption, Input/Ouput and memory performances, scalability of highly concurrent and hierarchical systems and the major one could be reliability. Codesign of software tools for Exascale machines and disruptive technologies will help to face the current challenges. In this talk we will focus on benchmarking profiling and performance analysis tools which could be the basis of scalable tool support on Exascale class machines.
+ER  - 
+
+TY  - CONF
+TI  - Monitoring of Exascale data processing
+T2  - 2019 IEEE International Conference on Advanced Scientific Computing (ICASC)
+SP  - 1
+EP  - 5
+AU  - G. Iuhasz
+AU  - D. Petcu
+PY  - 2019
+KW  - Monitoring
+KW  - Measurement
+KW  - Tools
+KW  - Event detection
+KW  - Hardware
+KW  - Computer architecture
+KW  - Task analysis
+KW  - monitoring
+KW  - exascale
+KW  - event processing
+KW  - anomaly detection
+DO  - 10.1109/ICASC48083.2019.8946279
+JO  - 2019 IEEE International Conference on Advanced Scientific Computing (ICASC)
+IS  - 
+SN  - 
+VO  - 
+VL  - 
+JA  - 2019 IEEE International Conference on Advanced Scientific Computing (ICASC)
+Y1  - 12-14 Sept. 2019
+AB  - Exascale systems are a hot topic of research in computer science. These systems in contrast to current Cloud, Big Data and HPC systems will routinely contain hundreds of thousand of nodes generating millions of events. At this scale of hardware fault and anomalous behaviour is not only more likely but to be expected. In this paper we describe the architecture of and Exascale monitoring solution coupled with an event detection component. The latter component is extremely important in order to handle the multitude of potential events. We describe the major lacking research that needs to be done, which will make event detection freezable in real world Exascale systems.
+ER  - 
+
+TY  - JOUR
+TI  - Novel Hybrid Bonding Technology Using Ultra-High Density Cu Nano-Pillar for Exascale 2.5D/3D Integration
+T2  - IEEE Electron Device Letters
+SP  - 81
+EP  - 83
+AU  - K. Lee
+AU  - J. Bea
+AU  - T. Fukushima
+AU  - S. Ramalingam
+AU  - X. Wu
+AU  - T. Tanaka
+AU  - M. Koyanagi
+PY  - 2016
+KW  - Electrodes
+KW  - Bonding
+KW  - Anisotropic conductive films
+KW  - Stacking
+KW  - Resistance
+KW  - Surface topography
+KW  - Surface treatment
+KW  - hybrid bonding
+KW  - Cu nano-pillar (CNP)
+KW  - extruded electrode
+KW  - exascale 2.5D/3D integration
+KW  - Hybrid bonding
+KW  - Cu nano-pillar (CNP)
+KW  - extruded electrode
+KW  - exascale 2.5D/3D integration
+DO  - 10.1109/LED.2015.2502584
+JO  - IEEE Electron Device Letters
+IS  - 1
+SN  - 1558-0563
+VO  - 37
+VL  - 37
+JA  - IEEE Electron Device Letters
+Y1  - Jan. 2016
+AB  - We propose a novel hybrid bonding technology with a high stacking yield using ultra-high density Cu nanopillar (CNP) for exascale 2.5D/3D integration. To solve the critical issues of a current standard hybrid bonding technology, we developed scaled electrodes with slightly extruded structure and unique adhesive layer of anisotropic conductive film composed of ultra-high density CNP. Test element group (TEG) dies with 7-mm × 23-mm size are bonded to interposer wafer by a new hybrid bonding technology. Scaled electrodes with 3-μm diameter and 6-μm pitch are formed in each TEG chip. We confirmed for the first time that a huge number of electrodes of 4309200 are successfully connected in series with the joining yield of 100% due to the ultra-high density CNP.
+ER  - 
+
+TY  - CONF
+TI  - Performance Estimation for Exascale Reconfigurable Dataflow Platforms
+T2  - 2018 International Conference on Field-Programmable Technology (FPT)
+SP  - 314
+EP  - 317
+AU  - R. Yasudo
+AU  - J. Coutinho
+AU  - A. Varbanescu
+AU  - W. Luk
+AU  - H. Amano
+AU  - T. Becker
+PY  - 2018
+KW  - Kernel
+KW  - Computational modeling
+KW  - Random access memory
+KW  - Bandwidth
+KW  - Acceleration
+KW  - Pricing
+KW  - Estimation
+KW  - Performance modelling
+KW  - exascale computing
+KW  - heterogeneous systems
+KW  - reconfigurable platforms
+KW  - FPGAs
+DO  - 10.1109/FPT.2018.00062
+JO  - 2018 International Conference on Field-Programmable Technology (FPT)
+IS  - 
+SN  - 
+VO  - 
+VL  - 
+JA  - 2018 International Conference on Field-Programmable Technology (FPT)
+Y1  - 10-14 Dec. 2018
+AB  - The next generation high-performance computing platforms will need to support exascale computing. A promising path in achieving exascale is to embrace heterogeneity and specialised computing in the form of reconfigurable accelerators. However, assessing the feasibility of heterogeneous exascale systems requires fast and accurate performance prediction. This paper proposes PERKS, a novel performance estimation frame-work for reconfigurable dataflow platforms (RDPs). PERKS uses machine and application parameters to build an analytical model for predicting the performance of multi-accelerator systems. Moreover, model calibration is automatic, making the model flexible and usable for different machine configurations and applications. Our experimental results demonstrate that PERKS can predict the performance of current workloads and RDPs with an accuracy above 95%. We also demonstrate how the modelling scales to exascale workloads and exascale platforms.
+ER  - 
+
+TY  - CONF
+TI  - Abstract: An Exascale Workload Study
+T2  - 2012 SC Companion: High Performance Computing, Networking Storage and Analysis
+SP  - 1463
+EP  - 1464
+AU  - P. Balaprakash
+AU  - D. Buntinas
+AU  - A. Chan
+AU  - A. Guha
+AU  - R. Gupta
+AU  - S. H. K. Narayanan
+AU  - A. A. Chien
+AU  - P. Hovland
+AU  - B. Norris
+PY  - 2012
+KW  - heterogeneous architectures
+KW  - accelerators
+KW  - exascale
+KW  - energy efficiency
+DO  - 10.1109/SC.Companion.2012.261
+JO  - 2012 SC Companion: High Performance Computing, Networking Storage and Analysis
+IS  - 
+SN  - 
+VO  - 
+VL  - 
+JA  - 2012 SC Companion: High Performance Computing, Networking Storage and Analysis
+Y1  - 10-16 Nov. 2012
+AB  - Amdahl's law has been one of the factors influencing speedup in high performance computing over the last few decades. While Amdahl's approach of optimizing (10% of the code is where 90% of the execution time is spent) has worked very well in the past, new challenges related to emerging exascale heterogeneous architectures, combined with stringent power and energy limitations, require a new architectural paradigm. The 10x10 approach is an effort in this direction. In this poster, we describe our initial steps and methodologies for defining and actualizing the 10x10 approach.
+ER  - 
+
+TY  - CONF
+TI  - TEXTAROSSA: Towards EXtreme scale Technologies and Accelerators for euROhpc hw/Sw Supercomputing Applications for exascale
+T2  - 2021 24th Euromicro Conference on Digital System Design (DSD)
+SP  - 286
+EP  - 294
+AU  - G. Agosta
+AU  - D. Cattaneo
+AU  - W. Fornaciari
+AU  - A. Galimberti
+AU  - G. Massari
+AU  - F. Reghenzani
+AU  - F. Terraneo
+AU  - D. Zoni
+AU  - C. Brandolese
+AU  - M. Celino
+AU  - F. Iannone
+AU  - P. Palazzari
+AU  - G. Zummo
+AU  - M. Bernaschi
+AU  - P. D’Ambra
+AU  - S. Saponara
+AU  - M. Danelutto
+AU  - M. Torquati
+AU  - M. Aldinucci
+AU  - Y. Arfat
+AU  - B. Cantalupo
+AU  - I. Colonnelli
+AU  - R. Esposito
+AU  - A. R. Martinelli
+AU  - G. Mittone
+AU  - O. Beaumont
+AU  - B. Bramas
+AU  - L. Eyraud-Dubois
+AU  - B. Goglin
+AU  - A. Guermouche
+AU  - R. Namyst
+AU  - S. Thibault
+AU  - A. Filgueras
+AU  - M. Vidal
+AU  - C. Alvarez
+AU  - X. Martorell
+AU  - A. Oleksiak
+AU  - M. Kulczewski
+AU  - A. Lonardo
+AU  - P. Vicini
+AU  - F. L. Cicero
+AU  - F. Simula
+AU  - A. Biagioni
+AU  - P. Cretaro
+AU  - O. Frezza
+AU  - P. S. Paolucci
+AU  - M. Turisini
+AU  - F. Giacomini
+AU  - T. Boccali
+AU  - S. Montangero
+AU  - R. Ammendola
+PY  - 2021
+KW  - Exascale computing
+KW  - Digital systems
+KW  - Computational modeling
+KW  - Software algorithms
+KW  - Europe
+KW  - Tools
+KW  - Programming
+KW  - High Performance Computing
+KW  - exascale
+KW  - thermal management
+KW  - power management
+KW  - run time resource management
+KW  - computing architectures
+KW  - hardware accelerators
+DO  - 10.1109/DSD53832.2021.00051
+JO  - 2021 24th Euromicro Conference on Digital System Design (DSD)
+IS  - 
+SN  - 
+VO  - 
+VL  - 
+JA  - 2021 24th Euromicro Conference on Digital System Design (DSD)
+Y1  - 1-3 Sept. 2021
+AB  - To achieve high performance and high energy efficiency on near-future exascale computing systems, three key technology gaps needs to be bridged. These gaps include: energy efficiency and thermal control; extreme computation efficiency via HW acceleration and new arithmetics; methods and tools for seamless integration of reconfigurable accelerators in heterogeneous HPC multi-node platforms. TEXTAROSSA aims at tackling this gap through a co-design approach to heterogeneous HPC solutions, supported by the integration and extension of HW and SW IPs, programming models and tools derived from European research.
+ER  - 
+
+TY  - CONF
+TI  - Exascale computing and data architectures for brownfield applications
+T2  - 2018 14th International Conference on Natural Computation, Fuzzy Systems and Knowledge Discovery (ICNC-FSKD)
+SP  - 450
+EP  - 457
+AU  - M. Bobák
+AU  - A. S. Z. Belloum
+AU  - P. Nowakowski
+AU  - J. Meizner
+AU  - M. Bubak
+AU  - M. Heikkurinen
+AU  - O. Habala
+AU  - L. Hluchý
+PY  - 2018
+KW  - exascale computing
+KW  - exascale data management
+KW  - architecture
+KW  - functional design
+KW  - brownfield applications
+DO  - 10.1109/FSKD.2018.8686900
+JO  - 2018 14th International Conference on Natural Computation, Fuzzy Systems and Knowledge Discovery (ICNC-FSKD)
+IS  - 
+SN  - 
+VO  - 
+VL  - 
+JA  - 2018 14th International Conference on Natural Computation, Fuzzy Systems and Knowledge Discovery (ICNC-FSKD)
+Y1  - 28-30 July 2018
+AB  - Despite the recent dramatic advances in the computational and data processing capacities of the commodity solutions, a numerous scientific, socioeconomic and industrial “grand challenges” exists that could be solved only through capabilities that exceed the current solutions by orders of magnitude. To demonstrate the feasibility of addressing these problems necessitating processing of exascale data sets, novel architectural approaches are needed. These architectures need to support efficient service composition and balancing infrastructure- and user-centric points of view of exascale infrastructures and services. This combination of bottom-up and top-down approaches aims at narrowing the gap between infrastructure services and paving the way towards future high capacity generations einfrastructure. The resulting architecture will help us provide computing solutions to exascale challenges within the H2020 project PROCESS<sup>1</sup><sup>1</sup>PROCESS project homepage https://www.process-project.eu/.
+ER  - 
+
+TY  - JOUR
+TI  - Silicon Photonics for Exascale Systems
+T2  - Journal of Lightwave Technology
+SP  - 547
+EP  - 562
+AU  - S. Rumley
+AU  - D. Nikolova
+AU  - R. Hendry
+AU  - Q. Li
+AU  - D. Calhoun
+AU  - K. Bergman
+PY  - 2015
+KW  - Bandwidth
+KW  - Silicon photonics
+KW  - Supercomputers
+KW  - Random access memory
+KW  - Parallel processing
+KW  - Optical waveguides
+KW  - Computer architecture
+KW  - Exascale high performance computing
+KW  - optical interconnects
+KW  - interconnection networks silicon photonics
+KW  - Exascale high performance computing
+KW  - interconnection networks silicon photonics
+KW  - optical interconnects
+DO  - 10.1109/JLT.2014.2363947
+JO  - Journal of Lightwave Technology
+IS  - 3
+SN  - 1558-2213
+VO  - 33
+VL  - 33
+JA  - Journal of Lightwave Technology
+Y1  - 1 Feb.1, 2015
+AB  - With the extraordinary growth in parallelism at all system scales driven by multicore architectures, computing performance is increasingly determined by how efficiently high-bandwidth data is communicated among the numerous compute resources. High-performance systems are especially challenged by the growing energy costs dominated by data movement. As future computing systems aim to realize the Exascale regime-surpassing 10<sup>18</sup> operations per second-achieving energy efficient high-bandwidth communication becomes paramount to scaled performance. Silicon photonics offers the possibility of delivering the needed communication bandwidths to match the growing computing powers of these highly parallel architectures with extremely scalable energy efficiency. However, the insertion of photonic interconnects is not a one-for-one replacement. The lack of practical buffering and the fundamental circuit switched nature of optical data communications require a holistic approach to designing system-wide photonic interconnection networks. New network architectures are required and must include arbitration strategies that incorporate the characteristics of the optical physical layer. This paper reviews the recent progresses in silicon photonic based interconnect devices along with the system level requirements for Exascale. We present a co-design approach for building silicon photonic interconnection networks that leverages the unique optical data movement capabilities and offers a path toward realizing future Exascale systems.
+ER  - 
+
+TY  - CONF
+TI  - ESiWACE: On European Infrastructure Efforts for Weather and Climate Modeling at Exascale
+T2  - 2019 15th International Conference on eScience (eScience)
+SP  - 498
+EP  - 501
+AU  - P. Neumann
+AU  - J. Biercamp
+PY  - 2019
+KW  - Meteorology
+KW  - Computational modeling
+KW  - Atmospheric modeling
+KW  - Europe
+KW  - Predictive models
+KW  - Data models
+KW  - Throughput
+KW  - high-performance computing
+KW  - exascale computing
+KW  - weather
+KW  - climate
+KW  - infrastructure
+DO  - 10.1109/eScience.2019.00065
+JO  - 2019 15th International Conference on eScience (eScience)
+IS  - 
+SN  - 
+VO  - 
+VL  - 
+JA  - 2019 15th International Conference on eScience (eScience)
+Y1  - 24-27 Sept. 2019
+AB  - Kilometer-scale ensemble simulations are expected to significantly boost and impact weather and climate predictions in the future. However, these simulations will only be enabled by exascale compute power and corresponding data capacity. In the following, we discuss a European effort in terms of the e-infrastructure Centre of Excellence in Simulation of Weather and Climate in Europe (ESiWACE). ESiWACE provides infrastructural means to prepare the weather and climate communities for simulations at the exascale. We give an overview of several ESiWACE infrastructure components and discuss their role in reaching the goal of kilometer-scale ensemble predictions. We particularly review the outcomes of the ESiWACE demonstrators, that is community-driven kilometer-scale models that have been developed throughout the last years.
+ER  - 
+
+TY  - JOUR
+TI  - The Optimist, the Pessimist, and the Global Race to Exascale in 20 Megawatts
+T2  - Computer
+SP  - 95
+EP  - 97
+AU  - M. Tolentino
+AU  - K. W. Cameron
+PY  - 2012
+KW  - Technological innovation
+KW  - Supercomputers
+KW  - Power system planning
+KW  - supercomputing
+KW  - exascale computing
+KW  - Green500
+DO  - 10.1109/MC.2012.34
+JO  - Computer
+IS  - 1
+SN  - 1558-0814
+VO  - 45
+VL  - 45
+JA  - Computer
+Y1  - Jan. 2012
+AB  - Multiple innovations will be required to navigate the challenging road to developing exascale systems. The stage is set for a global race to design and build the first exascale system within a 20-megawatt (MW) power envelope. Perhaps not since the race to the moon have we seen a worldwide competition of this scale and complexity.
+ER  - 
+
+TY  - JOUR
+TI  - Standardizing Power Monitoring and Control at Exascale
+T2  - Computer
+SP  - 38
+EP  - 46
+AU  - R. E. Grant
+AU  - M. Levenhagen
+AU  - S. L. Olivier
+AU  - D. DeBonis
+AU  - K. T. Pedretti
+AU  - J. H. Laros III
+PY  - 2016
+KW  - Power measurement
+KW  - Energy management
+KW  - Monitoring
+KW  - Exascale computing
+KW  - Power aware computing
+KW  - Frequency measurement
+KW  - Power system management
+KW  - Power system measurement
+KW  - Energy efficiency
+KW  - exascale computing
+KW  - power-aware computing
+KW  - control interfaces
+KW  - energy management
+KW  - power management
+KW  - high-performance computing
+KW  - power measurement
+KW  - power monitoring
+KW  - energy-efficient computing
+DO  - 10.1109/MC.2016.308
+JO  - Computer
+IS  - 10
+SN  - 1558-0814
+VO  - 49
+VL  - 49
+JA  - Computer
+Y1  - Oct. 2016
+AB  - Power API-the result of collaboration among national laboratories, universities, and major vendors-provides a range of standardized power management functions, from application-level control and measurement to facility-level accounting, including real-time and historical statistics gathering. Support is already available for Intel and AMD CPUs and standalone measurement devices.
+ER  - 
+
+TY  - CONF
+TI  - Novel W2W/C2W Hybrid Bonding Technology with High Stacking Yield Using Ultra-Fine Size, Ultra-High Density Cu Nano-Pillar (CNP) for Exascale 2.5D/3D Integration
+T2  - 2016 IEEE 66th Electronic Components and Technology Conference (ECTC)
+SP  - 350
+EP  - 355
+AU  - K. W. Lee
+AU  - C. Nagai
+AU  - J. C. Bea
+AU  - T. Fukushima
+AU  - T. Tanaka
+AU  - M. Koyanagi
+AU  - R. Suresh
+AU  - X. W. Xilinx
+PY  - 2016
+KW  - Electrodes
+KW  - Bonding
+KW  - Resistance
+KW  - Anisotropic conductive films
+KW  - Surface treatment
+KW  - Stacking
+KW  - Field programmable gate arrays
+KW  - Hybrid bonding
+KW  - Cu nano-pillar (CNP)
+KW  - extruded electrode
+KW  - exascale 2.5D/3D integration
+DO  - 10.1109/ECTC.2016.10
+JO  - 2016 IEEE 66th Electronic Components and Technology Conference (ECTC)
+IS  - 
+SN  - 
+VO  - 
+VL  - 
+JA  - 2016 IEEE 66th Electronic Components and Technology Conference (ECTC)
+Y1  - 31 May-3 June 2016
+AB  - We propose a novel hybrid bonding technology with a high stacking yield using ultra-high density Cu nano-pillar (CNP) for exascale 2.5D/3D integration. To solve the critical issues of current standard hybrid bonding technology, we developed scaled electrodes with slightly extruded structure and unique adhesive layer of anisotropic conductive film composed of untra-fine size, ultra-high density CNP. Multi-number of TEG dies with 7mm x 23mm size are bonded to an interposer wafer by a new hybrid bonding technology. A huge number of electrodes of 4,309,200 composed of scaled electrodes with 3μm diameter and 6μm pitch are formed in each TEG die. We confirmed for the first time that 4,309,200 electrodes per die are successfully connected in series with the joining yield of 100% due to ultra-high density CNP.
+ER  - 
+
+TY  - CONF
+TI  - The role of photonics in future exascale data systems
+T2  - 2016 21st OptoElectronics and Communications Conference (OECC) held jointly with 2016 International Conference on Photonics in Switching (PS)
+SP  - 1
+EP  - 3
+AU  - S. J. Ben Yoo
+PY  - 2016
+KW  - Optical switches
+KW  - Data systems
+KW  - Network topology
+KW  - Topology
+KW  - Arrayed waveguide gratings
+KW  - Optical transmitters
+KW  - exascale computing
+KW  - data systems
+KW  - optical interconnects
+KW  - high radix switch
+DO  - 
+JO  - 2016 21st OptoElectronics and Communications Conference (OECC) held jointly with 2016 International Conference on Photonics in Switching (PS)
+IS  - 
+SN  - 
+VO  - 
+VL  - 
+JA  - 2016 21st OptoElectronics and Communications Conference (OECC) held jointly with 2016 International Conference on Photonics in Switching (PS)
+Y1  - 3-7 July 2016
+AB  - We discuss the role of photonics in our pursuit for future exascale data systems. High-throughput, low-latency, low-contention, and high-radix switching together with energy-efficient silicon photonics intimately integrated with electronics will be vitally important.
+ER  - 
+
+TY  - CONF
+TI  - Torus Networking for Exascale Cloud Storage System
+T2  - 2015 9th International Conference on Future Generation Communication and Networking (FGCN)
+SP  - 37
+EP  - 40
+AU  - J. Park
+AU  - H. Kim
+AU  - Y. Kim
+PY  - 2015
+KW  - Network topology
+KW  - Routing
+KW  - Topology
+KW  - Routing protocols
+KW  - IP networks
+KW  - Servers
+KW  - Torus networking
+KW  - Exascale storage
+KW  - IP routing
+KW  - distributed file system
+DO  - 10.1109/FGCN.2015.16
+JO  - 2015 9th International Conference on Future Generation Communication and Networking (FGCN)
+IS  - 
+SN  - 2153-1463
+VO  - 
+VL  - 
+JA  - 2015 9th International Conference on Future Generation Communication and Networking (FGCN)
+Y1  - 25-28 Nov. 2015
+AB  - Rapid growth of data volume has been requiring consequent expansion of storage size. There have been research topics about various technologies for Exascale storage implementation. The implementation may be a challenge topic because size and speed have to be satisfied at the same time. In this paper, we designed a cloud file system based on IP Torus networking and tested the feasibility with Quagga in respect of reachability and network performance in 4X4 2D Torus topology. The result showed that OSPF is applicable to Torus networking and it has good reachability and performance.
+ER  - 
+
+TY  - CONF
+TI  - Resilience Challenges for Exascale Systems
+T2  - 2009 24th IEEE International Symposium on Defect and Fault Tolerance in VLSI Systems
+SP  - 379
+EP  - 379
+AU  - N. P. Jouppi
+PY  - 2009
+KW  - Resilience
+KW  - Microprocessors
+KW  - Computer architecture
+KW  - Very large scale integration
+KW  - Technological innovation
+KW  - Timing
+KW  - CMOS technology
+KW  - Fault tolerant systems
+KW  - Power system reliability
+KW  - Cloud computing
+KW  - Resilience
+KW  - exascale systems
+KW  - isolation
+KW  - duplication
+KW  - checkpointing
+DO  - 10.1109/DFT.2009.52
+JO  - 2009 24th IEEE International Symposium on Defect and Fault Tolerance in VLSI Systems
+IS  - 
+SN  - 2377-7966
+VO  - 
+VL  - 
+JA  - 2009 24th IEEE International Symposium on Defect and Fault Tolerance in VLSI Systems
+Y1  - 7-9 Oct. 2009
+AB  - The combination of decreasing device reliability due to deep submicron scaling, increasing integration, and the size of future exascale high-performance computers and cloud datacenters pose significant challenges for system resilience. Furthermore, with power and cost being of critical importance, resilience must be provided efficiently and economically. Although providing resilience will require a range of approaches at all levels of the system stack, the final responsibility rests at the system level. In addition to highlighting challenges, this talk reviews and introduces promising system-level techniques such as configurable isolation, duplication caching, multicore DIMMs, CoVeRT, and 3D checkpointing.
+ER  - 
+
+TY  - CONF
+TI  - VEF3 Traces: Towards a Complete Framework for Modelling Network Workloads for Exascale Systems
+T2  - 2018 IEEE 4th International Workshop on High-Performance Interconnection Networks in the Exascale and Big-Data Era (HiPINEB)
+SP  - 32
+EP  - 39
+AU  - J. Cano-Cano
+AU  - F. J. Andujar
+AU  - F. J. Alfaro
+AU  - J. L. Sanchez
+PY  - 2018
+KW  - Tools
+KW  - Multiprocessor interconnection
+KW  - Computational modeling
+KW  - Libraries
+KW  - System-on-chip
+KW  - Protocols
+KW  - Coherence
+KW  - Interconnection networks
+KW  - Modeling and simulation tool
+KW  - Exascale workloads
+KW  - Performance evaluation
+DO  - 10.1109/HiPINEB.2018.00013
+JO  - 2018 IEEE 4th International Workshop on High-Performance Interconnection Networks in the Exascale and Big-Data Era (HiPINEB)
+IS  - 
+SN  - 
+VO  - 
+VL  - 
+JA  - 2018 IEEE 4th International Workshop on High-Performance Interconnection Networks in the Exascale and Big-Data Era (HiPINEB)
+Y1  - 24-24 Feb. 2018
+AB  - To meet the expected performance requirements of applications running on future exascale systems, the number of processing nodes included in such systems will have to increase and, according to the current trend, also the number of cores in each node. In these systems, the networks, both off- and on-chip, interconnecting these nodes and cores inside nodes, respectively, will have to be much more efficient than current ones. In order to develop and research on interconnection networks, simulation is the most common technique used. Simulators traditionally have used synthetic traffic as network workload which does not represent the network workload that real applications generate. The use of application communication trace files is a best strategy for this purpose. In this paper, we extend an existing tool including functionality related to communication within each node. In this way, the tool will allow interconnection network simulators to model traffic due to all the communications generated in the exascale systems.
+ER  - 
+
+TY  - CONF
+TI  - Exascale computing - A fact or a fiction?
+T2  - 2013 IEEE 27th International Symposium on Parallel and Distributed Processing
+SP  - 3
+EP  - 3
+AU  - S. Borkar
+PY  - 2013
+KW  - Computer architecture
+KW  - Physics
+KW  - Parallel processing
+KW  - Programming
+KW  - Educational institutions
+KW  - Distributed processing
+DO  - 10.1109/IPDPS.2013.121
+JO  - 2013 IEEE 27th International Symposium on Parallel and Distributed Processing
+IS  - 
+SN  - 1530-2075
+VO  - 
+VL  - 
+JA  - 2013 IEEE 27th International Symposium on Parallel and Distributed Processing
+Y1  - 20-24 May 2013
+AB  - Summary form only given. Compute performance increased by orders of magnitude in the last few decades, made possible by continued technology scaling, increasing frequency, providing integration capacity to realize novel architectures, and reducing energy to keep power dissipation within limit. The technology treadmill will continue, and one would expect to reach Exascale level performance this decade; however, it's the same Physics that helped you in the past will now pose some barriers-Business as usual will not be an option. The energy and power will pose as a major challenge-an Exascale machine would consume in excess of a Giga-watt! Memory &amp; communication bandwidth with conventional technology would be prohibitive. Orders of magnitude increased parallelism, let alone explosion of parallelism created by energy saving techniques, would increase unreliability. And programming system will be posed with even severe challenge of harnessing the performance with concurrency. This talk will discuss potential solutions in all disciplines, such as circuit design, test, architecture, system design, programming system, and resiliency to pave the road towards Exascale performance.
+ER  - 
+
+TY  - JOUR
+TI  - Achieving Exascale Capabilities through Heterogeneous Computing
+T2  - IEEE Micro
+SP  - 26
+EP  - 36
+AU  - M. J. Schulte
+AU  - M. Ignatowski
+AU  - G. H. Loh
+AU  - B. M. Beckmann
+AU  - W. C. Brantley
+AU  - S. Gurumurthi
+AU  - N. Jayasena
+AU  - I. Paul
+AU  - S. K. Reinhardt
+AU  - G. Rodgers
+PY  - 2015
+KW  - Graphics processing units
+KW  - Random access memory
+KW  - Bandwidth
+KW  - Memory management
+KW  - Energy efficiency
+KW  - Supercomputers
+KW  - Computer programs
+KW  - exascale computing
+KW  - heterogeneous computing
+KW  - energy efficiency
+KW  - data-parallel computing
+KW  - hardware
+DO  - 10.1109/MM.2015.71
+JO  - IEEE Micro
+IS  - 4
+SN  - 1937-4143
+VO  - 35
+VL  - 35
+JA  - IEEE Micro
+Y1  - July-Aug. 2015
+AB  - This article provides an overview of AMD's vision for exascale computing, and in particular, how heterogeneity will play a central role in realizing this vision. Exascale computing requires high levels of performance capabilities while staying within stringent power budgets. Using hardware optimized for specific functions is much more energy efficient than implementing those functions with general-purpose cores. However, there is a strong desire for supercomputer customers not to have to pay for custom components designed only for high-end high-performance computing systems. Therefore, high-volume GPU technology becomes a natural choice for energy-efficient data-parallel computing. To fully realize the GPU's capabilities, the authors envision exascale computing nodes that compose integrated CPUs and GPUs (that is, accelerated processing units), along with the hardware and software support to enable scientists to effectively run their scientific experiments on an exascale system. The authors discuss the hardware and software challenges in building a heterogeneous exascale system and describe ongoing research efforts at AMD to realize their exascale vision.
+ER  - 
+
+TY  - JOUR
+TI  - Increasing Scientific Data Insights about Exascale Class Simulations under Power and Storage Constraints
+T2  - IEEE Computer Graphics and Applications
+SP  - 8
+EP  - 11
+AU  - J. Ahrens
+AU  - T. Rhyne
+PY  - 2015
+KW  - Simulation
+KW  - High performance computing
+KW  - Scientific computing
+KW  - VIsualization
+KW  - Energy storage
+KW  - Costs
+KW  - computer graphics
+KW  - visualization
+KW  - high-performance computing
+KW  - exascale computing
+KW  - scientific visualization
+KW  - in situ visualization and analysis
+KW  - power costs
+KW  - storage costs
+DO  - 10.1109/MCG.2015.35
+JO  - IEEE Computer Graphics and Applications
+IS  - 2
+SN  - 1558-1756
+VO  - 35
+VL  - 35
+JA  - IEEE Computer Graphics and Applications
+Y1  - Mar.-Apr. 2015
+AB  - Creating the next-generation high-performance simulation and analysis environment will be a significant challenge because of power and storage technology trends. Responding to these challenges will require rethinking and reframing how we approach visualization and analysis. A key difference is the need to keep track of a cost per insight in terms of power and storage used. To reduce power and storage costs, an emerging community consensus is that significantly more visualization and analysis should occur in situ--that is, during the simulation run while the data is resident in memory. Using this approach, we need to consider what scientific insights are sought, balanced by power and storage constraints, and then output only the minimal analysis data needed during the simulation run. Emerging research challenges include exploring what types of analysis questions can be answered during postprocessing with compact data products that are generated in situ and what mathematical or statistical techniques will best support this process.
+ER  - 
+
+TY  - CONF
+TI  - Highly scalable checkpointing for exascale computing
+T2  - 2010 IEEE International Symposium on Parallel & Distributed Processing, Workshops and Phd Forum (IPDPSW)
+SP  - 1
+EP  - 4
+AU  - C. Karlsson
+AU  - Z. Chen
+PY  - 2010
+KW  - Checkpointing
+KW  - Computational modeling
+KW  - High performance computing
+KW  - Application software
+KW  - Scalability
+KW  - Encoding
+KW  - Computer architecture
+KW  - Earthquakes
+KW  - Large-scale systems
+KW  - Delay
+KW  - diskless checkpointing
+KW  - exascale
+KW  - multi failure
+KW  - topology aware
+DO  - 10.1109/IPDPSW.2010.5470810
+JO  - 2010 IEEE International Symposium on Parallel & Distributed Processing, Workshops and Phd Forum (IPDPSW)
+IS  - 
+SN  - 
+VO  - 
+VL  - 
+JA  - 2010 IEEE International Symposium on Parallel & Distributed Processing, Workshops and Phd Forum (IPDPSW)
+Y1  - 19-23 April 2010
+AB  - A consequence of the fact that the number of processors in High Performance Computers (HPC) continues to increase is demonstrated by the correlation between Mean-Time-To-Failure(T<sub>MTTF</sub> ) and application execution time. The T<sub>MTTF</sub> is becoming shorter than the expected execution time for many next generation HPC applications. There is an ability to handle failure without a system-wide breakdown in most architecture, but many of the applications do not have a built-in ability to survive node failures. The purpose of this paper is to present an approach to develop a highly scalable technique to allow the next generation applications to survive node and/or link failure without aborting the computation. We will develop several strategies to improve the scalability of diskless checkpointing. The technique is scalable in the sense that when the number of processes increases, the overhead to handle k failures on p processes should remain as constant as possible. We will present the proposed technique, initial results together with remaining objectives and challenges.
+ER  - 
+
+TY  - CONF
+TI  - Cost-Effective Optics: Enabling the Exascale Roadmap
+T2  - 2009 17th IEEE Symposium on High Performance Interconnects
+SP  - 133
+EP  - 137
+AU  - A. F. Benner
+PY  - 2009
+KW  - Optical receivers
+KW  - Optical transmitters
+KW  - Optical fiber networks
+KW  - Optical sensors
+KW  - Telecommunication traffic
+KW  - Optical interconnections
+KW  - LAN interconnection
+KW  - Delay
+KW  - Large-scale systems
+KW  - Network servers
+KW  - Optics
+KW  - Optical Interconnect
+KW  - Petascale
+KW  - Exascale
+DO  - 10.1109/HOTI.2009.26
+JO  - 2009 17th IEEE Symposium on High Performance Interconnects
+IS  - 
+SN  - 2332-5569
+VO  - 
+VL  - 
+JA  - 2009 17th IEEE Symposium on High Performance Interconnects
+Y1  - 25-27 Aug. 2009
+AB  - The biggest disruptive impact of cost-effective optics will simply be that if it succeeds, the interconnect will be able to (barely) keep up with the increased system-level performance demands.
+ER  - 
+
+TY  - CONF
+TI  - Trends in High Performance Computing: Exascale Systems and Facilities Beyond the First Wave
+T2  - 2019 18th IEEE Intersociety Conference on Thermal and Thermomechanical Phenomena in Electronic Systems (ITherm)
+SP  - 167
+EP  - 176
+AU  - L. A. Parnell
+AU  - D. W. Demetriou
+AU  - V. Kamath
+AU  - E. Y. Zhang
+PY  - 2019
+KW  - Conferences
+KW  - exascale
+KW  - high performance computing
+KW  - energy efficiency
+DO  - 10.1109/ITHERM.2019.8757229
+JO  - 2019 18th IEEE Intersociety Conference on Thermal and Thermomechanical Phenomena in Electronic Systems (ITherm)
+IS  - 
+SN  - 2577-0799
+VO  - 
+VL  - 
+JA  - 2019 18th IEEE Intersociety Conference on Thermal and Thermomechanical Phenomena in Electronic Systems (ITherm)
+Y1  - 28-31 May 2019
+AB  - The demand for computing at extreme scale continues to drive the performance of high-performance computing systems to exascale and has recently resulted in plans worldwide to field such systems, including an acquisition of three such systems planned by the United States in 2021 to 2023. China, Japan, and Europe also have programs leading to deployment of exascale systems in the next decade. Vendor response to this continuing demand for more computing power has led to unabated increases in performance that are enabling the fielding of exascale systems featuring a combination of traditional processors and, now prominently, co-processors, such as graphics processing units. The first exascale systems are currently expected to necessitate facilities that can provide massive resources: as much as 40 MW of electrical power; up to 13,000 tons of liquid cooling; 250 thousand to 1 million CFM of forced air cooling; and 15,000 square feet of facility space. As the historic trend in HPC has long indicated, the advent of the first exascale systems in the early 2020's will be just the initial wave of systems at such scale, followed later in the decade by others in increasing numbers that will be continually more efficient and compact, requiring less power, cooling and space. This paper addresses the trends which will characterize such systems and facilities beyond the first wave of exascale, enabling the deployment of leading-edge computer systems to the larger communities of organizations and sites that cannot provide the huge facilities that will be required for the first-wave of exascale computers. These trends are now discernable from the data published in recent TOP500 and Green500 semiannual lists, as well as from developments evident in the processors, systems, and facilities slated to characterize the newest and highest performing systems worldwide. Extension of exascale beyond the first wave will require power and cooling needs, and thus facilities cost of operation, that can be sustained by a growing community of sites and organizations who heretofore have fielded the now-dominant architecture staple of data center facilities - air-cooled designs based on commodity-processor rack clusters. The balance between custom hardware designs along with acquisition and operational costs for the compute/network/storage racks requires an evolutionary approach where the solution deployed can leverage existing infrastructure and allow for enhancements with a TCO mindset. As compute silicon power increases with no reduction in rack power in sight, the migration path from traditional air cooled or liquid assisted cooling to a more direct liquid-to-node approach requires planning and standardization of deployment and validation of the solution. Infrastructure compatibility across vendors of cooling equipment and systems could be needed to ensure success for new cooling approaches to be consumed in the data center. Highlighted in this paper are the challenges and opportunities these second wave of exascale facilities operators need to be cognizant of while developing a data center strategy over the next decade.
+ER  - 
+
+
