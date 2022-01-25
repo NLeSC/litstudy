@@ -11,7 +11,9 @@ Welcome to litstudy's documentation!
    :caption: Contents:
 
    Introduction <self>
+   example
    api/index
+   license
 
 
 
