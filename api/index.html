@@ -15,11 +15,12 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Data Types" href="types.html" />
-    <link rel="prev" title="Welcome to litstudy’s documentation!" href="../index.html" /> 
+    <link rel="prev" title="Example of using litstudy" href="../example.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -40,6 +41,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example.html">Example of using litstudy</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API reference</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="types.html">Data Types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sources.html">Literature Databases</a></li>
@@ -49,6 +51,7 @@
 <li class="toctree-l2"><a class="reference internal" href="nlp.html">Language Processing</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 </ul>
 
         </div>
@@ -75,21 +78,45 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="api-reference">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="api-reference">
 <h1>API reference<a class="headerlink" href="#api-reference" title="Permalink to this headline"></a></h1>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="types.html">Data Types</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sources.html">Literature Databases</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="sources.html#module-litstudy">Scopus</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sources.html#module-0">SemanticScholar</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sources.html#module-1">CrossRef</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sources.html#module-2">bibtex</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sources.html#module-3">RIS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sources.html#module-4">dblp</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sources.html#module-5">IEEE Xplore</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sources.html#module-6">Springer Link</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sources.html#scopus">Scopus</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sources.html#semanticscholar">SemanticScholar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sources.html#crossref">CrossRef</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sources.html#bibtex">bibtex</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sources.html#ris">RIS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sources.html#dblp">dblp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sources.html#ieee-xplore">IEEE Xplore</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sources.html#springer-link">Springer Link</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="stats.html">Calculating Statistics</a></li>
@@ -104,7 +131,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../index.html" class="btn btn-neutral float-left" title="Welcome to litstudy’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../example.html" class="btn btn-neutral float-left" title="Example of using litstudy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="types.html" class="btn btn-neutral float-right" title="Data Types" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

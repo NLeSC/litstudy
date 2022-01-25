@@ -15,9 +15,11 @@
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="License" href="../license.html" />
     <link rel="prev" title="Network Analysis" href="network.html" /> 
 </head>
 
@@ -39,6 +41,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../example.html">Example of using litstudy</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">API reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="types.html">Data Types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sources.html">Literature Databases</a></li>
@@ -48,6 +51,7 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Language Processing</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 </ul>
 
         </div>
@@ -75,105 +79,32 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-litstudy.nlp">
-<span id="language-processing"></span><h1>Language Processing<a class="headerlink" href="#module-litstudy.nlp" title="Permalink to this headline"></a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="litstudy.nlp.Corpus">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">litstudy.nlp.</span></span><span class="sig-name descname"><span class="pre">Corpus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_tokens</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.nlp.Corpus" title="Permalink to this definition"></a></dt>
-<dd><p>Contains the word-frequency vectors for a set of documents. See
-<cite>build_corpus</cite> for more information.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="litstudy.nlp.Corpus.dictionary">
-<span class="sig-name descname"><span class="pre">dictionary</span></span><a class="headerlink" href="#litstudy.nlp.Corpus.dictionary" title="Permalink to this definition"></a></dt>
-<dd><p>The dictionary that maps indices to words
-(<cite>gensim.corpora.Dictionary</cite>).</p>
-</dd></dl>
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="litstudy.nlp.Corpus.frequencies">
-<span class="sig-name descname"><span class="pre">frequencies</span></span><a class="headerlink" href="#litstudy.nlp.Corpus.frequencies" title="Permalink to this definition"></a></dt>
-<dd><p>List of word frequency vectors. Each vector corresponds to one
-document and consists of <cite>(word_index, frequency)</cite> tuples.</p>
-</dd></dl>
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
 
-</dd></dl>
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
 
-<dl class="py function">
-<dt class="sig sig-object py" id="litstudy.nlp.build_corpus">
-<span class="sig-prename descclassname"><span class="pre">litstudy.nlp.</span></span><span class="sig-name descname"><span class="pre">build_corpus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_words</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_word_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_docs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_docs_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.75</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_tokens</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace_words</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">custom_bigrams</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ngram_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#litstudy.nlp.Corpus" title="litstudy.nlp.Corpus"><span class="pre">litstudy.nlp.Corpus</span></a></span></span><a class="headerlink" href="#litstudy.nlp.build_corpus" title="Permalink to this definition"></a></dt>
-<dd><p>Build a <cite>Corpus</cite> object.</p>
-<p>This function takes the words from the title/abstract of the given
-documents, preprocesses the tokens, and returns a corpus consisting of a
-word frequency vector for each document. This preprocessing stage is
-highly customizable, thus it is advised to experiment with the many
-parameters.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>remove_words</strong> – list of words that should be ignored while building
-the word frequency vectors.</p></li>
-<li><p><strong>min_word_length</strong> – Words shorter than this are ignored.</p></li>
-<li><p><strong>min_docs</strong> – Words that occur in fewer than this many documents are
-ignored.</p></li>
-<li><p><strong>max_docs_ratio</strong> – Words that occur in more than this document are
-ignored. Should be ratio between 0 and 1.</p></li>
-<li><p><strong>max_tokens</strong> – Only the top most common tokens are preserved.</p></li>
-<li><p><strong>replace_words</strong> – Replace words by other words. Must be a <cite>dict</cite>
-containing <em>original word</em> to <em>replacement word</em>
-pairs.</p></li>
-<li><p><strong>custom_bigrams</strong> – Add custom bigrams. Must be a <cite>dict</cite> where keys
-are <cite>(first, second)</cite> tuples and values are
-replacements. For example, the key can be
-<cite>(“Big”, “Data”)</cite> and the value <cite>“BigData”</cite>.</p></li>
-<li><p><strong>ngram_threshold</strong> – Threshold used for n-gram detection. Is passed
-to <cite>gensim.models.phrases.Phrases</cite> to detect
-common n-grams.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a <cite>Corpus object</cite>.</p>
-</dd>
-</dl>
-</dd></dl>
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
 
-<dl class="py class">
-<dt class="sig sig-object py" id="litstudy.nlp.TopicModel">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">litstudy.nlp.</span></span><span class="sig-name descname"><span class="pre">TopicModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictionary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doc2topic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topic2token</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.nlp.TopicModel" title="Permalink to this definition"></a></dt>
-<dd><p>Topic model trained by one of the <cite>train_*_model</cite> functions.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="litstudy.nlp.train_nmf_model">
-<span class="sig-prename descclassname"><span class="pre">litstudy.nlp.</span></span><span class="sig-name descname"><span class="pre">train_nmf_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#litstudy.nlp.Corpus" title="litstudy.nlp.Corpus"><span class="pre">litstudy.nlp.Corpus</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_topics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#litstudy.nlp.TopicModel" title="litstudy.nlp.TopicModel"><span class="pre">litstudy.nlp.TopicModel</span></a></span></span><a class="headerlink" href="#litstudy.nlp.train_nmf_model" title="Permalink to this definition"></a></dt>
-<dd><p>Train a topic model using NMF.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>num_topics</strong> – The number of topics to train.</p></li>
-<li><p><strong>seed</strong> – The seed used for random number generation.</p></li>
-<li><p><strong>max_iter</strong> – The maximum number of iterations to use for training.
-More iterations mean better results, but longer training
-times.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="litstudy.nlp.train_lda_model">
-<span class="sig-prename descclassname"><span class="pre">litstudy.nlp.</span></span><span class="sig-name descname"><span class="pre">train_lda_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#litstudy.nlp.Corpus" title="litstudy.nlp.Corpus"><span class="pre">litstudy.nlp.Corpus</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_topics</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#litstudy.nlp.TopicModel" title="litstudy.nlp.TopicModel"><span class="pre">litstudy.nlp.TopicModel</span></a></span></span><a class="headerlink" href="#litstudy.nlp.train_lda_model" title="Permalink to this definition"></a></dt>
-<dd><p>Train a topic model using LDA.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>num_topics</strong> – The number of topics to train.</p></li>
-<li><p><strong>seed</strong> – The seed used for random number generation.</p></li>
-<li><p><strong>kwargs</strong> – Arguments passed to <cite>gensim.models.lda.LdaModel</cite>.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="language-processing">
+<h1>Language Processing<a class="headerlink" href="#language-processing" title="Permalink to this headline"></a></h1>
 </section>
 
 
@@ -181,6 +112,7 @@ times.</p></li>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="network.html" class="btn btn-neutral float-left" title="Network Analysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../license.html" class="btn btn-neutral float-right" title="License" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
