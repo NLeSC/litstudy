@@ -295,22 +295,28 @@ def train_lda_model(corpus: Corpus, num_topics, seed=0, **kwargs
     return TopicModel(dic, doc2topic, topic2token)
 
 
-def plot_word_distribution(corpus, *, limit=25, **kwargs):
+def compute_word_distribution(corpus, *, limit=None):
     """ """
     counter = defaultdict(int)
     dic = corpus.dictionary
-    n = len(corpus.frequencies)
 
     for vector in corpus.frequencies:
         for i, _ in vector:
             counter[i] += 1
 
-    best = sorted(counter, key=lambda k: counter[k], reverse=True)[:limit]
-    data = pd.DataFrame(
-            index=[dic[i] for i in best],
-            data=dict(count=[counter[i] for i in best])
+    keys = sorted(counter, key=lambda k: counter[k], reverse=True)[:limit]
+    if limit is not None:
+        keys = keys[:limit]
+
+    return pd.DataFrame(
+            index=[dic[i] for i in keys],
+            data=dict(count=[counter[i] for i in keys])
     )
 
+def plot_word_distribution(corpus, *, limit=25, **kwargs):
+    """ """
+    n = len(corpus.frequencies)
+    data = compute_word_distribution(corpus, limit=limit)
     return plot_histogram(data, relative_to=n, **kwargs)
 
 

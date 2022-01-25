@@ -37,6 +37,7 @@ from .nlp import \
         train_nmf_model, \
         train_lda_model, \
         plot_topic_clouds, \
+        compute_word_distribution, \
         plot_word_distribution, \
         calculate_embedding, \
         plot_embedding
