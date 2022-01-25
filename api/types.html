@@ -83,7 +83,7 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">litstudy.types.</span></span><span class="sig-name descname"><span class="pre">DocumentSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.types.DocumentSet" title="Permalink to this definition"></a></dt>
 <dd><p>Represents a set of documents.</p>
 <p><cite>DocumentSet</cite> stores a list of <cite>Document</cite> objects. Optionally, a pandas
-data frame can be provided which stores additional annotations on the
+data frame can be provided which stores additional properties on the
 documents.</p>
 <p>All set operations are accepted by <cite>DocumentSet</cite> (union, intersection,
 difference), allowing for new sets to be created from existing sets.</p>
@@ -91,13 +91,13 @@ difference), allowing for new sets to be created from existing sets.</p>
 Instead, most methods below return a new <cite>DocumentSet</cite> instead of
 performing modifications in-place.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="litstudy.types.DocumentSet.add_column">
-<span class="sig-name descname"><span class="pre">add_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.types.DocumentSet.add_column" title="Permalink to this definition"></a></dt>
-<dd><p>Returns a new set which has an additional column added.</p>
+<dt class="sig sig-object py" id="litstudy.types.DocumentSet.add_property">
+<span class="sig-name descname"><span class="pre">add_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.types.DocumentSet.add_property" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a new set which has an additional property added.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> – Name of the new column.</p></li>
+<li><p><strong>name</strong> – Name of the new property.</p></li>
 <li><p><strong>values</strong> – List of values. Should be the same length as the
 number of documents in this set.</p></li>
 </ul>
@@ -109,12 +109,12 @@ number of documents in this set.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="litstudy.types.DocumentSet.remove_column">
-<span class="sig-name descname"><span class="pre">remove_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.types.DocumentSet.remove_column" title="Permalink to this definition"></a></dt>
-<dd><p>Returns a new set which has the given column removed.</p>
+<dt class="sig sig-object py" id="litstudy.types.DocumentSet.remove_property">
+<span class="sig-name descname"><span class="pre">remove_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.types.DocumentSet.remove_property" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a new set which has the given property removed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>name</strong> – Name of the column.</p>
+<dd class="field-odd"><p><strong>name</strong> – Name of the property.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>The new document set.</p>
@@ -143,7 +143,7 @@ number of documents in this set.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>predicate</strong> – A function <cite>Document, dict -&gt; bool</cite>. The provided
-dict stores the annotations of the document.</p>
+dict stores the properties of the document.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>The new document set.</p>
@@ -245,7 +245,7 @@ from <cite>self</cite>.</p>
 <dt class="sig sig-object py" id="litstudy.types.DocumentSet.itertuples">
 <span class="sig-name descname"><span class="pre">itertuples</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.types.DocumentSet.itertuples" title="Permalink to this definition"></a></dt>
 <dd><p>Returns an iterator over <cite>(Document, dict)</cite> tuples, where the
-<cite>dict</cite> contains the annotations of this document.</p>
+<cite>dict</cite> contains the properties of this document.</p>
 </dd></dl>
 
 </dd></dl>
