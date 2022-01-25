@@ -59,7 +59,13 @@ def preprocess_merge_ngrams(texts, threshold):
     texts = list(texts)
     phrases = gensim.models.phrases.Phrases(texts, threshold=threshold,
                                             scoring='npmi')
-    return phrases[texts]
+
+    for text in texts:
+        for word, score in phrases.analyze_sentence(text):
+            if score is not None:
+                text.append(word)
+
+        yield text
 
 
 def preprocess_outliers(texts, min_docs, max_docs):
