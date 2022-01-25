@@ -458,7 +458,7 @@ print(len(docs_notfound), &#39;papers were not found and were discarded&#39;)
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|██████████| 1440/1440 [00:03&lt;00:00, 397.74it/s]
+100%|██████████| 1440/1440 [00:03&lt;00:00, 382.80it/s]
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -664,24 +664,103 @@ litstudy.plot_source_histogram(docs, mapper=mapping, limit=15);
 </section>
 <section id="Topic-modeling">
 <h2>Topic modeling<a class="headerlink" href="#Topic-modeling" title="Permalink to this headline"></a></h2>
-<p>litstudy supports automatic topic discovery based on the words used in documents abstracts. We show an example below. First, we need to build a corpus from the document set. Note that <code class="docutils literal notranslate"><span class="pre">build_corpus</span></code> supports many arguments to tweak the preprocessing stage of building the corpus.</p>
+<p>litstudy supports automatic topic discovery based on the words used in documents abstracts. We show an example below. First, we need to build a corpus from the document set. Note that <code class="docutils literal notranslate"><span class="pre">build_corpus</span></code> supports many arguments to tweak the preprocessing stage of building the corpus. In this example, we pass <code class="docutils literal notranslate"><span class="pre">ngram_threshold=0.85</span></code> which will add commonly used n-grams (i.e., frequent consecutive words) to the corpus.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>bigrams = {
-    (&quot;big&quot;, &quot;data&quot;): &quot;big_data&quot;,
-    (&quot;neural&quot;, &quot;network&quot;): &quot;neural_network&quot;,
-    (&quot;deep&quot;, &quot;learning&quot;): &quot;deep_learning&quot;,
-}
-
-corpus = litstudy.build_corpus(docs, custom_bigrams=bigrams)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>corpus = litstudy.build_corpus(docs, ngram_threshold=0.8)
 </pre></div>
 </div>
 </div>
-<p>Let’s visualize the word distribution from this corpus. This indicate how often this word occurs across all documents.</p>
+<p>We can compute a word distribution using <code class="docutils literal notranslate"><span class="pre">litstudy.compute_word_distribution</span></code> which how often each word occurs across all documents. In this example, we filter out the bigrams by only showing the words that contain an <code class="docutils literal notranslate"><span class="pre">_</span></code>. We see that words such as <code class="docutils literal notranslate"><span class="pre">artificial</span> <span class="pre">intelligence</span></code> and <code class="docutils literal notranslate"><span class="pre">trade</span> <span class="pre">offs</span></code> have been recognized as common bigrams.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>litstudy.compute_word_distribution(corpus).filter(like=&#39;_&#39;, axis=0).sort_index()
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>artificial_intelligence</th>
+      <td>13</td>
+    </tr>
+    <tr>
+      <th>author_exclusive</th>
+      <td>41</td>
+    </tr>
+    <tr>
+      <th>berlin_heidelberg</th>
+      <td>83</td>
+    </tr>
+    <tr>
+      <th>chinese_academy</th>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>coarse_grained</th>
+      <td>16</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>synthetic_aperture</th>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>trade_offs</th>
+      <td>10</td>
+    </tr>
+    <tr>
+      <th>unified_device</th>
+      <td>108</td>
+    </tr>
+    <tr>
+      <th>xeon_phi</th>
+      <td>21</td>
+    </tr>
+    <tr>
+      <th>zhejiang_university</th>
+      <td>6</td>
+    </tr>
+  </tbody>
+</table>
+<p>63 rows × 1 columns</p>
+</div></div>
+</div>
+<p>Let’s visualize the word distribution from this corpus.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>plt.figure(figsize=(20, 3))
@@ -693,12 +772,12 @@ litstudy.plot_word_distribution(corpus, limit=50, title=&quot;Top words&quot;, v
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/example_32_0.png" src="_images/example_32_0.png" />
+<img alt="_images/example_34_0.png" src="_images/example_34_0.png" />
 </div>
 </div>
 <p>The word distribution looks like what we would expect. Next, we run a NMF topic model for 15 topics.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>num_topics = 15
@@ -708,7 +787,7 @@ topic_model = litstudy.train_nmf_model(corpus, num_topics, max_iter=250)
 </div>
 <p>To visualize the output of NMF, we can plot the each discovered topic as a word cloud. The size of each word indicates the importance of that word for that topic.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>plt.figure(figsize=(15, 5))
@@ -720,13 +799,13 @@ litstudy.nlp.plot_topic_clouds(topic_model, ncols=5);
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/example_36_0.png" src="_images/example_36_0.png" />
+<img alt="_images/example_38_0.png" src="_images/example_38_0.png" />
 </div>
 </div>
 <p>These 15 topics look promising. For example, there is one topic on graph processing, one on OpenACC, one on OpenCL, one on FPGAs, etc.</p>
 <p>We can visualize the results as a “landscape” plot. This is a visual appealing way to place documents on a map. The documents are placed such that similar documents are located closed to each other. However, this is a non-linear embedding so the distances between the documents are not linear.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>plt.figure(figsize=(20, 20))
@@ -734,43 +813,34 @@ litstudy.plot_embedding(corpus, topic_model);
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area stderr docutils container">
-<div class="highlight"><pre>
-/home/stijn/.local/lib/python3.8/site-packages/sklearn/manifold/_t_sne.py:691: FutureWarning: &#39;square_distances&#39; has been introduced in 0.24 to help phase out legacy squaring behavior. The &#39;legacy&#39; setting will be removed in 1.1 (renaming of 0.26), and the default setting will be changed to True. In 1.3, &#39;square_distances&#39; will be removed altogether, and distances will be squared by default. Set &#39;square_distances&#39;=True to silence this warning.
-  warnings.warn(
-</pre></div></div>
-</div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/example_38_1.png" src="_images/example_38_1.png" />
+<img alt="_images/example_40_0.png" src="_images/example_40_0.png" />
 </div>
 </div>
 </section>
 <section id="Advanced-topic-modeling">
 <h2>Advanced topic modeling<a class="headerlink" href="#Advanced-topic-modeling" title="Permalink to this headline"></a></h2>
 <p>We can combine the results of topic modeling with the plotting of statistics. Here we show we a simple example.</p>
-<p>First, we find the topic id for the topic that most strongly belongs to “big_data”. Next, we annotate the document set with a “bigdata_topic” tag for document that strongly belong to this topic (i.e., weight above a certain threshold).</p>
-<p>After this, we define two groups: documents that have the tag “bigdata_topic” and documents that do not have this tag. We can, for example, print the publications over the years to see if interest in Big Data computing has increased or decreased over the years.</p>
+<p>First, we find the topic id for the topic that most strongly belongs to “deep_learning”. Next, we annotate the document set with a “dl_topic” tag for document that strongly belong to this topic (i.e., weight above a certain threshold).</p>
+<p>After this, we define two groups: documents that have the tag “dl_topic” and documents that do not have this tag. We can, for example, print the publications over the years to see if interest in deep learning has increased or decreased over the years.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>bigdata_topic_id = topic_model.best_topic_for_token(&#39;big_data&#39;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>topic_id = topic_model.best_topic_for_token(&#39;deep_learning&#39;)
 
-threshold = 0.25
-is_bigdata = topic_model.doc2topic[:, bigdata_topic_id] &gt; threshold
+threshold = 0.2
+dl_topic = topic_model.doc2topic[:, topic_id] &gt; threshold
 
-docs = docs.add_property(&#39;bigdata_topic&#39;, is_bigdata)
+docs = docs.add_property(&#39;dl_topic&#39;, dl_topic)
 
 
 groups = {
-    &#39;BigData-related&#39;: &#39;bigdata_topic&#39;,
-    &#39;non-BigData&#39;: &#39;not bigdata_topic&#39;,
+    &#39;deep learning related&#39;: &#39;dl_topic&#39;,
+    &#39;other&#39;: &#39;1 - dl_topic&#39;,
 }
 
 litstudy.plot_year_histogram(docs, groups=groups, stacked=True);
@@ -781,15 +851,152 @@ litstudy.plot_year_histogram(docs, groups=groups, stacked=True);
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/example_41_0.png" src="_images/example_41_0.png" />
+<img alt="_images/example_43_0.png" src="_images/example_43_0.png" />
 </div>
 </div>
-<p>Alternatively, we can plot the two groups for the publications source. We can see that some journals/conferences have a strong focus on Big Data computing (for example, “Journal of Big Data”), while others have no or few publications on this topic (for example, “Journal of Real Time Image Processing”).</p>
+<p>The histogram shows that interest in deep learning is clearly rising over the years. We can even calculate the exact amount by calculating the percentage of documents on deep learning each year. The example below shows that this percentage has increased from just 3.4% in 2011 to 13.6% in 2021.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>table = litstudy.compute_year_histogram(docs, groups=groups)
+table = (table.T / table.sum(axis=1)).T * 100
+table
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>deep learning related</th>
+      <th>other</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2005</th>
+      <td>0.000000</td>
+      <td>100.000000</td>
+    </tr>
+    <tr>
+      <th>2006</th>
+      <td>0.000000</td>
+      <td>100.000000</td>
+    </tr>
+    <tr>
+      <th>2007</th>
+      <td>0.000000</td>
+      <td>100.000000</td>
+    </tr>
+    <tr>
+      <th>2008</th>
+      <td>6.250000</td>
+      <td>93.750000</td>
+    </tr>
+    <tr>
+      <th>2009</th>
+      <td>0.000000</td>
+      <td>100.000000</td>
+    </tr>
+    <tr>
+      <th>2010</th>
+      <td>2.127660</td>
+      <td>97.872340</td>
+    </tr>
+    <tr>
+      <th>2011</th>
+      <td>3.409091</td>
+      <td>96.590909</td>
+    </tr>
+    <tr>
+      <th>2012</th>
+      <td>2.941176</td>
+      <td>97.058824</td>
+    </tr>
+    <tr>
+      <th>2013</th>
+      <td>3.738318</td>
+      <td>96.261682</td>
+    </tr>
+    <tr>
+      <th>2014</th>
+      <td>3.305785</td>
+      <td>96.694215</td>
+    </tr>
+    <tr>
+      <th>2015</th>
+      <td>9.565217</td>
+      <td>90.434783</td>
+    </tr>
+    <tr>
+      <th>2016</th>
+      <td>7.272727</td>
+      <td>92.727273</td>
+    </tr>
+    <tr>
+      <th>2017</th>
+      <td>3.448276</td>
+      <td>96.551724</td>
+    </tr>
+    <tr>
+      <th>2018</th>
+      <td>7.200000</td>
+      <td>92.800000</td>
+    </tr>
+    <tr>
+      <th>2019</th>
+      <td>9.027778</td>
+      <td>90.972222</td>
+    </tr>
+    <tr>
+      <th>2020</th>
+      <td>9.734513</td>
+      <td>90.265487</td>
+    </tr>
+    <tr>
+      <th>2021</th>
+      <td>13.600000</td>
+      <td>86.400000</td>
+    </tr>
+    <tr>
+      <th>2022</th>
+      <td>14.285714</td>
+      <td>85.714286</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Alternatively, we can plot the two groups for the publications source. We can see that some journals/conferences have more focus on deep learning (for example, “Neural Computing and Applications”), while others have no or few publications on this topic (for example, “Journal of Real Time Image Processing”).</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>plt.figure(figsize=(10, 10))
+
+dl_topic = topic_model.doc2topic[:, topic_id] &gt; .1
+docs = docs.add_property(&#39;dl_topic&#39;, dl_topic)
+
 litstudy.plot_source_histogram(docs, groups=groups, limit=25, stacked=True);
 </pre></div>
 </div>
@@ -798,7 +1005,15 @@ litstudy.plot_source_histogram(docs, groups=groups, limit=25, stacked=True);
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/example_43_0.png" src="_images/example_43_0.png" />
+<img alt="_images/example_47_0.png" src="_images/example_47_0.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
 </div>
 </div>
 </section>
