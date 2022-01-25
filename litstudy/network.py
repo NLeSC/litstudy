@@ -171,15 +171,16 @@ def build_base_network(docs, directed, colors=None, cmap=None,
 
         assert len(colors) == len(docs)
 
-        if all(isinstance(c, int) for c in colors):
+        if all(isinstance(c, float) for c in colors):
+            begin, end = min(colors), max(colors)
+            cmap = sns.color_palette(cmap, as_cmap=True)
+            colors = [cmap(float(c - begin) / (end - begin)) for c in colors]
+        #if all(isinstance(c, int) for c in colors):
+        else:
             groups = dict((c, i) for i, c in enumerate(sorted(set(colors))))
             cmap = sns.color_palette(cmap, n_colors=len(groups))
             colors = [cmap[groups[c]] for c in colors]
 
-        elif all(isinstance(c, float) for c in colors):
-            begin, end = min(colors), max(colors)
-            cmap = sns.color_palette(cmap, as_cmap=True)
-            colors = [cmap(float(c - begin) / (end - begin)) for c in colors]
 
         for i, c in enumerate(colors):
             g.nodes[i]['color'] = c
