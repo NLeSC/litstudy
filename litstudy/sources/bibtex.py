@@ -34,14 +34,18 @@ def find_doi(entry):
 
         return None
 
-    doi = None
-    for key in ['doi', 'link', 'url', 'howpublished']:
-        if key in entry:
-            if doi := extract(entry[key]):
-                break
+    if result := entry.get('doi', '').strip():
+        doi = result
+    else:
+        doi = None
 
-    if not doi:
-        return None
+        for key in ['doi', 'link', 'url', 'howpublished']:
+            if key in entry:
+                if doi := extract(entry[key]):
+                    break
+
+        if not doi:
+            return None
 
     # Remove URL prefix
     prefix = 'https://doi.org/'
@@ -127,10 +131,11 @@ class BibDocument(Document):
 
     @property
     def publication_source(self):
-        if 'journal' in self.entry:
-            return self.entry['journal']
-        elif 'booktitle' in self.entry:
-            return self.entry['booktitle']
+        if result := self.entry.get('journal'):
+            return result
+
+        if result := self.entry.get('booktitle'):
+            return result
 
         return None
 
