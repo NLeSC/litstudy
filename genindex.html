@@ -38,6 +38,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="example.html">Example of using litstudy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
@@ -75,6 +76,7 @@
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
  | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#K"><strong>K</strong></a>
  | <a href="#L"><strong>L</strong></a>
@@ -117,12 +119,24 @@
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/nlp.html#litstudy.nlp.TopicModel.best_documents_for_topic">best_documents_for_topic() (litstudy.nlp.TopicModel method)</a>
+</li>
+      <li><a href="api/nlp.html#litstudy.nlp.TopicModel.best_token_for_topic">best_token_for_topic() (litstudy.nlp.TopicModel method)</a>
+</li>
+      <li><a href="api/nlp.html#litstudy.nlp.TopicModel.best_token_weights_for_topic">best_token_weights_for_topic() (litstudy.nlp.TopicModel method)</a>
+</li>
+      <li><a href="api/nlp.html#litstudy.nlp.TopicModel.best_tokens_for_topic">best_tokens_for_topic() (litstudy.nlp.TopicModel method)</a>
+</li>
+      <li><a href="api/nlp.html#litstudy.nlp.TopicModel.best_topic_for_documents">best_topic_for_documents() (litstudy.nlp.TopicModel method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/nlp.html#litstudy.nlp.TopicModel.best_topic_for_token">best_topic_for_token() (litstudy.nlp.TopicModel method)</a>
+</li>
       <li><a href="api/network.html#litstudy.network.build_citation_network">build_citation_network() (in module litstudy.network)</a>
 </li>
       <li><a href="api/network.html#litstudy.network.build_coauthor_network">build_coauthor_network() (in module litstudy.network)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/network.html#litstudy.network.build_cocitation_network">build_cocitation_network() (in module litstudy.network)</a>
 </li>
       <li><a href="api/nlp.html#litstudy.nlp.build_corpus">build_corpus() (in module litstudy.nlp)</a>
@@ -135,6 +149,8 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/nlp.html#litstudy.nlp.calculate_embedding">calculate_embedding() (in module litstudy.nlp)</a>
+</li>
       <li><a href="api/types.html#litstudy.types.Document.citation_count">citation_count (litstudy.types.Document property)</a>
 </li>
       <li><a href="api/types.html#litstudy.types.Document.citations">citations (litstudy.types.Document property)</a>
@@ -161,6 +177,8 @@
 </li>
       <li><a href="api/stats.html#litstudy.stats.compute_source_type_histogram">compute_source_type_histogram() (in module litstudy.stats)</a>
 </li>
+      <li><a href="api/nlp.html#litstudy.nlp.compute_word_distribution">compute_word_distribution() (in module litstudy.nlp)</a>
+</li>
       <li><a href="api/stats.html#litstudy.stats.compute_year_histogram">compute_year_histogram() (in module litstudy.stats)</a>
 </li>
       <li><a href="api/types.html#litstudy.types.DocumentSet.concat">concat() (litstudy.types.DocumentSet method)</a>
@@ -179,10 +197,14 @@
 </li>
       <li><a href="api/types.html#litstudy.types.DocumentSet.difference">difference() (litstudy.types.DocumentSet method)</a>
 </li>
+      <li><a href="api/nlp.html#litstudy.nlp.TopicModel.doc2topic">doc2topic (litstudy.nlp.TopicModel attribute)</a>
+</li>
       <li><a href="api/types.html#litstudy.types.Document">Document (class in litstudy.types)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/nlp.html#litstudy.nlp.TopicModel.document_topics">document_topics() (litstudy.nlp.TopicModel method)</a>
+</li>
       <li><a href="api/types.html#litstudy.types.DocumentIdentifier">DocumentIdentifier (class in litstudy.types)</a>
 </li>
       <li><a href="api/types.html#litstudy.types.DocumentSet">DocumentSet (class in litstudy.types)</a>
@@ -206,6 +228,14 @@
       <li><a href="api/types.html#litstudy.types.DocumentSet.filter_docs">filter_docs() (litstudy.types.DocumentSet method)</a>
 </li>
       <li><a href="api/nlp.html#litstudy.nlp.Corpus.frequencies">frequencies (litstudy.nlp.Corpus attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/nlp.html#litstudy.nlp.generate_topic_cloud">generate_topic_cloud() (in module litstudy.nlp)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -340,18 +370,46 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/plot.html#litstudy.plot.plot_affiliation_histogram">plot_affiliation_histogram() (in module litstudy.plot)</a>
+</li>
+      <li><a href="api/plot.html#litstudy.plot.plot_author_affiliation_histogram">plot_author_affiliation_histogram() (in module litstudy.plot)</a>
+</li>
+      <li><a href="api/plot.html#litstudy.plot.plot_author_histogram">plot_author_histogram() (in module litstudy.plot)</a>
+</li>
       <li><a href="api/network.html#litstudy.network.plot_citation_network">plot_citation_network() (in module litstudy.network)</a>
 </li>
       <li><a href="api/network.html#litstudy.network.plot_coauthor_network">plot_coauthor_network() (in module litstudy.network)</a>
 </li>
       <li><a href="api/network.html#litstudy.network.plot_cocitation_network">plot_cocitation_network() (in module litstudy.network)</a>
 </li>
+      <li><a href="api/plot.html#litstudy.plot.plot_continent_histogram">plot_continent_histogram() (in module litstudy.plot)</a>
+</li>
+      <li><a href="api/plot.html#litstudy.plot.plot_country_histogram">plot_country_histogram() (in module litstudy.plot)</a>
+</li>
       <li><a href="api/network.html#litstudy.network.plot_coupling_network">plot_coupling_network() (in module litstudy.network)</a>
+</li>
+      <li><a href="api/plot.html#litstudy.plot.plot_embedding">plot_embedding() (in module litstudy.plot)</a>
+</li>
+      <li><a href="api/plot.html#litstudy.plot.plot_language_histogram">plot_language_histogram() (in module litstudy.plot)</a>
 </li>
       <li><a href="api/network.html#litstudy.network.plot_network">plot_network() (in module litstudy.network)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/plot.html#litstudy.plot.plot_number_authors_histogram">plot_number_authors_histogram() (in module litstudy.plot)</a>
+</li>
+      <li><a href="api/plot.html#litstudy.plot.plot_source_histogram">plot_source_histogram() (in module litstudy.plot)</a>
+</li>
+      <li><a href="api/plot.html#litstudy.plot.plot_source_type_histogram">plot_source_type_histogram() (in module litstudy.plot)</a>
+</li>
+      <li><a href="api/plot.html#litstudy.plot.plot_topic_cloud">plot_topic_cloud() (in module litstudy.plot)</a>
+</li>
+      <li><a href="api/plot.html#litstudy.plot.plot_topic_clouds">plot_topic_clouds() (in module litstudy.plot)</a>
+</li>
+      <li><a href="api/plot.html#litstudy.plot.plot_word_distribution">plot_word_distribution() (in module litstudy.plot)</a>
+</li>
+      <li><a href="api/plot.html#litstudy.plot.plot_year_histogram">plot_year_histogram() (in module litstudy.plot)</a>
+</li>
       <li><a href="api/types.html#litstudy.types.Document.publication_date">publication_date (litstudy.types.Document property)</a>
 </li>
       <li><a href="api/types.html#litstudy.types.Document.publication_source">publication_source (litstudy.types.Document property)</a>
@@ -418,6 +476,8 @@
         <li><a href="api/types.html#litstudy.types.DocumentIdentifier.title">(litstudy.types.DocumentIdentifier property)</a>
 </li>
       </ul></li>
+      <li><a href="api/nlp.html#litstudy.nlp.TopicModel.topic2token">topic2token (litstudy.nlp.TopicModel attribute)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/nlp.html#litstudy.nlp.TopicModel">TopicModel (class in litstudy.nlp)</a>

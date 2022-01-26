@@ -19,7 +19,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="License" href="../license.html" />
+    <link rel="next" title="Plotting Statistics" href="plot.html" />
     <link rel="prev" title="Network Analysis" href="network.html" /> 
 </head>
 
@@ -41,14 +41,15 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../example.html">Example of using litstudy</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">API reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="types.html">Data Types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sources.html">Literature Databases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="stats.html">Calculating Statistics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot.html">Plotting Statistics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="network.html">Network Analysis</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Language Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot.html">Plotting Statistics</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
@@ -168,6 +169,69 @@ common n-grams.</p></li>
 <dt class="sig sig-object py" id="litstudy.nlp.TopicModel">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">litstudy.nlp.</span></span><span class="sig-name descname"><span class="pre">TopicModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dictionary</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">doc2topic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">topic2token</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.nlp.TopicModel" title="Permalink to this definition"></a></dt>
 <dd><p>Topic model trained by one of the <cite>train_*_model</cite> functions.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="litstudy.nlp.TopicModel.doc2topic">
+<span class="sig-name descname"><span class="pre">doc2topic</span></span><a class="headerlink" href="#litstudy.nlp.TopicModel.doc2topic" title="Permalink to this definition"></a></dt>
+<dd><p><cite>N x T</cite> matrix that stores the weights towards each of the T
+topics for the N documents.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="litstudy.nlp.TopicModel.topic2token">
+<span class="sig-name descname"><span class="pre">topic2token</span></span><a class="headerlink" href="#litstudy.nlp.TopicModel.topic2token" title="Permalink to this definition"></a></dt>
+<dd><p><cite>T x M</cite> matrix that stores the weights towards each of the M
+tokens for each of the T topics</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="litstudy.nlp.TopicModel.best_documents_for_topic">
+<span class="sig-name descname"><span class="pre">best_documents_for_topic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topic_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#litstudy.nlp.TopicModel.best_documents_for_topic" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the documents that most strongly belong to the given
+topic.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="litstudy.nlp.TopicModel.document_topics">
+<span class="sig-name descname"><span class="pre">document_topics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.nlp.TopicModel.document_topics" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a numpy array indicating the weights towards the different
+topic for the given document. These weight sum up to one.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="litstudy.nlp.TopicModel.best_token_weights_for_topic">
+<span class="sig-name descname"><span class="pre">best_token_weights_for_topic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topic_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.nlp.TopicModel.best_token_weights_for_topic" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a list of <cite>(token, weight)</cite> tuples for the tokens that
+most strongly belong to the given topic.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="litstudy.nlp.TopicModel.best_tokens_for_topic">
+<span class="sig-name descname"><span class="pre">best_tokens_for_topic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topic_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.nlp.TopicModel.best_tokens_for_topic" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the top tokens that most strongly belong to the given
+topic.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="litstudy.nlp.TopicModel.best_token_for_topic">
+<span class="sig-name descname"><span class="pre">best_token_for_topic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">topic_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#litstudy.nlp.TopicModel.best_token_for_topic" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the token that most strongly belongs to the given
+topic.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="litstudy.nlp.TopicModel.best_topic_for_token">
+<span class="sig-name descname"><span class="pre">best_topic_for_token</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">token</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#litstudy.nlp.TopicModel.best_topic_for_token" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the topic index that most strongly belongs to the given
+token.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="litstudy.nlp.TopicModel.best_topic_for_documents">
+<span class="sig-name descname"><span class="pre">best_topic_for_documents</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#litstudy.nlp.TopicModel.best_topic_for_documents" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the topic for each document that most strongly belongs
+to that document.</p>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="py function">
@@ -202,6 +266,41 @@ times.</p></li>
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.nlp.compute_word_distribution">
+<span class="sig-prename descclassname"><span class="pre">litstudy.nlp.</span></span><span class="sig-name descname"><span class="pre">compute_word_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#litstudy.nlp.Corpus" title="litstudy.nlp.Corpus"><span class="pre">litstudy.nlp.Corpus</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.core.frame.DataFrame</span></span></span><a class="headerlink" href="#litstudy.nlp.compute_word_distribution" title="Permalink to this definition"></a></dt>
+<dd><p>Returns dataframe that indicates, for each word, the number of
+documents that mention that word.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.nlp.generate_topic_cloud">
+<span class="sig-prename descclassname"><span class="pre">litstudy.nlp.</span></span><span class="sig-name descname"><span class="pre">generate_topic_cloud</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#litstudy.nlp.TopicModel" title="litstudy.nlp.TopicModel"><span class="pre">litstudy.nlp.TopicModel</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">topic_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_font_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">75</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'white'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">wordcloud.wordcloud.WordCloud</span></span></span><a class="headerlink" href="#litstudy.nlp.generate_topic_cloud" title="Permalink to this definition"></a></dt>
+<dd><p>Generate a word cloud for the given topic from the given topic model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cmap</strong> – The color map used to color the words.</p></li>
+<li><p><strong>max_font_size</strong> – Size of the word which most strongly belongs to the
+topic. The other words are scaled accordingly.</p></li>
+<li><p><strong>background_color</strong> – Background color.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.nlp.calculate_embedding">
+<span class="sig-prename descclassname"><span class="pre">litstudy.nlp.</span></span><span class="sig-name descname"><span class="pre">calculate_embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#litstudy.nlp.Corpus" title="litstudy.nlp.Corpus"><span class="pre">litstudy.nlp.Corpus</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">svd_dims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">perplexity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.nlp.calculate_embedding" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate a document embedding that assigns each document in the
+corpus a N-d position based on the word usage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of N-d tuples for the documents in the corpus.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 
@@ -209,7 +308,7 @@ times.</p></li>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="network.html" class="btn btn-neutral float-left" title="Network Analysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../license.html" class="btn btn-neutral float-right" title="License" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="plot.html" class="btn btn-neutral float-right" title="Plotting Statistics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

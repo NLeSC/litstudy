@@ -41,14 +41,15 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../example.html">Example of using litstudy</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API reference</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="types.html">Data Types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sources.html">Literature Databases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="stats.html">Calculating Statistics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot.html">Plotting Statistics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="network.html">Network Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nlp.html">Language Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot.html">Plotting Statistics</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
@@ -104,8 +105,30 @@
 </style>
 <section id="api-reference">
 <h1>API reference<a class="headerlink" href="#api-reference" title="Permalink to this headline"></a></h1>
+<p>This page provides the API documentation of litstudy.
+All public functions are re-exported under the global <cite>litstudy</cite> namespace for convenience.
+However, the code is structured hierachical meaning the documentation shows the hierarchical names.
+For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">docs</span> <span class="o">=</span> <span class="n">litstudy</span><span class="o">.</span><span class="n">sources</span><span class="o">.</span><span class="n">scopus</span><span class="o">.</span><span class="n">search_scopus</span><span class="p">(</span><span class="s2">&quot;example&quot;</span><span class="p">)</span>
+<span class="n">litstudy</span><span class="o">.</span><span class="n">plot</span><span class="o">.</span><span class="n">plot_author_histogram</span><span class="p">(</span><span class="n">docs</span><span class="p">)</span>
+
+<span class="c1"># Is equivalent to</span>
+
+<span class="n">docs</span> <span class="o">=</span> <span class="n">litstudy</span><span class="o">.</span><span class="n">search_scopus</span><span class="p">(</span><span class="s2">&quot;example&quot;</span><span class="p">)</span>
+<span class="n">litstudy</span><span class="o">.</span><span class="n">plot_author_histogram</span><span class="p">(</span><span class="n">docs</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The package is divided into 6 modules:</p>
+<ul class="simple">
+<li><p>Core data types such as <cite>Document</cite> and <cite>DocumentSet</cite>.</p></li>
+<li><p>Functions to retrieve or load scientific citations.</p></li>
+<li><p>Compute general statistics.</p></li>
+<li><p>Generate bibliographic networks.</p></li>
+<li><p>Automatic topic detection using natural language processing (NLP).</p></li>
+<li><p>Plot results. These functions are mostly useful inside a notebook.</p></li>
+</ul>
 <div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<p class="caption" role="heading"><span class="caption-text">Contents</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="types.html">Data Types</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sources.html">Literature Databases</a><ul>
@@ -120,9 +143,9 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="stats.html">Calculating Statistics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="plot.html">Plotting Statistics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="network.html">Network Analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="nlp.html">Language Processing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plot.html">Plotting Statistics</a></li>
 </ul>
 </div>
 </section>

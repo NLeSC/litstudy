@@ -41,14 +41,15 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../example.html">Example of using litstudy</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">API reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Data Types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sources.html">Literature Databases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="stats.html">Calculating Statistics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="plot.html">Plotting Statistics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="network.html">Network Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nlp.html">Language Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plot.html">Plotting Statistics</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
@@ -103,9 +104,15 @@
     text-align: unset;
 }
 </style>
-<section id="module-litstudy.types">
-<span id="data-types"></span><h1>Data Types<a class="headerlink" href="#module-litstudy.types" title="Permalink to this headline"></a></h1>
-<dl class="py class">
+<section id="data-types">
+<h1>Data Types<a class="headerlink" href="#data-types" title="Permalink to this headline"></a></h1>
+<p>There are two core datatypes in litstudy: <cite>Document</cite> and <cite>DocumentSet</cite>.</p>
+<p><cite>Document</cite> is an abstract base class (ABC) that provides access to the metadata of documents in a unified way.
+Different backends provide their own implements of this class (for example, <cite>ScopusDocument</cite>, <cite>BibTexDocument</cite>, etc.)</p>
+<p><cite>DocumentSet</cite> is set of <cite>Document</cite> objects.
+All set operations are supported, making it possible to create a new set from existing sets.
+For instance, it is possible to load documents from two sources (obtaining two <cite>DocumentSets</cite>) and merge them (obtaining one large <cite>DocumentSet</cite>).</p>
+<span class="target" id="module-litstudy.types"></span><dl class="py class">
 <dt class="sig sig-object py" id="litstudy.types.DocumentSet">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">litstudy.types.</span></span><span class="sig-name descname"><span class="pre">DocumentSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.types.DocumentSet" title="Permalink to this definition"></a></dt>
 <dd><p>Represents a set of documents.</p>

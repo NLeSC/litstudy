@@ -19,8 +19,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Network Analysis" href="network.html" />
-    <link rel="prev" title="Calculating Statistics" href="stats.html" /> 
+    <link rel="next" title="License" href="../license.html" />
+    <link rel="prev" title="Language Processing" href="nlp.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -41,14 +41,15 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../index.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../example.html">Example of using litstudy</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">API reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="types.html">Data Types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sources.html">Literature Databases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="stats.html">Calculating Statistics</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Plotting Statistics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="network.html">Network Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nlp.html">Language Processing</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Plotting Statistics</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
@@ -105,14 +106,102 @@
 </style>
 <section id="module-litstudy.plot">
 <span id="plotting-statistics"></span><h1>Plotting Statistics<a class="headerlink" href="#module-litstudy.plot" title="Permalink to this headline"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.plot.plot_year_histogram">
+<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_year_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_year_histogram" title="Permalink to this definition"></a></dt>
+<dd><p>Plot histogram of the number of documents published in each year.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.plot.plot_author_histogram">
+<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_author_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_author_histogram" title="Permalink to this definition"></a></dt>
+<dd><p>Plot histogram of the number of documents published per author.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.plot.plot_number_authors_histogram">
+<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_number_authors_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_number_authors_histogram" title="Permalink to this definition"></a></dt>
+<dd><p>Plot histogram of the number of authors per document.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.plot.plot_author_affiliation_histogram">
+<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_author_affiliation_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_author_affiliation_histogram" title="Permalink to this definition"></a></dt>
+<dd><p>Plot histogram of the number of documents published per author
+affiliation.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.plot.plot_language_histogram">
+<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_language_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_language_histogram" title="Permalink to this definition"></a></dt>
+<dd><p>Plot histogram of the number of documents by language.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.plot.plot_source_histogram">
+<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_source_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_source_histogram" title="Permalink to this definition"></a></dt>
+<dd><p>Plot histogram of the number of documents by publication source.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.plot.plot_source_type_histogram">
+<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_source_type_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_source_type_histogram" title="Permalink to this definition"></a></dt>
+<dd><p>Plot histogram of the number of documents by publication source
+type.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.plot.plot_affiliation_histogram">
+<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_affiliation_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_affiliation_histogram" title="Permalink to this definition"></a></dt>
+<dd><p>Plot histogram of the number of documents by author affiliation.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.plot.plot_country_histogram">
+<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_country_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_country_histogram" title="Permalink to this definition"></a></dt>
+<dd><p>Plot histogram of the number of documents by country of author
+affiliation.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.plot.plot_continent_histogram">
+<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_continent_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_continent_histogram" title="Permalink to this definition"></a></dt>
+<dd><p>Plot histogram of the number of documents by continent of author
+affiliation.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.plot.plot_word_distribution">
+<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_word_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="nlp.html#litstudy.nlp.Corpus" title="litstudy.nlp.Corpus"><span class="pre">litstudy.nlp.Corpus</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_word_distribution" title="Permalink to this definition"></a></dt>
+<dd><p>Plot the frequency of the top words in the given corpus.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.plot.plot_embedding">
+<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_embedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="nlp.html#litstudy.nlp.Corpus" title="litstudy.nlp.Corpus"><span class="pre">litstudy.nlp.Corpus</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="nlp.html#litstudy.nlp.TopicModel" title="litstudy.nlp.TopicModel"><span class="pre">litstudy.nlp.TopicModel</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">layout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_embedding" title="Permalink to this definition"></a></dt>
+<dd><p>TODO</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.plot.plot_topic_clouds">
+<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_topic_clouds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="nlp.html#litstudy.nlp.TopicModel" title="litstudy.nlp.TopicModel"><span class="pre">litstudy.nlp.TopicModel</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_topic_clouds" title="Permalink to this definition"></a></dt>
+<dd><p>Plot word clouds for each of the topics from the given topic model.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.plot.plot_topic_cloud">
+<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_topic_cloud</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="nlp.html#litstudy.nlp.TopicModel" title="litstudy.nlp.TopicModel"><span class="pre">litstudy.nlp.TopicModel</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">topic_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_topic_cloud" title="Permalink to this definition"></a></dt>
+<dd><p>Plot a word cloud for the given topic from the given topic model.</p>
+</dd></dl>
+
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="stats.html" class="btn btn-neutral float-left" title="Calculating Statistics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="network.html" class="btn btn-neutral float-right" title="Network Analysis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="nlp.html" class="btn btn-neutral float-left" title="Language Processing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../license.html" class="btn btn-neutral float-right" title="License" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
