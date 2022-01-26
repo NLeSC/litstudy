@@ -21,20 +21,24 @@ jobs:
     steps:
       - name: Setup python
         uses: actions/setup-python@v2
+        with:
+            python-version: '3.8'
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
       - name: Setup dependencies
         run: |
           sudo apt-get update
           sudo apt-get install python3-sphinx pandoc
-          python -m pip install --upgrade pip sphinx_rtd_theme unidecode nbsphinx
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
-        name: Checkout
+          python -m pip install --upgrade pip
+          python -m pip install sphinx_rtd_theme unidecode nbsphinx wheel
+          python -m pip install .[doc]
       - name: Build and commit
         uses: sphinx-notes/pages@v2
         with:
           documentation_path: './docs'
-          requirements_path: '.requirements'
+          requirements_path: 'requirements.txt'
       - name: Push documentation
         uses: ad-m/github-push-action@master
         with:
