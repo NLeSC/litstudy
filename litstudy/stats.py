@@ -145,7 +145,7 @@ def compute_source_histogram(docs: DocumentSet, mapper=None, **kwargs
 
 
 def compute_source_type_histogram(docs: DocumentSet, **kwargs
-                             ) -> pd.DataFrame:
+                                  ) -> pd.DataFrame:
     """ Compute a histogram of number of documents by source type. """
     def extract(doc):
         return [doc.source_type or '(unknown)']
@@ -226,8 +226,8 @@ def compute_country_histogram(docs: DocumentSet, **kwargs) -> pd.DataFrame:
 
 
 def compute_continent_histogram(docs: DocumentSet, **kwargs) -> pd.DataFrame:
-    """ Compute a histogram of number of documents by affiliation 
-        continent. 
+    """ Compute a histogram of number of documents by affiliation
+        continent.
     """
     from .continent import COUNTRY_TO_CONTINENT
 

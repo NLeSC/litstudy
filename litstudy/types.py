@@ -252,7 +252,6 @@ class DocumentSet:
                 dtype = right[col].dtype
                 left[col] = np.array(default_val(dtype)).astype(dtype)
 
-
         data = pd.concat([left, right], ignore_index=True)
         docs = self.docs + other.docs
         return DocumentSet(docs, data)

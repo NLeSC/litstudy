@@ -95,6 +95,7 @@ S2_QUERY_URL = 'https://api.semanticscholar.org/graph/v1/paper/search'
 CACHE_FILE = '.semantischolar'
 DEFAULT_TIMEOUT = 3.05  # 100 requests per 5 minutes
 
+
 def request_results(query, offset, cache, timeout=DEFAULT_TIMEOUT):
     cache_key = f'results={query};{offset}'
     if cache_key in cache:

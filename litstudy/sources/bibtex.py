@@ -1,5 +1,5 @@
 from ..types import Document, DocumentSet, DocumentIdentifier, Author
-from bibtexparser.customization import convert_to_unicode
+# from bibtexparser.customization import convert_to_unicode
 from bibtexparser.latexenc import latex_to_unicode
 import bibtexparser
 from datetime import date

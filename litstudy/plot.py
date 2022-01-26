@@ -139,8 +139,12 @@ def wrapper(docs, fun, default, **kwargs):
 
 def plot_groups_histogram(docs, **kwargs):
     """ """
+
+    def fun(docs, **kwargs):
+        return compute_groups_histogram(docs, **kwargs).T
+
     default = dict(title='Categories')
-    return wrapper(docs, lambda docs, **kwargs: compute_groups_histogram(docs, **kwargs).T, default, **kwargs)
+    return wrapper(docs, fun, default, **kwargs)
 
 
 def plot_year_histogram(docs, **kwargs):

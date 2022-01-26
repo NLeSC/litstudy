@@ -1,9 +1,11 @@
 from ..types import Document, Author, DocumentSet, DocumentIdentifier
 import logging
 
+
 def extract_title(attr):
     return attr.get('TI') or attr.get('T1') or attr.get('T2') or \
             attr.get('T3') or attr.get('TT')
+
 
 class RISDocument(Document):
     def __init__(self, attr, keywords, authors):
@@ -94,7 +96,8 @@ def load_ris_file(path: str) -> DocumentSet:
             elif key in ['A1', 'A2', 'A3', 'A4', 'AU']:
                 authors.append(RISAuthor(value))
             elif key in attr:
-                logging.warn(f'Tag {key} appears multiple times ("{value}" and "{attr[key]}")')
+                logging.warn(f'Tag {key} appears multiple times ' +
+                             f'("{value}" and "{attr[key]}")')
             else:
                 attr[key] = value
 
@@ -102,4 +105,3 @@ def load_ris_file(path: str) -> DocumentSet:
         docs.append(RISDocument(attr, keywords, authors))
 
     return docs
-

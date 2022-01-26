@@ -201,7 +201,6 @@ def build_corpus(docs: DocumentSet, *, remove_words=None, min_word_length=3,
         max_docs = int(len(docs) * max_docs_ratio)
         filters.append(lambda w: preprocess_outliers(w, min_docs, max_docs))
 
-
     return Corpus(docs, filters, max_tokens)
 
 
@@ -215,7 +214,7 @@ class TopicModel:
         self.num_topics = len(topic2token)
 
     def top_documents_for_topic(self, topic_id, limit=5):
-        return np.argsort(self.doc2topic[:,topic_id])[::-1][:limit]
+        return np.argsort(self.doc2topic[:, topic_id])[::-1][:limit]
 
     def document_topics(self, doc_id):
         return self.doc2topic[doc_id]
@@ -313,6 +312,7 @@ def compute_word_distribution(corpus, *, limit=None):
             data=dict(count=[counter[i] for i in keys])
     )
 
+
 def plot_word_distribution(corpus, *, limit=25, **kwargs):
     """ """
     n = len(corpus.frequencies)
@@ -394,7 +394,7 @@ def calculate_embedding(corpus, rank=2, svd_dims=50, perplexity=30):
         components = tfidf
 
     model = TSNE(rank, metric='cosine', square_distances=True,
-                perplexity=perplexity)
+                 perplexity=perplexity)
     return model.fit_transform(components)
 
 
@@ -417,7 +417,7 @@ def plot_embedding(corpus, model, layout=None, ax=None):
 
     for i in range(num_topics):
         indices = best_topic == i
-        #label = 'ABCDEFGHIJLMNOPQRSTUVWXYZ'[i]
+        # label = 'ABCDEFGHIJLMNOPQRSTUVWXYZ'[i]
         label = i + 1
 
         for j in np.argwhere(indices)[:, 0]:

@@ -6,12 +6,13 @@ from datetime import date
 from pybliometrics.scopus import AbstractRetrieval, ScopusSearch
 from pybliometrics.scopus.exception import Scopus404Error
 from typing import Tuple
-import itertools
 import logging
 import random
 import shelve
 
+
 SCOPUS_CACHE = '.scopus'
+
 
 class ScopusAuthor(Author):
     def __init__(self, name, affiliations):
@@ -47,14 +48,14 @@ class ScopusDocument(Document):
     @staticmethod
     def from_identifier(id, id_type, view='FULL'):
         with shelve.open(SCOPUS_CACHE) as cache:
-            key = id  + '_found'
+            key = id + '_found'
             if cache.get(key) is False:
                 raise Scopus404Error()
 
             try:
                 result = AbstractRetrieval(id, id_type=id_type, view=view)
                 return ScopusDocument(result)
-            except Scopus404Error as e:
+            except Scopus404Error:
                 cache[key] = False
                 raise
 

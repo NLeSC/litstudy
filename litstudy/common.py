@@ -29,7 +29,10 @@ STOPWORDS = set([
 ])
 
 
-def canonical(key, aggresive=True):
+def canonical(key, aggresive=True, stopwords=None):
+    if stopwords is None:
+        stopwords = STOPWORDS
+
     if aggresive:
         key = unidecode(key).lower()
 
@@ -40,7 +43,7 @@ def canonical(key, aggresive=True):
         if not token or token[0].isdigit():
             continue
 
-        if aggresive and (token in STOPWORDS or len(token) <= 1):
+        if aggresive and (token in stopwords or len(token) <= 1):
             continue
 
         new_tokens.append(token)
