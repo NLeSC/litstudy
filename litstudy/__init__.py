@@ -21,7 +21,10 @@ from .plot import \
         plot_affiliation_histogram, \
         plot_country_histogram, \
         plot_continent_histogram, \
-        plot_groups_histogram  # noqa: F401
+        plot_groups_histogram, \
+        plot_word_distribution, \
+        plot_topic_clouds, \
+        plot_embedding  # noqa: F401
 from .network import \
         build_citation_network, \
         build_coauthor_network, \
@@ -36,10 +39,7 @@ from .nlp import \
         build_corpus, \
         train_nmf_model, \
         train_lda_model, \
-        plot_topic_clouds, \
         compute_word_distribution, \
-        plot_word_distribution, \
-        calculate_embedding, \
-        plot_embedding  # noqa: F401
+        calculate_embedding  # noqa: F401
 
 # __all__ = []

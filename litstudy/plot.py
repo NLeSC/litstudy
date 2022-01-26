@@ -10,9 +10,17 @@ from .stats import \
         compute_country_histogram, \
         compute_continent_histogram, \
         compute_groups_histogram
+from .nlp import \
+        generate_topic_cloud, \
+        calculate_embedding, \
+        compute_word_distribution, \
+        TopicModel, \
+        Corpus
+import inspect
+import math
 import matplotlib.pyplot as plt
 import numpy as np
-import inspect
+import seaborn
 
 
 def plot_histogram(
@@ -206,3 +214,99 @@ def plot_continent_histogram(docs, **kwargs):
     """ """
     default = dict(title='Continents', limit=25)
     return wrapper(docs, compute_continent_histogram, default, **kwargs)
+
+
+def plot_word_distribution(corpus: Corpus, *, limit=25, **kwargs):
+    """ """
+    n = len(corpus.frequencies)
+    data = compute_word_distribution(corpus, limit=limit)
+    return plot_histogram(data, relative_to=n, **kwargs)
+
+
+def plot_embedding(corpus: Corpus, model: TopicModel, layout=None, ax=None):
+    """ """
+    if ax is None:
+        ax = plt.gca()
+
+    if layout is None:
+        layout = calculate_embedding(corpus)
+
+    num_topics = len(model.topic2token)
+    best_topic = np.argmax(model.doc2topic.T, axis=0)
+
+    colors = seaborn.color_palette('hls', num_topics)
+    colors = np.array(colors)[:, :3] * 0.9  # Mute colors a bit
+
+    for i in range(num_topics):
+        indices = best_topic == i
+        # label = 'ABCDEFGHIJLMNOPQRSTUVWXYZ'[i]
+        label = i + 1
+
+        for j in np.argwhere(indices)[:, 0]:
+            x, y = layout[j]
+            ax.scatter(
+                    x,
+                    y,
+                    marker='o',
+                    s=150,
+                    linewidth=0.5,
+                    color=colors[i],
+                    zorder=2*j,
+            )
+
+            ax.text(
+                x,
+                y,
+                label,
+                fontsize=6,
+                color='1',
+                va='center',
+                ha='center',
+                fontweight='bold',
+                zorder=2*j + 1,
+            )
+
+        top_items = model.top_topic_tokens(i, limit=3)
+        label = f'Topic {label}:' + ', '.join(top_items)
+
+        center = np.median(layout[indices], axis=0)
+        ax.text(
+                center[0],
+                center[1],
+                label,
+                va='center',
+                ha='center',
+                color='1',
+                backgroundcolor=(0, 0, 0, .75),
+                zorder=10 * len(best_topic),
+        )
+
+    ax.set_aspect('equal')
+    ax.set_xticks([])
+    ax.set_yticks([])
+
+
+def plot_topic_clouds(model: TopicModel, fig=None, ncols=3, **kwargs):
+    """ """
+    if fig is None:
+        plt.clf()
+        fig = plt.gcf()
+
+    nrows = math.ceil(model.num_topics / float(ncols))
+
+    for i in range(model.num_topics):
+        ax = fig.add_subplot(nrows, ncols, i + 1)
+        plot_topic_cloud(model, i, ax=ax, **kwargs)
+
+
+def plot_topic_cloud(model: TopicModel, topic_id: int, ax=None, **kwargs):
+    """ """
+    if ax is None:
+        ax = plt.gca()
+
+    ax.set_xticks([])
+    ax.set_yticks([])
+
+    im = generate_topic_cloud(model, topic_id, **kwargs).to_array()
+    ax.set_title(f'Topic {topic_id + 1}')
+    ax.imshow(im, interpolation='bilinear')

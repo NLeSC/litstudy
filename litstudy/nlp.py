@@ -1,14 +1,11 @@
 from collections import defaultdict
 from gensim.matutils import corpus2dense
 import gensim
-import math
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import seaborn
 import wordcloud
 
-from .plot import plot_histogram
 from .stopwords import STOPWORDS
 from .types import DocumentSet
 
@@ -313,43 +310,12 @@ def compute_word_distribution(corpus, *, limit=None):
     )
 
 
-def plot_word_distribution(corpus, *, limit=25, **kwargs):
-    """ """
-    n = len(corpus.frequencies)
-    data = compute_word_distribution(corpus, limit=limit)
-    return plot_histogram(data, relative_to=n, **kwargs)
-
-
-def plot_topic_clouds(model: TopicModel, fig=None, ncols=3, **kwargs):
-    """ """
-    if fig is None:
-        plt.clf()
-        fig = plt.gcf()
-
-    nrows = math.ceil(model.num_topics / float(ncols))
-
-    for i in range(model.num_topics):
-        ax = fig.add_subplot(nrows, ncols, i + 1)
-        ax.set_title(f'Topic {i + 1}')
-        plot_topic_cloud(model, i, ax=ax, **kwargs)
-
-
-def plot_topic_cloud(model: TopicModel, topic_id, ax=None, **kwargs):
-    """ """
-    if ax is None:
-        ax = plt.gca()
-
-    ax.set_xticks([])
-    ax.set_yticks([])
-
-    im = generate_topic_cloud(model, topic_id, **kwargs).to_array()
-    ax.imshow(im, interpolation='bilinear')
-
-
 def generate_topic_cloud(model, topic_id, cmap=None, max_font_size=75,
-                         background_color='white'):
+                         background_color='white') -> wordcloud.WordCloud:
     if cmap is None:
-        cmap = plt.get_cmap('Blues')
+        cmap = 'Blues'
+
+    cmap = plt.get_cmap(cmap)
 
     dic = model.dictionary
     vec = model.topic2token[topic_id]
@@ -378,7 +344,7 @@ def generate_topic_cloud(model, topic_id, cmap=None, max_font_size=75,
     return wc
 
 
-def calculate_embedding(corpus, rank=2, svd_dims=50, perplexity=30):
+def calculate_embedding(corpus, rank=2, svd_dims=50, perplexity=30, seed=0):
     from gensim.models.tfidfmodel import TfidfModel
     from sklearn.decomposition import TruncatedSVD
     from sklearn.manifold import TSNE
@@ -388,77 +354,11 @@ def calculate_embedding(corpus, rank=2, svd_dims=50, perplexity=30):
     tfidf = corpus2dense(TfidfModel(dictionary=dic)[freqs], len(dic)).T
 
     if svd_dims is not None:
-        svd = TruncatedSVD(n_components=svd_dims)
+        svd = TruncatedSVD(n_components=svd_dims, random_state=seed)
         components = svd.fit_transform(tfidf)
     else:
         components = tfidf
 
     model = TSNE(rank, metric='cosine', square_distances=True,
-                 perplexity=perplexity)
+                 perplexity=perplexity, random_state=seed)
     return model.fit_transform(components)
-
-
-def plot_embedding(corpus, model, layout=None, ax=None):
-    """ """
-    if ax is None:
-        ax = plt.gca()
-
-    if layout is None:
-        layout = calculate_embedding(corpus)
-
-    dic = corpus.dictionary
-    freqs = corpus2dense(corpus.frequencies, len(dic))
-
-    num_topics = len(model.topic2token)
-    best_topic = np.argmax(model.doc2topic.T, axis=0)
-
-    colors = seaborn.color_palette('hls', num_topics)
-    colors = np.array(colors)[:, :3] * 0.9  # Mute colors a bit
-
-    for i in range(num_topics):
-        indices = best_topic == i
-        # label = 'ABCDEFGHIJLMNOPQRSTUVWXYZ'[i]
-        label = i + 1
-
-        for j in np.argwhere(indices)[:, 0]:
-            x, y = layout[j]
-            ax.scatter(
-                    x,
-                    y,
-                    marker='o',
-                    s=150,
-                    linewidth=0.5,
-                    color=colors[i],
-                    zorder=2*j,
-            )
-
-            ax.text(
-                x,
-                y,
-                label,
-                fontsize=6,
-                color='1',
-                va='center',
-                ha='center',
-                fontweight='bold',
-                zorder=2*j + 1,
-            )
-
-        top_items = np.argsort(model.topic2token[i])[::-1]
-        label = f'Topic {label}:' + ', '.join(dic[j] for j in top_items[:3])
-
-        center = np.median(layout[indices], axis=0)
-        ax.text(
-                center[0],
-                center[1],
-                label,
-                va='center',
-                ha='center',
-                color='1',
-                backgroundcolor=(0, 0, 0, .75),
-                zorder=10 * len(freqs),
-        )
-
-    ax.set_aspect('equal')
-    ax.set_xticks([])
-    ax.set_yticks([])
