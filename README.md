@@ -18,42 +18,23 @@ In essense, this package offers five features
 ## Example
 An example notebook is available in `notebooks/example.ipynb` and [here](https://nlesc.github.io/litstudy/example.html).
 
+## Installation Guide
+litstudy is available on pip!
+Full installation guide is available [here](https://nlesc.github.io/litstudy/installation.html).
+
+```bash
+pip install litstudy
+```
+
+
 ## Documentation
 
-Document is available [here](https://nlesc.github.io/litstudy/).
+Documentation is available [here](https://nlesc.github.io/litstudy/).
 
 ## Requirements
 The package has been tested for Python 3.6. Required packages are available in `requirements.txt`.
 
 To access the `Scopus` API using `litstudy`, you (or your institute) needs a Scopus subscription and you need to request an Elsevier Developer API key (see [Elsevier Developers](https://dev.elsevier.com/index.jsp).
-
-## Running using virtualenv
-Installation using `virtualenv` is can be using the following commands:
-
-Create virtualenv environment named myenv:
-```
-virtualenv myenv --python=`which python3`
-```
-
-Activate virtual environment
-```
-source ./myenv/bin/activate
-```
-
-Install requirement dependencies.
-```
-pip3 install -r requirements.txt
-```
-
-Install new Jupyter kernel.
-```
-ipython kernel install --user --name=myenv
-```
-
-Run Jupyter and select `myenv` as kernel. Remaining instructions can be found within the notebook itself.
-```
-jupyter notebook --MappingKernelManager.default_kernel_name=myenv
-```
 
 ## License
 Apache 2.0. See [LICENSE](https://github.com/NLeSC/litstudy/blob/master/LICENSE).

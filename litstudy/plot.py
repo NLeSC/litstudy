@@ -156,75 +156,79 @@ def plot_groups_histogram(docs, **kwargs):
 
 
 def plot_year_histogram(docs, **kwargs):
-    """ """
+    """ Plot histogram of the number of documents published in each year. """
     default = dict(title='Year of publications')
     return wrapper(docs, compute_year_histogram, default, **kwargs)
 
 
 def plot_author_histogram(docs, **kwargs):
-    """ """
+    """ Plot histogram of the number of documents published per author. """
     default = dict(title='Authors', limit=25)
     return wrapper(docs, compute_author_histogram, default, **kwargs)
 
 
 def plot_number_authors_histogram(docs, **kwargs):
-    """ """
+    """ Plot histogram of the number of authors per document. """
     default = dict(title='No. of authors')
     return wrapper(docs, compute_number_authors_histogram, default, **kwargs)
 
 
 def plot_author_affiliation_histogram(docs, **kwargs):
-    """ """
+    """ Plot histogram of the number of documents published per author
+    affiliation. """
     default = dict(title='Author + Affiliation', limit=25)
     return wrapper(docs, compute_author_affiliation_histogram, default,
                    **kwargs)
 
 
 def plot_language_histogram(docs, **kwargs):
-    """ """
+    """ Plot histogram of the number of documents by language. """
     default = dict(title='Language')
     return wrapper(docs, compute_language_histogram, default, **kwargs)
 
 
 def plot_source_histogram(docs, **kwargs):
-    """ """
+    """ Plot histogram of the number of documents by publication source. """
     default = dict(title='Publication source', limit=25)
     return wrapper(docs, compute_source_histogram, default, **kwargs)
 
 
 def plot_source_type_histogram(docs, **kwargs):
-    """ """
+    """ Plot histogram of the number of documents by publication source
+    type. """
     default = dict(title='Publication source type', limit=25)
     return wrapper(docs, compute_source_type_histogram, default, **kwargs)
 
 
 def plot_affiliation_histogram(docs, **kwargs):
-    """ """
+    """ Plot histogram of the number of documents by author affiliation. """
     default = dict(title='Affiliations', limit=25)
     return wrapper(docs, compute_affiliation_histogram, default, **kwargs)
 
 
 def plot_country_histogram(docs, **kwargs):
-    """ """
+    """ Plot histogram of the number of documents by country of author
+    affiliation. """
     default = dict(title='Countries', limit=25)
     return wrapper(docs, compute_country_histogram, default, **kwargs)
 
 
 def plot_continent_histogram(docs, **kwargs):
-    """ """
+    """ Plot histogram of the number of documents by continent of author
+    affiliation. """
     default = dict(title='Continents', limit=25)
     return wrapper(docs, compute_continent_histogram, default, **kwargs)
 
 
 def plot_word_distribution(corpus: Corpus, *, limit=25, **kwargs):
-    """ """
+    """ Plot the frequency of the top words in the given corpus. """
     n = len(corpus.frequencies)
     data = compute_word_distribution(corpus, limit=limit)
     return plot_histogram(data, relative_to=n, **kwargs)
 
 
 def plot_embedding(corpus: Corpus, model: TopicModel, layout=None, ax=None):
-    """ """
+    """ TODO """
     if ax is None:
         ax = plt.gca()
 
@@ -286,8 +290,8 @@ def plot_embedding(corpus: Corpus, model: TopicModel, layout=None, ax=None):
     ax.set_yticks([])
 
 
-def plot_topic_clouds(model: TopicModel, fig=None, ncols=3, **kwargs):
-    """ """
+def plot_topic_clouds(model: TopicModel, *, fig=None, ncols=3, **kwargs):
+    """ Plot word clouds for each of the topics from the given topic model. """
     if fig is None:
         plt.clf()
         fig = plt.gcf()
@@ -299,8 +303,8 @@ def plot_topic_clouds(model: TopicModel, fig=None, ncols=3, **kwargs):
         plot_topic_cloud(model, i, ax=ax, **kwargs)
 
 
-def plot_topic_cloud(model: TopicModel, topic_id: int, ax=None, **kwargs):
-    """ """
+def plot_topic_cloud(model: TopicModel, topic_id: int, *, ax=None, **kwargs):
+    """ Plot a word cloud for the given topic from the given topic model. """
     if ax is None:
         ax = plt.gca()
 

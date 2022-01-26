@@ -1,5 +1,6 @@
 from collections import defaultdict
 from gensim.matutils import corpus2dense
+from typing import List
 import gensim
 import matplotlib.pyplot as plt
 import numpy as np
@@ -206,36 +207,63 @@ class TopicModel:
 
     def __init__(self, dictionary, doc2topic, topic2token):
         self.dictionary = dictionary
+
         self.doc2topic = doc2topic
+        """ `N x T` matrix that stores the weights towards each of the T
+        topics for the N documents.
+        """
+
         self.topic2token = topic2token
+        """ `T x M` matrix that stores the weights towards each of the M
+        tokens for each of the T topics
+        """
+
         self.num_topics = len(topic2token)
 
-    def top_documents_for_topic(self, topic_id, limit=5):
+    def best_documents_for_topic(self, topic_id: int, limit=5) -> List[int]:
+        """ Returns the documents that most strongly belong to the given
+        topic.
+        """
         return np.argsort(self.doc2topic[:, topic_id])[::-1][:limit]
 
-    def document_topics(self, doc_id):
+    def document_topics(self, doc_id: int):
+        """ Returns a numpy array indicating the weights towards the different
+        topic for the given document. These weight sum up to one.
+        """
         return self.doc2topic[doc_id]
 
-    def document_topic_weight(self, doc_id, topic_id):
-        return self.doc2topic[doc_id, topic_id]
-
-    def top_topic_tokens_with_weights(self, topic_id, limit=5):
+    def best_token_weights_for_topic(self, topic_id: int, limit=5):
+        """ Returns a list of `(token, weight)` tuples for the tokens that
+        most strongly belong to the given topic.
+        """
         dic = self.dictionary
         weights = self.topic2token[topic_id]
 
         indices = np.argsort(self.topic2token[topic_id])[::-1][:limit]
         return [(dic[i], weights[i]) for i in indices]
 
-    def top_topic_tokens(self, topic_id, limit=5):
+    def best_tokens_for_topic(self, topic_id: int, limit=5):
+        """ Returns the top tokens that most strongly belong to the given
+        topic. """
         results = self.top_topic_tokens_with_weights(topic_id, limit=limit)
         return [w for w, _ in results]
 
-    def top_topic_token(self, topic_id):
+    def best_token_for_topic(self, topic_id: int) -> str:
+        """ Returns the token that most strongly belongs to the given
+        topic. """
         return self.top_topic_tokens(topic_id, limit=1)[0]
 
-    def best_topic_for_token(self, token):
+    def best_topic_for_token(self, token) -> int:
+        """ Returns the topic index that most strongly belongs to the given
+        token. """
         index = self.dictionary.token2id[token]
         return np.argmax(self.topic2token[:, index])
+
+    def best_topic_for_documents(self) -> List[int]:
+        """ Returns the topic for each document that most strongly belongs
+        to that document.
+        """
+        return np.argmax(self.doc2topic, axis=1)
 
 
 def train_nmf_model(corpus: Corpus, num_topics: int, seed=0, max_iter=500
@@ -291,8 +319,10 @@ def train_lda_model(corpus: Corpus, num_topics, seed=0, **kwargs
     return TopicModel(dic, doc2topic, topic2token)
 
 
-def compute_word_distribution(corpus, *, limit=None):
-    """ """
+def compute_word_distribution(corpus: Corpus, *, limit=None) -> pd.DataFrame:
+    """ Returns dataframe that indicates, for each word, the number of
+    documents that mention that word.
+    """
     counter = defaultdict(int)
     dic = corpus.dictionary
 
@@ -310,8 +340,16 @@ def compute_word_distribution(corpus, *, limit=None):
     )
 
 
-def generate_topic_cloud(model, topic_id, cmap=None, max_font_size=75,
-                         background_color='white') -> wordcloud.WordCloud:
+def generate_topic_cloud(model: TopicModel, topic_id: int, cmap=None,
+                         max_font_size=75, background_color='white'
+                         ) -> wordcloud.WordCloud:
+    """ Generate a word cloud for the given topic from the given topic model.
+
+    :param cmap: The color map used to color the words.
+    :param max_font_size: Size of the word which most strongly belongs to the
+                          topic. The other words are scaled accordingly.
+    :param background_color: Background color.
+    """
     if cmap is None:
         cmap = 'Blues'
 
@@ -344,7 +382,13 @@ def generate_topic_cloud(model, topic_id, cmap=None, max_font_size=75,
     return wc
 
 
-def calculate_embedding(corpus, rank=2, svd_dims=50, perplexity=30, seed=0):
+def calculate_embedding(corpus: Corpus, *, rank=2, svd_dims=50, perplexity=30,
+                        seed=0):
+    """ Calculate a document embedding that assigns each document in the
+    corpus a N-d position based on the word usage.
+
+    :returns: A list of N-d tuples for the documents in the corpus.
+    """
     from gensim.models.tfidfmodel import TfidfModel
     from sklearn.decomposition import TruncatedSVD
     from sklearn.manifold import TSNE
