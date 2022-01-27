@@ -1,4 +1,5 @@
 # litstudy
+[![github](https://img.shields.io/badge/github-repo-000.svg?logo=github&labelColor=gray&color=blue)](https://github.com/NLeSC/litstudy/)
 [![DOI](https://zenodo.org/badge/206312286.svg)](https://zenodo.org/badge/latestdoi/206312286)
 [![License](https://img.shields.io/github/license/nlesc/litstudy)](https://github.com/NLeSC/litstudy/blob/master/LICENSE)
 [![Version](https://img.shields.io/pypi/v/litstudy)]([https://pypi.org/project/litstudy/)
