@@ -327,8 +327,8 @@ class DocumentSet:
         """
         if isinstance(key, str):
             return self.data[key]
-        elif isinstance(key, int):
-            return self.docs[key]
+        elif np.issubdtype(type(key), np.integer):  # any type of integer works
+            return self.docs[int(key)]
         else:
             return self.select(key)
 
