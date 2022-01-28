@@ -459,7 +459,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|██████████| 1440/1440 [00:04&lt;00:00, 335.79it/s]
+100%|██████████| 1440/1440 [00:03&lt;00:00, 374.96it/s]
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -654,13 +654,47 @@ div.rendered_html tbody tr:hover {
 </section>
 <section id="Network-analysis">
 <h2>Network analysis<a class="headerlink" href="#Network-analysis" title="Permalink to this headline"></a></h2>
-<div class="nbinput nblast docutils container">
+<p>The network below shows an example of a co-citation network. This is a type of network where the strength the of the edges indicates how often two documents have been cited together. Two papers with a high co-citation strength (i.e., stronger edge) are usually highly related.</p>
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># litstudy.plot_cocitation_network(docs, max_edges=500)</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">litstudy</span><span class="o">.</span><span class="n">plot_cocitation_network</span><span class="p">(</span><span class="n">docs</span><span class="p">,</span> <span class="n">max_edges</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+100%|██████████| 1000/1000 [00:00&lt;00:00, 2532.57it/s]
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+BarnesHut Approximation  took  0.10  seconds
+Repulsion forces  took  0.23  seconds
+Gravitational forces  took  0.01  seconds
+Attraction forces  took  0.00  seconds
+AdjustSpeedAndApplyForces step  took  0.03  seconds
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<iframe
+    width="100%"
+    height="1000px"
+    src="citation.html"
+    frameborder="0"
+    allowfullscreen
+></iframe></div>
 </div>
 </section>
 <section id="Topic-modeling">
@@ -773,7 +807,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/example_34_0.png" src="_images/example_34_0.png" />
+<img alt="_images/example_35_0.png" src="_images/example_35_0.png" />
 </div>
 </div>
 <p>The word distribution looks like what we would expect. Next, we run an NMF topic model for 15 topics.</p>
@@ -786,13 +820,13 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<p>To understad the result of NMF, we can, for examp, print the top 3 words for each topics.</p>
+<p>To understand the result of NMF, we can, for example, print the top 3 words for each topics.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">topic_id</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_topics</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;topic </span><span class="si">{</span><span class="n">topic_id</span> <span class="o">+</span> <span class="mi">1</span><span class="si">}</span><span class="s1">:&#39;</span><span class="p">,</span> <span class="n">topic_model</span><span class="o">.</span><span class="n">top_topic_tokens</span><span class="p">(</span><span class="n">topic_id</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_topics</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Topic </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">:&#39;</span><span class="p">,</span> <span class="n">topic_model</span><span class="o">.</span><span class="n">best_tokens_for_topic</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -801,21 +835,21 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-topic 1: [&#39;cluster&#39;, &#39;mpi&#39;, &#39;node&#39;]
-topic 2: [&#39;mapreduce&#39;, &#39;big&#39;, &#39;data&#39;]
-topic 3: [&#39;simulation&#39;, &#39;particle&#39;, &#39;numerical&#39;]
-topic 4: [&#39;learning&#39;, &#39;network&#39;, &#39;deep&#39;]
-topic 5: [&#39;fpga&#39;, &#39;memory&#39;, &#39;access&#39;]
-topic 6: [&#39;openacc&#39;, &#39;compiler&#39;, &#39;openmp&#39;]
-topic 7: [&#39;image&#39;, &#39;segmentation&#39;, &#39;algorithm&#39;]
-topic 8: [&#39;sequence&#39;, &#39;alignment&#39;, &#39;protein&#39;]
-topic 9: [&#39;video&#39;, &#39;decoding&#39;, &#39;encoding&#39;]
-topic 10: [&#39;gpgpu&#39;, &#39;cuda&#39;, &#39;code&#39;]
-topic 11: [&#39;energy&#39;, &#39;heterogeneous&#39;, &#39;power&#39;]
-topic 12: [&#39;graph&#39;, &#39;vertex&#39;, &#39;framework&#39;]
-topic 13: [&#39;scheduling&#39;, &#39;task&#39;, &#39;heterogeneous&#39;]
-topic 14: [&#39;intel&#39;, &#39;matrix&#39;, &#39;phi&#39;]
-topic 15: [&#39;opencl&#39;, &#39;portability&#39;, &#39;benchmark&#39;]
+Topic 1: [&#39;cluster&#39;, &#39;mpi&#39;, &#39;node&#39;, &#39;hybrid&#39;, &#39;communication&#39;]
+Topic 2: [&#39;mapreduce&#39;, &#39;big&#39;, &#39;data&#39;, &#39;hadoop&#39;, &#39;cloud&#39;]
+Topic 3: [&#39;simulation&#39;, &#39;particle&#39;, &#39;numerical&#39;, &#39;fluid&#39;, &#39;flow&#39;]
+Topic 4: [&#39;learning&#39;, &#39;network&#39;, &#39;deep&#39;, &#39;deep_learning&#39;, &#39;training&#39;]
+Topic 5: [&#39;fpga&#39;, &#39;memory&#39;, &#39;access&#39;, &#39;cache&#39;, &#39;bandwidth&#39;]
+Topic 6: [&#39;openacc&#39;, &#39;compiler&#39;, &#39;openmp&#39;, &#39;directive&#39;, &#39;language&#39;]
+Topic 7: [&#39;image&#39;, &#39;segmentation&#39;, &#39;algorithm&#39;, &#39;medical&#39;, &#39;sensing&#39;]
+Topic 8: [&#39;sequence&#39;, &#39;alignment&#39;, &#39;protein&#39;, &#39;database&#39;, &#39;search&#39;]
+Topic 9: [&#39;video&#39;, &#39;decoding&#39;, &#39;encoding&#39;, &#39;ldpc&#39;, &#39;motion&#39;]
+Topic 10: [&#39;gpgpu&#39;, &#39;cuda&#39;, &#39;code&#39;, &#39;general_purpose&#39;, &#39;general&#39;]
+Topic 11: [&#39;energy&#39;, &#39;heterogeneous&#39;, &#39;power&#39;, &#39;consumption&#39;, &#39;systems&#39;]
+Topic 12: [&#39;graph&#39;, &#39;vertex&#39;, &#39;framework&#39;, &#39;analytics&#39;, &#39;edge&#39;]
+Topic 13: [&#39;scheduling&#39;, &#39;task&#39;, &#39;heterogeneous&#39;, &#39;resources&#39;, &#39;execution&#39;]
+Topic 14: [&#39;intel&#39;, &#39;matrix&#39;, &#39;phi&#39;, &#39;xeon&#39;, &#39;cloud&#39;]
+Topic 15: [&#39;opencl&#39;, &#39;portability&#39;, &#39;benchmark&#39;, &#39;platforms&#39;, &#39;sycl&#39;]
 </pre></div></div>
 </div>
 <p>An alternative way to visualize the output of NMF is to plot each discovered topic as a word cloud. The size of the words indicate the importance of each word for that topic.</p>
@@ -824,7 +858,7 @@ topic 15: [&#39;opencl&#39;, &#39;portability&#39;, &#39;benchmark&#39;]
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
-<span class="n">litstudy</span><span class="o">.</span><span class="n">nlp</span><span class="o">.</span><span class="n">plot_topic_clouds</span><span class="p">(</span><span class="n">topic_model</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">5</span><span class="p">);</span>
+<span class="n">litstudy</span><span class="o">.</span><span class="n">plot_topic_clouds</span><span class="p">(</span><span class="n">topic_model</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">5</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -832,7 +866,7 @@ topic 15: [&#39;opencl&#39;, &#39;portability&#39;, &#39;benchmark&#39;]
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/example_40_0.png" src="_images/example_40_0.png" />
+<img alt="_images/example_41_0.png" src="_images/example_41_0.png" />
 </div>
 </div>
 <p>These 15 topics look promising. For example, there is one topic on graphs, one on OpenACC, one on OpenCL, one on FPGAs, etc.</p>
@@ -850,22 +884,56 @@ topic 15: [&#39;opencl&#39;, &#39;portability&#39;, &#39;benchmark&#39;]
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/example_42_0.png" src="_images/example_42_0.png" />
+<img alt="_images/example_43_0.png" src="_images/example_43_0.png" />
 </div>
 </div>
 </section>
 <section id="Advanced-topic-modeling">
 <h2>Advanced topic modeling<a class="headerlink" href="#Advanced-topic-modeling" title="Permalink to this headline"></a></h2>
 <p>We can combine the results of topic modeling with the plotting of statistics. Here we show we a simple example.</p>
-<p>First, we find the topic id for the topic that most strongly belongs to “deep_learning”. Next, we annotate the document set with a “dl_topic” tag for document that strongly belong to this topic (i.e., weight above a certain threshold).</p>
-<p>After this, we define two groups: documents that have the tag “dl_topic” and documents that do not have this tag. We can, for example, print the publications over the years to see if interest in deep learning has increased or decreased over the years.</p>
-<div class="nbinput docutils container">
+<p>One of the topics appears to be on “deep_learning”. First, we find the topic id for the topic that most strongly belongs to “deep_learning”.</p>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">topic_id</span> <span class="o">=</span> <span class="n">topic_model</span><span class="o">.</span><span class="n">best_topic_for_token</span><span class="p">(</span><span class="s1">&#39;deep_learning&#39;</span><span class="p">)</span>
-
-<span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.2</span>
+</pre></div>
+</div>
+</div>
+<p>Let’s print the top 10 papers that most stongly belong to this topic to check the results. We see that these are indeed documents on the topic of deep learning.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">doc_id</span> <span class="ow">in</span> <span class="n">topic_model</span><span class="o">.</span><span class="n">best_documents_for_topic</span><span class="p">(</span><span class="n">topic_id</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">docs</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">doc_id</span><span class="p">)]</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+High performance networked computing in media, services and information management
+What do Programmers Discuss about Deep Learning Frameworks
+Sparse evolutionary deep learning with over one million artificial neurons on commodity hardware
+Deep learning for intelligent traffic sensing and prediction: recent advances and future challenges
+SOLAR: Services-oriented learning architectures: Deep learning as a service
+Reveal training performance mystery between TensorFlow and PyTorch in the single GPU environment
+Network Management 2030: Operations and Control of Network 2030 Services
+SOLAR: Services-Oriented Deep Learning Architectures-Deep Learning as a Service
+DLPlib: A Library for Deep Learning Processor
+Machine Learning and Deep Learning frameworks and libraries for large-scale data mining: a survey
+</pre></div></div>
+</div>
+<p>Next, we annotate the document set with a “dl_topic” tag for document that strongly belong to this topic (i.e., weight above a certain threshold).</p>
+<p>After this, we define two groups: documents that have the tag “dl_topic” and documents that do not have this tag. We can, for example, print the publications over the years to see if interest in deep learning has increased or decreased over the years.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><br/><span></span><span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.2</span>
 <span class="n">dl_topic</span> <span class="o">=</span> <span class="n">topic_model</span><span class="o">.</span><span class="n">doc2topic</span><span class="p">[:,</span> <span class="n">topic_id</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">threshold</span>
 
 <span class="n">docs</span> <span class="o">=</span> <span class="n">docs</span><span class="o">.</span><span class="n">add_property</span><span class="p">(</span><span class="s1">&#39;dl_topic&#39;</span><span class="p">,</span> <span class="n">dl_topic</span><span class="p">)</span>
@@ -884,22 +952,21 @@ topic 15: [&#39;opencl&#39;, &#39;portability&#39;, &#39;benchmark&#39;]
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/example_45_0.png" src="_images/example_45_0.png" />
+<img alt="_images/example_50_0.png" src="_images/example_50_0.png" />
 </div>
 </div>
 <p>The histogram shows that interest in deep learning is clearly rising over the years. We can even calculate the exact amount by calculating the percentage of documents on deep learning each year. The example below shows that this percentage has increased from just 3.4% in 2011 to 13.6% in 2021.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">litstudy</span><span class="o">.</span><span class="n">compute_year_histogram</span><span class="p">(</span><span class="n">docs</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">)</span>
-<span class="n">table</span> <span class="o">=</span> <span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">T</span> <span class="o">/</span> <span class="n">table</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="mi">100</span>
-<span class="n">table</span>
+<span class="n">table</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
 </pre></div>
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1022,14 +1089,10 @@ topic 15: [&#39;opencl&#39;, &#39;portability&#39;, &#39;benchmark&#39;]
 </div>
 <p>Alternatively, we can plot the two groups for the publications source. We can see that some journals/conferences have more focus on deep learning (for example, “Neural Computing and Applications”), while others have no or few publications on this topic (for example, “Journal of Real Time Image Processing”).</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
-
-<span class="n">dl_topic</span> <span class="o">=</span> <span class="n">topic_model</span><span class="o">.</span><span class="n">doc2topic</span><span class="p">[:,</span> <span class="n">topic_id</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">.1</span>
-<span class="n">docs</span> <span class="o">=</span> <span class="n">docs</span><span class="o">.</span><span class="n">add_property</span><span class="p">(</span><span class="s1">&#39;dl_topic&#39;</span><span class="p">,</span> <span class="n">dl_topic</span><span class="p">)</span>
-
 <span class="n">litstudy</span><span class="o">.</span><span class="n">plot_source_histogram</span><span class="p">(</span><span class="n">docs</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">stacked</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -1038,15 +1101,7 @@ topic 15: [&#39;opencl&#39;, &#39;portability&#39;, &#39;benchmark&#39;]
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="_images/example_49_0.png" src="_images/example_49_0.png" />
-</div>
-</div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
+<img alt="_images/example_54_0.png" src="_images/example_54_0.png" />
 </div>
 </div>
 </section>
