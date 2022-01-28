@@ -24,6 +24,7 @@ from .plot import \
         plot_groups_histogram, \
         plot_word_distribution, \
         plot_topic_clouds, \
+        plot_document_topics, \
         plot_embedding  # noqa: F401
 from .network import \
         build_citation_network, \

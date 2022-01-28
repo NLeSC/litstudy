@@ -270,7 +270,7 @@ def plot_embedding(corpus: Corpus, model: TopicModel, layout=None, ax=None):
                 zorder=2*j + 1,
             )
 
-        top_items = model.top_topic_tokens(i, limit=3)
+        top_items = model.best_tokens_for_topic(i, limit=3)
         label = f'Topic {label}:' + ', '.join(top_items)
 
         center = np.median(layout[indices], axis=0)
@@ -314,3 +314,23 @@ def plot_topic_cloud(model: TopicModel, topic_id: int, *, ax=None, **kwargs):
     im = generate_topic_cloud(model, topic_id, **kwargs).to_array()
     ax.set_title(f'Topic {topic_id + 1}')
     ax.imshow(im, interpolation='bilinear')
+
+
+def plot_document_topics(model: TopicModel, document_id: int, *, ax=None):
+    if ax is None:
+        ax = plt.gca()
+
+    weights = model.document_topics(document_id)
+
+    ax.bar(
+            np.arange(model.num_topics),
+            model.document_topics(document_id)
+    )
+    ax.set_ylim(0, 1)
+    ax.set_ylabel('Relevance')
+    ax.set_ylabel('Topics')
+
+    for i, w in enumerate(weights):
+        if w > 0.01:
+            plt.text(i, w, str(i + 1), ha='center', va='bottom')
+
