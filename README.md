@@ -19,6 +19,8 @@ In essense, this package offers five features
 ## Example
 An example notebook is available in `notebooks/example.ipynb` and [here](https://nlesc.github.io/litstudy/example.html).
 
+![Example notebook](https://raw.githubusercontent.com/NLeSC/litstudy/master/docs/images/notebook.png)
+
 ## Installation Guide
 litstudy is available on pip!
 Full installation guide is available [here](https://nlesc.github.io/litstudy/installation.html).
