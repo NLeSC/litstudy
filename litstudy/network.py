@@ -70,7 +70,7 @@ def plot_network(g: nx.Graph, *, height='1000px', smooth_edges=None,
             directed=directed
     )
 
-    sizes = [attr.get('weight') for (_, attr) in g.nodes.items()]
+    sizes = [attr.get('size') or attr.get('weight') for (_, attr) in g.nodes.items()]
 
     if all(s is not None for s in sizes):
         sizes = np.array(sizes)
@@ -88,7 +88,7 @@ def plot_network(g: nx.Graph, *, height='1000px', smooth_edges=None,
         attr = g.nodes[id]
         kwargs = dict(labelHighlightBold=True)
 
-        kwargs['shape'] = 'dot'
+        kwargs['shape'] = attr.get('shape', 'dot')
         kwargs['title'] = attr['title']
         kwargs['label'] = textwrap.fill(attr['title'], width=20)
         kwargs['size'] = float(size)
@@ -146,7 +146,20 @@ def plot_network(g: nx.Graph, *, height='1000px', smooth_edges=None,
 
 
 def build_base_network(docs, directed, colors=None, cmap=None,
-                       node_props=None):
+                       shapes=None, sizes=None, node_props=None):
+    def extract_column(docs, expr):
+        if not docs:
+            result = []
+        elif not isinstance(expr, str):
+            result = list(expr)
+        elif expr in docs.data:
+            result = docs.data[expr]
+        else:
+            result = docs.data.eval(expr)
+
+        assert len(result) == len(docs)
+        return result
+
     g = nx.DiGraph() if directed else nx.Graph()
     mapping = DocumentMapping()
 
@@ -162,14 +175,9 @@ def build_base_network(docs, directed, colors=None, cmap=None,
         g.add_node(i, title=doc.title, doc=doc, **attr)
         mapping.add(doc.id, i)
 
-    if colors is not None and docs:
-        # Column name
-        if isinstance(colors, str):
-            colors = docs.data.eval(colors)  # Column evaluation
-        else:
-            colors = list(colors)
-
-        assert len(colors) == len(docs)
+    # Custom colors
+    if colors is not None:
+        colors = extract_column(docs, colors)
 
         if all(isinstance(c, float) for c in colors):
             begin, end = min(colors), max(colors)
@@ -183,6 +191,19 @@ def build_base_network(docs, directed, colors=None, cmap=None,
 
         for i, c in enumerate(colors):
             g.nodes[i]['color'] = c
+
+    # Custom sizes
+    if sizes is not None:
+        sizes = extract_column(docs, sizes)
+
+        for i, size in enumerate(sizes):
+            g.nodes[i]['size'] = size
+
+    if shapes is not None:
+        shapes = extract_column(docs, shapes)
+
+        for i, shape in enumerate(sizes):
+            g.nodes[i]['shape'] = shape
 
     return g, mapping
 
