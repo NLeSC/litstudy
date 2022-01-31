@@ -46,14 +46,14 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">API reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="types.html">Data Types</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Literature Databases</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#module-litstudy">Scopus</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-0">SemanticScholar</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-1">CrossRef</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-2">bibtex</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-3">RIS</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-4">dblp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-5">IEEE Xplore</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-6">Springer Link</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scopus">Scopus</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#semanticscholar">SemanticScholar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#crossref">CrossRef</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bibtex">bibtex</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ris">RIS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dblp">dblp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ieee-xplore">IEEE Xplore</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#springer-link">Springer Link</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="stats.html">Calculating Statistics</a></li>
@@ -116,149 +116,29 @@
 </style>
 <section id="literature-databases">
 <h1>Literature Databases<a class="headerlink" href="#literature-databases" title="Permalink to this headline"></a></h1>
-<section id="module-litstudy">
-<span id="scopus"></span><h2>Scopus<a class="headerlink" href="#module-litstudy" title="Permalink to this headline"></a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="litstudy.search_scopus">
-<span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">search_scopus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.search_scopus" title="Permalink to this definition"></a></dt>
-<dd><p>Submit the given query to the Scopus API.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>limit</strong> – Restrict results the first <cite>limit</cite> documents.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="litstudy.refine_scopus">
-<span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">refine_scopus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">search_title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#litstudy.refine_scopus" title="Permalink to this definition"></a></dt>
-<dd><p>Attempt to fetch Scopus metadata for each document in the given
-set. Returns a tuple containing two sets: the documents available on
-Scopus and the remaining documents not found on Scopus.</p>
-<p>Documents are retrieved based on their identifier (DOI, Pubmed ID, or
-Scopus ID). Documents without a unique identifier are retrieved by
-performing a fuzzy search based on their title. This is not ideal
-and can lead to false positives (i.e., another document is found having
-the same title), thus it can be disabled if necessary.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>search_title</strong> – Flag to toggle searching by title.</p>
-</dd>
-</dl>
-</dd></dl>
-
+<section id="scopus">
+<h2>Scopus<a class="headerlink" href="#scopus" title="Permalink to this headline"></a></h2>
 </section>
-<section id="module-0">
-<span id="semanticscholar"></span><h2>SemanticScholar<a class="headerlink" href="#module-0" title="Permalink to this headline"></a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="litstudy.fetch_semanticscholar">
-<span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">fetch_semanticscholar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">set</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="types.html#litstudy.types.Document" title="litstudy.types.Document"><span class="pre">litstudy.types.Document</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#litstudy.fetch_semanticscholar" title="Permalink to this definition"></a></dt>
-<dd><p>Fetch SemanticScholar metadata for the given key. The key can be
-one of the following (see <a class="reference external" href="https://www.semanticscholar.org/product/api">API reference</a>):</p>
-<ul class="simple">
-<li><p>DOI</p></li>
-<li><p>S2 paper ID</p></li>
-<li><p>ArXiv ID (example format: <cite>arXiv:1705.10311</cite>)</p></li>
-<li><p>MAG ID (example format: <cite>MAG:112218234</cite>)</p></li>
-<li><p>ACL ID (example format: <cite>ACL:W12-3903</cite>)</p></li>
-<li><p>PubMed ID (example format: <cite>PMID:19872477</cite>)</p></li>
-<li><p>Corpus ID (example format: <cite>CorpusID:37220927</cite>)</p></li>
-</ul>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>The <cite>Document</cite> if it was found and <cite>None</cite> otherwise.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="litstudy.refine_semanticscholar">
-<span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">refine_semanticscholar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#litstudy.refine_semanticscholar" title="Permalink to this definition"></a></dt>
-<dd><p>Attempt to fetch SemanticScholar metadata for each document in the
-given set based on their DOIs. Returns a tuple containing two sets: the
-documents available on SemanticScholar and the remaining documents that
-were not found or do not have a DOI.</p>
-</dd></dl>
-
+<section id="semanticscholar">
+<h2>SemanticScholar<a class="headerlink" href="#semanticscholar" title="Permalink to this headline"></a></h2>
 </section>
-<section id="module-1">
-<span id="crossref"></span><h2>CrossRef<a class="headerlink" href="#module-1" title="Permalink to this headline"></a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="litstudy.fetch_crossref">
-<span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">fetch_crossref</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="types.html#litstudy.types.Document" title="litstudy.types.Document"><span class="pre">litstudy.types.Document</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#litstudy.fetch_crossref" title="Permalink to this definition"></a></dt>
-<dd><p>Fetch the metadata for the given DOI from CrossRef.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>The <cite>Document</cite> or <cite>None</cite> if the DOI was not available.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="litstudy.refine_crossref">
-<span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">refine_crossref</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#litstudy.refine_crossref" title="Permalink to this definition"></a></dt>
-<dd><p>Attempts to fetch metadata from CrossRef for each document in the given
-set. Returns a tuple of two sets: the documents retrieved from CrossRef
-and the remaining documents (i.e., without DOI or not found).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>timeout</strong> – Timeout in seconds between each request to throttle
-server communication.</p>
-</dd>
-</dl>
-</dd></dl>
-
+<section id="crossref">
+<h2>CrossRef<a class="headerlink" href="#crossref" title="Permalink to this headline"></a></h2>
 </section>
-<section id="module-2">
-<span id="bibtex"></span><h2>bibtex<a class="headerlink" href="#module-2" title="Permalink to this headline"></a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="litstudy.load_bibtex">
-<span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">load_bibtex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.load_bibtex" title="Permalink to this definition"></a></dt>
-<dd><p>Load the bibtex file at the given <cite>path</cite> as a <cite>DocumentSet</cite>.</p>
-</dd></dl>
-
+<section id="bibtex">
+<h2>bibtex<a class="headerlink" href="#bibtex" title="Permalink to this headline"></a></h2>
 </section>
-<section id="module-3">
-<span id="ris"></span><h2>RIS<a class="headerlink" href="#module-3" title="Permalink to this headline"></a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="litstudy.load_ris_file">
-<span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">load_ris_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.load_ris_file" title="Permalink to this definition"></a></dt>
-<dd><p>Load the RIS file at the given <cite>path</cite> as a <cite>DocumentSet</cite>.</p>
-</dd></dl>
-
+<section id="ris">
+<h2>RIS<a class="headerlink" href="#ris" title="Permalink to this headline"></a></h2>
 </section>
-<section id="module-4">
-<span id="dblp"></span><h2>dblp<a class="headerlink" href="#module-4" title="Permalink to this headline"></a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="litstudy.search_dblp">
-<span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">search_dblp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.search_dblp" title="Permalink to this definition"></a></dt>
-<dd><p>Perform the given <cite>query</cite> on the DBLP API and return the results
-as a <cite>DocumentSet</cite>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>limit</strong> – The maximum number of documents to retrieve.</p>
-</dd>
-</dl>
-</dd></dl>
-
+<section id="dblp">
+<h2>dblp<a class="headerlink" href="#dblp" title="Permalink to this headline"></a></h2>
 </section>
-<section id="module-5">
-<span id="ieee-xplore"></span><h2>IEEE Xplore<a class="headerlink" href="#module-5" title="Permalink to this headline"></a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="litstudy.load_ieee_csv">
-<span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">load_ieee_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.load_ieee_csv" title="Permalink to this definition"></a></dt>
-<dd><p>Import CSV file exported from <a class="reference external" href="https://ieeexplore.ieee.org/search/searchresult.jsp">IEEE Xplore</a>.</p>
-</dd></dl>
-
+<section id="ieee-xplore">
+<h2>IEEE Xplore<a class="headerlink" href="#ieee-xplore" title="Permalink to this headline"></a></h2>
 </section>
-<section id="module-6">
-<span id="springer-link"></span><h2>Springer Link<a class="headerlink" href="#module-6" title="Permalink to this headline"></a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="litstudy.load_springer_csv">
-<span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">load_springer_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.load_springer_csv" title="Permalink to this definition"></a></dt>
-<dd><p>Load CSV file exported from <a class="reference external" href="https://link.springer.com/">Springer Link</a>.</p>
-</dd></dl>
-
+<section id="springer-link">
+<h2>Springer Link<a class="headerlink" href="#springer-link" title="Permalink to this headline"></a></h2>
 </section>
 </section>
 
