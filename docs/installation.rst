@@ -24,4 +24,4 @@ Virtual environment
 -------------------
 
 It is recommended to use a virtual environment for Python.
-We suggest to use `minicode <https://docs.conda.io/en/latest/miniconda.html>`_.
+We suggest to use `miniconda <https://docs.conda.io/en/latest/miniconda.html>`_.
