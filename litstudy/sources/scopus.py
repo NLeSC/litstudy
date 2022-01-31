@@ -3,8 +3,6 @@ from ..types import Document, DocumentSet, DocumentIdentifier, Author, \
                    Affiliation
 from collections import defaultdict
 from datetime import date
-from pybliometrics.scopus import AbstractRetrieval, ScopusSearch
-from pybliometrics.scopus.exception import Scopus404Error
 from typing import Tuple, Optional
 import logging
 import random
@@ -47,6 +45,9 @@ class ScopusAffiliation(Affiliation):
 class ScopusDocument(Document):
     @staticmethod
     def from_identifier(id, id_type, view='FULL'):
+        from pybliometrics.scopus import AbstractRetrieval
+        from pybliometrics.scopus.exception import Scopus404Error
+
         with shelve.open(SCOPUS_CACHE) as cache:
             key = id + '_found'
             if cache.get(key) is False:
@@ -182,6 +183,7 @@ def search_scopus(query: str, *, limit: int = None) -> DocumentSet:
 
     :param limit: Restrict results the first `limit` documents.
     """
+    from pybliometrics.scopus import ScopusSearch
 
     search = ScopusSearch(query, view='STANDARD')
     eids = list(search.get_eids())
@@ -212,7 +214,10 @@ def refine_scopus(docs: DocumentSet, *, search_title=True
     and can lead to false positives (i.e., another document is found having
     the same title), thus it can be disabled if necessary.
 
-    :param search_title: Flag to toggle searching by title."""
+    :param search_title: Flag to toggle searching by title.
+    """
+    from pybliometrics.scopus import ScopusSearch
+
     def callback(doc):
         id = doc.id
         if isinstance(doc, ScopusDocument):
