@@ -197,6 +197,10 @@ def refine_semanticscholar(docs: DocumentSet
 
 
 def search_semanticscholar(query: str, *, limit: int = None) -> DocumentSet:
+    """ Submit the given query to SemanticScholar and return the results
+    as a `DocumentSet`.
+    """
+
     if not query:
         raise Exception('invalid query: {query}')
 
