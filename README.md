@@ -24,11 +24,17 @@ An example notebook is available in `notebooks/example.ipynb` and [here](https:/
 
 
 ## Installation Guide
-litstudy is available on pip!
+litstudy is available on PyPI!
 Full installation guide is available [here](https://nlesc.github.io/litstudy/installation.html).
 
 ```bash
 pip install litstudy
+```
+
+Or install the lastest development version directly from GitHub:
+
+```bash
+pip install git+https://github.com/NLeSC/litstudy
 ```
 
 
