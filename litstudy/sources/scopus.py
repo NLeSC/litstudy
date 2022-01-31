@@ -166,22 +166,22 @@ class ScopusDocument(Document):
 
 
 def fetch_scopus(key: str) -> Optional[Document]:
-    ''' Fetch the document on Scopus for the given key. The key can be one of
+    """ Fetch the document on Scopus for the given key. The key can be one of
     the following options:
 
     * DOI
     * Scopus EID or Scopus ID
     * PII
     * Pubmed-ID
-    '''
+    """
     return ScopusDocument.from_identifier(key, None)
 
 
 def search_scopus(query: str, *, limit: int = None) -> DocumentSet:
-    ''' Submit the given query to the Scopus API.
+    """ Submit the given query to the Scopus API.
 
     :param limit: Restrict results the first `limit` documents.
-    '''
+    """
 
     search = ScopusSearch(query, view='STANDARD')
     eids = list(search.get_eids())
@@ -201,7 +201,7 @@ def search_scopus(query: str, *, limit: int = None) -> DocumentSet:
 
 def refine_scopus(docs: DocumentSet, *, search_title=True
                   ) -> Tuple[DocumentSet, DocumentSet]:
-    '''Attempt to fetch Scopus metadata for each document in the given
+    """Attempt to fetch Scopus metadata for each document in the given
     set. Returns a tuple containing two sets: the documents available on
     Scopus and the remaining documents not found on Scopus.
 
@@ -212,7 +212,7 @@ def refine_scopus(docs: DocumentSet, *, search_title=True
     and can lead to false positives (i.e., another document is found having
     the same title), thus it can be disabled if necessary.
 
-    :param search_title: Flag to toggle searching by title.'''
+    :param search_title: Flag to toggle searching by title."""
     def callback(doc):
         id = doc.id
         if isinstance(doc, ScopusDocument):
