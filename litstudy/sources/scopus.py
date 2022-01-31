@@ -165,6 +165,18 @@ class ScopusDocument(Document):
         return f'<{self.title}>'
 
 
+def fetch_scopus(key: str) -> Optional[Document]:
+    ''' Fetch the document on Scopus for the given key. The key can be one of
+    the following options:
+
+    * DOI
+    * Scopus EID or Scopus ID
+    * PII
+    * Pubmed-ID
+    '''
+    return ScopusDocument.from_identifier(key, None)
+
+
 def search_scopus(query: str, *, limit: int = None) -> DocumentSet:
     ''' Submit the given query to the Scopus API.
 
