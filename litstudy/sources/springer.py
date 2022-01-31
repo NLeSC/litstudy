@@ -39,7 +39,7 @@ class SpringerDocument(Document):
 
 
 def load_springer_csv(path: str) -> DocumentSet:
-    """ """
+    """ Load CSV file exported from `Springer Link <https://link.springer.com/>`_. """
     with open(path, newline='') as f:
         lines = csv.DictReader(f)
         docs = [SpringerDocument(line) for line in lines]

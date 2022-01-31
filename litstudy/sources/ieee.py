@@ -96,7 +96,7 @@ class IEEEAuthor(Author):
 
 
 def load_ieee_csv(path: str) -> DocumentSet:
-    """ """
+    """ Import CSV file exported from `IEEE Xplore <https://ieeexplore.ieee.org/search/searchresult.jsp>`_. """
     with open(path, newline='') as f:
         lines = csv.DictReader(f)
         docs = [IEEEDocument(line) for line in lines]
