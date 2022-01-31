@@ -3,7 +3,7 @@
 [![DOI](https://zenodo.org/badge/206312286.svg)](https://zenodo.org/badge/latestdoi/206312286)
 [![License](https://img.shields.io/github/license/nlesc/litstudy)](https://github.com/NLeSC/litstudy/blob/master/LICENSE)
 [![Version](https://img.shields.io/pypi/v/litstudy)](https://pypi.org/project/litstudy/)
-[![Github](https://img.shields.io/github/checks-status/nlesc/litstudy/master)](https://github.com/NLeSC/litstudy)
+[![Build and Test](https://github.com/NLeSC/litstudy/actions/workflows/python-app.yml/badge.svg)](https://github.com/NLeSC/litstudy/actions/workflows/)
 
 `litstudy` is a Python package that allows analysis of scientific literature from the comfort of a Jupyter notebook.
 It enables selecting scientific publications and study their metadata using visualizations, network analysis, and natural language processing.
