@@ -61,6 +61,7 @@ Don't forget to check out these other amazing software packages!
 
 * [ScientoPy](https://www.scientopy.com/): Open-source Python based scientometric analysis tool.
 * [pybliometrics](https://github.com/pybliometrics-dev/pybliometrics): API-Wrapper to access Scopus.
+* [ASReview](https://asreview.nl/): Active learning for systematic reviews.
 * [metaknowledge](https://github.com/UWNETLAB/metaknowledge): Python library for doing bibliometric and network analysis in science.
 * [tethne](https://github.com/diging/tethne): Python module for bibliographic network analysis.
 * [VOSviewer](https://www.vosviewer.com/): Software tool for constructing and visualizing bibliometric networks.
