@@ -165,7 +165,7 @@ def build_base_network(docs, directed, colors=None, cmap=None,
     if colors is not None and docs:
         # Column name
         if isinstance(colors, str):
-            colors = docs[colors]
+            colors = docs.data.eval(colors)  # Column evaluation
         else:
             colors = list(colors)
 
