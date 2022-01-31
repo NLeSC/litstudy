@@ -152,7 +152,7 @@ def compute_author_histogram(docs: DocumentSet, **kwargs) -> pd.DataFrame:
     """ Compute a histogram of number of documents by author name. """
     def extract(doc):
         for author in doc.authors or []:
-            yield a.name
+            yield author.name
 
     return compute_histogram(docs, extract, **kwargs)
 
@@ -163,7 +163,6 @@ def compute_author_affiliation_histogram(docs: DocumentSet, **kwargs
     affiliation name) combinations. This can help reduce conflicts where there
     are many authors of the same name working for different affiliations."""
     def extract(doc):
-        result = []
         for author in doc.authors or []:
             for affiliation in author.affiliations or []:
                 if author.name and affiliation.name:

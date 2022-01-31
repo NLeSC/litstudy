@@ -251,7 +251,7 @@ class TopicModel:
     def best_token_for_topic(self, topic_id: int) -> str:
         """ Returns the token that most strongly belongs to the given
         topic. """
-        return best_tokens_for_topic(topic_id, limit=1)[0]
+        return self.best_tokens_for_topic(topic_id, limit=1)[0]
 
     def best_topic_for_token(self, token) -> int:
         """ Returns the topic index that most strongly belongs to the given

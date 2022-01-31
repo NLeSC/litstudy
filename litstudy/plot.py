@@ -333,4 +333,3 @@ def plot_document_topics(model: TopicModel, document_id: int, *, ax=None):
     for i, w in enumerate(weights):
         if w > 0.01:
             plt.text(i, w, str(i + 1), ha='center', va='bottom')
-

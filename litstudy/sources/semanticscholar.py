@@ -211,10 +211,11 @@ def search_semanticscholar(query: str, *, limit: int = None) -> DocumentSet:
         paper_ids = []
 
         while True:
-            records = request_results(query, offset, cache)
-            if not records:
+            data = request_results(query, offset, cache)
+            if not data:
                 break
 
+            records = data['data']
             offset += len(records)
 
             for record in records:

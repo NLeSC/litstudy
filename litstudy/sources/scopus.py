@@ -5,7 +5,7 @@ from collections import defaultdict
 from datetime import date
 from pybliometrics.scopus import AbstractRetrieval, ScopusSearch
 from pybliometrics.scopus.exception import Scopus404Error
-from typing import Tuple
+from typing import Tuple, Optional
 import logging
 import random
 import shelve

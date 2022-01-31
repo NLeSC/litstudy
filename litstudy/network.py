@@ -70,7 +70,8 @@ def plot_network(g: nx.Graph, *, height='1000px', smooth_edges=None,
             directed=directed
     )
 
-    sizes = [attr.get('size') or attr.get('weight') for (_, attr) in g.nodes.items()]
+    sizes = [attr.get('size') or attr.get('weight') for (_, attr) in
+             g.nodes.items()]
 
     if all(s is not None for s in sizes):
         sizes = np.array(sizes)
