@@ -110,9 +110,8 @@ def request_results(query, offset, cache, timeout=DEFAULT_TIMEOUT):
         msg = response.get('error') or response.get('message') or 'unknown'
         raise Exception(f'error while fetching {reply.url}: {msg}')
 
-    data = response['data']
-    cache[cache_key] = data
-    return data
+    cache[cache_key] = response
+    return response
 
 
 def request_paper(key, cache, timeout=DEFAULT_TIMEOUT):
