@@ -3,7 +3,7 @@
 [![DOI](https://zenodo.org/badge/206312286.svg)](https://zenodo.org/badge/latestdoi/206312286)
 [![License](https://img.shields.io/github/license/nlesc/litstudy)](https://github.com/NLeSC/litstudy/blob/master/LICENSE)
 [![Version](https://img.shields.io/pypi/v/litstudy)](https://pypi.org/project/litstudy/)
-[![Build and Test](https://github.com/NLeSC/litstudy/actions/workflows/python-app.yml/badge.svg)](https://github.com/NLeSC/litstudy/actions/workflows/)
+[![Build and Test](https://github.com/NLeSC/litstudy/actions/workflows/python-app.yml/badge.svg)](https://github.com/NLeSC/litstudy/actions/)
 
 `litstudy` is a Python package that allows analysis of scientific literature from the comfort of a Jupyter notebook.
 It enables selecting scientific publications and study their metadata using visualizations, network analysis, and natural language processing.
@@ -20,7 +20,7 @@ In essense, this package offers five features
 ## Example
 An example notebook is available in `notebooks/example.ipynb` and [here](https://nlesc.github.io/litstudy/example.html).
 
-![Example notebook](https://raw.githubusercontent.com/NLeSC/litstudy/master/docs/images/notebook.png)
+[![Example notebook](https://raw.githubusercontent.com/NLeSC/litstudy/master/docs/images/notebook.png)](https://github.com/NLeSC/litstudy/blob/master/notebooks/example.ipynb)
 
 
 ## Installation Guide
