@@ -16,15 +16,17 @@ from .nlp import \
         compute_word_distribution, \
         TopicModel, \
         Corpus
+from .types import DocumentSet
 import inspect
 import math
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn
+import pandas as pd
 
 
 def plot_histogram(
-                   data,
+                   data: pd.DataFrame,
                    keys=None,
                    title='',
                    xlabel='',
@@ -37,6 +39,39 @@ def plot_histogram(
                    legend=True,
                    relative_to=None,
                    ax=None):
+    """
+    This is the general function to plot a histogram (bar plot). All other
+    `plot_*_histogram` functions in this module will call this function.
+
+    This function takes a pandas `DataFrame`. Each column represents one
+    group and a sequence of bars that will be plotted. The names in the index
+    are placed as labels on the axis.
+
+    For instance, a possible input could be
+    data frame where the columns are different authors, rows are different
+    years, and values are the number of publications per year per author.
+
+    :param ax: The `matplotlib` `Axes` instance the plot will be drawn on. If
+               `None`, the current `Axes` instance is used (`plt.gca()`).
+    :param vertical: Default bars are horizontal (left to right). Set
+                     `vertical=True` for vertical bars (bottom to top).
+    :param bar_width: Width of bars. Should be at most `1.0` for 100%.
+    :param label_rotation: Rotates the xlabels. This is useful if
+                           `vertical=True` since it can be used to place the
+                           labels horziontal (`label_rotation=0`), vertical
+                           (`label_rotation=90`), or diagonal
+                           (`label_rotation=45`).
+    :param max_label_length: Labels longer than this length are shortened.
+    :param stacked: By default, different groups are drawn next to each other.
+                    If `True`, the different groups are stacked on top of each
+                    other instead.
+    :param legend: Show legend.
+    :param relative_to: If not `None`, all bars will be plotted as a
+                        percentage relative to this value.
+    :param title: Title of plot (set using `ax.set_title`).
+    :param xlabel: Title on the X axis (or Y axis if `vertical=True`).
+    :param ylabel: Title on the Y axis (or X axis if `vertical=True`).
+    """
     if ax is None:
         ax = plt.gca()
 
@@ -155,73 +190,100 @@ def plot_groups_histogram(docs, **kwargs):
     return wrapper(docs, fun, default, **kwargs)
 
 
-def plot_year_histogram(docs, **kwargs):
-    """ Plot histogram of the number of documents published in each year. """
+def plot_year_histogram(docs: DocumentSet, **kwargs):
+    """ Plot histogram of the number of documents published in each year.
+
+    :param kwargs: Passed to `plot_histogram`.
+    """
     default = dict(title='Year of publications')
     return wrapper(docs, compute_year_histogram, default, **kwargs)
 
 
-def plot_author_histogram(docs, **kwargs):
-    """ Plot histogram of the number of documents published per author. """
+def plot_author_histogram(docs: DocumentSet, **kwargs):
+    """ Plot histogram of the number of documents published per author.
+
+    :param kwargs: Passed to `plot_histogram`.
+    """
     default = dict(title='Authors', limit=25)
     return wrapper(docs, compute_author_histogram, default, **kwargs)
 
 
-def plot_number_authors_histogram(docs, **kwargs):
-    """ Plot histogram of the number of authors per document. """
+def plot_number_authors_histogram(docs: DocumentSet, **kwargs):
+    """ Plot histogram of the number of authors per document.
+
+    :param kwargs: Passed to `plot_histogram`.
+    """
     default = dict(title='No. of authors')
     return wrapper(docs, compute_number_authors_histogram, default, **kwargs)
 
 
-def plot_author_affiliation_histogram(docs, **kwargs):
+def plot_author_affiliation_histogram(docs: DocumentSet, **kwargs):
     """ Plot histogram of the number of documents published per author
-    affiliation. """
+    affiliation.
+
+    :param kwargs: Passed to `plot_histogram`.
+    """
     default = dict(title='Author + Affiliation', limit=25)
     return wrapper(docs, compute_author_affiliation_histogram, default,
                    **kwargs)
 
 
-def plot_language_histogram(docs, **kwargs):
+def plot_language_histogram(docs: DocumentSet, **kwargs):
     """ Plot histogram of the number of documents by language. """
     default = dict(title='Language')
     return wrapper(docs, compute_language_histogram, default, **kwargs)
 
 
-def plot_source_histogram(docs, **kwargs):
+def plot_source_histogram(docs: DocumentSet, **kwargs):
     """ Plot histogram of the number of documents by publication source. """
     default = dict(title='Publication source', limit=25)
     return wrapper(docs, compute_source_histogram, default, **kwargs)
 
 
-def plot_source_type_histogram(docs, **kwargs):
+def plot_source_type_histogram(docs: DocumentSet, **kwargs):
     """ Plot histogram of the number of documents by publication source
-    type. """
+    type.
+
+    :param kwargs: Passed to `plot_histogram`.
+    """
     default = dict(title='Publication source type', limit=25)
     return wrapper(docs, compute_source_type_histogram, default, **kwargs)
 
 
-def plot_affiliation_histogram(docs, **kwargs):
-    """ Plot histogram of the number of documents by author affiliation. """
+def plot_affiliation_histogram(docs: DocumentSet, **kwargs):
+    """ Plot histogram of the number of documents by author affiliation.
+
+    :param kwargs: Passed to `plot_histogram`.
+    """
     default = dict(title='Affiliations', limit=25)
     return wrapper(docs, compute_affiliation_histogram, default, **kwargs)
 
 
-def plot_country_histogram(docs, **kwargs):
+def plot_country_histogram(docs: DocumentSet, **kwargs):
     """ Plot histogram of the number of documents by country of author
-    affiliation. """
+    affiliation 
+
+    :param kwargs: Passed to `plot_histogram`.
+    """
     default = dict(title='Countries', limit=25)
     return wrapper(docs, compute_country_histogram, default, **kwargs)
 
 
-def plot_continent_histogram(docs, **kwargs):
+def plot_continent_histogram(docs: DocumentSet, **kwargs):
     """ Plot histogram of the number of documents by continent of author
-    affiliation. """
+    affiliation.
+
+    :param kwargs: Passed to `plot_histogram`.
+    """
     default = dict(title='Continents', limit=25)
     return wrapper(docs, compute_continent_histogram, default, **kwargs)
 
 
 def plot_word_distribution(corpus: Corpus, *, limit=25, **kwargs):
-    """ Plot the frequency of the top words in the given corpus. """
+    """ Plot the frequency of the top words in the given corpus.
+
+    :param kwargs: Passed to `plot_histogram`.
+    """
     n = len(corpus.frequencies)
     data = compute_word_distribution(corpus, limit=limit)
     return plot_histogram(data, relative_to=n, **kwargs)
