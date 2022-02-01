@@ -365,11 +365,12 @@ div.rendered_html tbody tr:hover {
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
-
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sbs</span>
+
+<span class="c1"># Options for plots</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
 <span class="n">sbs</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;paper&#39;</span><span class="p">)</span>
 
 <span class="c1"># Import litstudy</span>
@@ -459,7 +460,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|██████████| 1440/1440 [00:03&lt;00:00, 374.96it/s]
+100%|██████████| 1440/1440 [00:03&lt;00:00, 361.20it/s]
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -668,7 +669,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-100%|██████████| 1000/1000 [00:00&lt;00:00, 2532.57it/s]
+100%|██████████| 1000/1000 [00:00&lt;00:00, 1752.38it/s]
 </pre></div></div>
 </div>
 <div class="nboutput docutils container">
@@ -676,11 +677,19 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-BarnesHut Approximation  took  0.10  seconds
-Repulsion forces  took  0.23  seconds
+BarnesHut Approximation  took  0.14  seconds
+Repulsion forces  took  0.32  seconds
 Gravitational forces  took  0.01  seconds
-Attraction forces  took  0.00  seconds
-AdjustSpeedAndApplyForces step  took  0.03  seconds
+Attraction forces  took  0.01  seconds
+AdjustSpeedAndApplyForces step  took  0.04  seconds
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -933,7 +942,7 @@ Machine Learning and Deep Learning frameworks and libraries for large-scale data
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><br/><br/><span></span><span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.2</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.2</span>
 <span class="n">dl_topic</span> <span class="o">=</span> <span class="n">topic_model</span><span class="o">.</span><span class="n">doc2topic</span><span class="p">[:,</span> <span class="n">topic_id</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">threshold</span>
 
 <span class="n">docs</span> <span class="o">=</span> <span class="n">docs</span><span class="o">.</span><span class="n">add_property</span><span class="p">(</span><span class="s1">&#39;dl_topic&#39;</span><span class="p">,</span> <span class="n">dl_topic</span><span class="p">)</span>
@@ -941,7 +950,7 @@ Machine Learning and Deep Learning frameworks and libraries for large-scale data
 
 <span class="n">groups</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s1">&#39;deep learning related&#39;</span><span class="p">:</span> <span class="s1">&#39;dl_topic&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;other&#39;</span><span class="p">:</span> <span class="s1">&#39;1 - dl_topic&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;other&#39;</span><span class="p">:</span> <span class="s1">&#39;not dl_topic&#39;</span><span class="p">,</span>
 <span class="p">}</span>
 
 <span class="n">litstudy</span><span class="o">.</span><span class="n">plot_year_histogram</span><span class="p">(</span><span class="n">docs</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">,</span> <span class="n">stacked</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
@@ -1103,6 +1112,307 @@ Machine Learning and Deep Learning frameworks and libraries for large-scale data
 <div class="output_area docutils container">
 <img alt="_images/example_54_0.png" src="_images/example_54_0.png" />
 </div>
+</div>
+<p>We can even calculate the most popular publication venues for deep learning in our dataset using some simple Panda functions. It appears that “Neural Computing and Applications” is the most popular publication venue.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute histogram by publication venue</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">litstudy</span><span class="o">.</span><span class="n">compute_source_histogram</span><span class="p">(</span><span class="n">docs</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">)</span>
+
+<span class="c1"># Add column &#39;total&#39;</span>
+<span class="n">table</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="s1">&#39;deep learning related&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">table</span><span class="p">[</span><span class="s1">&#39;other&#39;</span><span class="p">]</span>
+
+<span class="c1"># Remove rare venues that have less than 5 publications</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">]</span>
+
+<span class="c1"># Add column &#39;ratio&#39;</span>
+<span class="n">table</span><span class="p">[</span><span class="s1">&#39;ratio&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="s1">&#39;deep learning related&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">table</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span>
+
+<span class="c1"># Sort by ratio in descending order</span>
+<span class="n">table</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;ratio&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>deep learning related</th>
+      <th>other</th>
+      <th>total</th>
+      <th>ratio</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Neural Computing and Applications</th>
+      <td>3</td>
+      <td>3</td>
+      <td>6</td>
+      <td>50.000000</td>
+    </tr>
+    <tr>
+      <th>Computing</th>
+      <td>3</td>
+      <td>12</td>
+      <td>15</td>
+      <td>20.000000</td>
+    </tr>
+    <tr>
+      <th>IEEE International Symposium on Workload Characterization IISWC</th>
+      <td>1</td>
+      <td>4</td>
+      <td>5</td>
+      <td>20.000000</td>
+    </tr>
+    <tr>
+      <th>Science China Information Sciences</th>
+      <td>2</td>
+      <td>8</td>
+      <td>10</td>
+      <td>20.000000</td>
+    </tr>
+    <tr>
+      <th>IEEE High Performance Extreme Computing Conference HPEC</th>
+      <td>1</td>
+      <td>7</td>
+      <td>8</td>
+      <td>12.500000</td>
+    </tr>
+    <tr>
+      <th>European Physical Journal C</th>
+      <td>1</td>
+      <td>7</td>
+      <td>8</td>
+      <td>12.500000</td>
+    </tr>
+    <tr>
+      <th>Journal of Grid Computing</th>
+      <td>1</td>
+      <td>7</td>
+      <td>8</td>
+      <td>12.500000</td>
+    </tr>
+    <tr>
+      <th>Journal of Computer Science and Technology</th>
+      <td>3</td>
+      <td>21</td>
+      <td>24</td>
+      <td>12.500000</td>
+    </tr>
+    <tr>
+      <th>Multimedia Tools and Applications</th>
+      <td>3</td>
+      <td>25</td>
+      <td>28</td>
+      <td>10.714286</td>
+    </tr>
+    <tr>
+      <th>Journal of Supercomputing</th>
+      <td>20</td>
+      <td>205</td>
+      <td>225</td>
+      <td>8.888889</td>
+    </tr>
+    <tr>
+      <th>BMC Bioinformatics</th>
+      <td>2</td>
+      <td>22</td>
+      <td>24</td>
+      <td>8.333333</td>
+    </tr>
+    <tr>
+      <th>Journal of Big Data</th>
+      <td>1</td>
+      <td>11</td>
+      <td>12</td>
+      <td>8.333333</td>
+    </tr>
+    <tr>
+      <th>Cluster Computing</th>
+      <td>3</td>
+      <td>52</td>
+      <td>55</td>
+      <td>5.454545</td>
+    </tr>
+    <tr>
+      <th>International Journal of Parallel Programming</th>
+      <td>5</td>
+      <td>87</td>
+      <td>92</td>
+      <td>5.434783</td>
+    </tr>
+    <tr>
+      <th>IEEE International Parallel and Distributed Processing Symposium Workshops IPDPSW</th>
+      <td>1</td>
+      <td>21</td>
+      <td>22</td>
+      <td>4.545455</td>
+    </tr>
+    <tr>
+      <th>Journal of Signal Processing Systems</th>
+      <td>1</td>
+      <td>42</td>
+      <td>43</td>
+      <td>2.325581</td>
+    </tr>
+    <tr>
+      <th>Soft Computing</th>
+      <td>0</td>
+      <td>16</td>
+      <td>16</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>BMC Research Notes</th>
+      <td>0</td>
+      <td>6</td>
+      <td>6</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>Journal of the Brazilian Society of Mechanical Sciences and Engineering</th>
+      <td>0</td>
+      <td>5</td>
+      <td>5</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>IEEE International Conference on Cluster Computing CLUSTER</th>
+      <td>0</td>
+      <td>5</td>
+      <td>5</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>IEEE International Symposium on High Performance Computer Architecture HPCA</th>
+      <td>0</td>
+      <td>5</td>
+      <td>5</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>IEEE International Conference on Parallel and Distributed Systems ICPADS</th>
+      <td>0</td>
+      <td>5</td>
+      <td>5</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>Journal of Real Time Image Processing</th>
+      <td>0</td>
+      <td>57</td>
+      <td>57</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>Journal of Scientific Computing</th>
+      <td>0</td>
+      <td>5</td>
+      <td>5</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>Computing and Visualization in Science</th>
+      <td>0</td>
+      <td>5</td>
+      <td>5</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>Visual Computer</th>
+      <td>0</td>
+      <td>7</td>
+      <td>7</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>IEEE ACM International Symposium on Cluster Cloud and Grid Computing CCGrid</th>
+      <td>0</td>
+      <td>6</td>
+      <td>6</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>Euromicro International Conference on Parallel Distributed and Network Based Processing PDP</th>
+      <td>0</td>
+      <td>6</td>
+      <td>6</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>IEEE Transactions on Parallel and Distributed Systems</th>
+      <td>0</td>
+      <td>7</td>
+      <td>7</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>International Conference for High Performance Computing Networking Storage and Analysis SC</th>
+      <td>0</td>
+      <td>7</td>
+      <td>7</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>Frontiers of Computer Science</th>
+      <td>0</td>
+      <td>8</td>
+      <td>8</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>VLDB Journal</th>
+      <td>0</td>
+      <td>8</td>
+      <td>8</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>Computer Science Research and Development</th>
+      <td>0</td>
+      <td>10</td>
+      <td>10</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>IEEE International Parallel and Distributed Processing Symposium IPDPS</th>
+      <td>0</td>
+      <td>11</td>
+      <td>11</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>International Conference on High Performance Computing and Simulation HPCS</th>
+      <td>0</td>
+      <td>5</td>
+      <td>5</td>
+      <td>0.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
 </div>
 </section>
 </section>
