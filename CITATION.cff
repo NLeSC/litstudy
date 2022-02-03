@@ -5,7 +5,7 @@ authors:
     family-names: Heldens
     given-names: S
     orcid: "https://orcid.org/0000-0001-8792-6305"
-cff-version: "1.0.3"
+cff-version: 1.2.0
 date-released: 2019-09-04
 license: "Apache-2.0"
 message: "If you use this software, please cite it using these metadata."
