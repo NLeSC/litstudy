@@ -107,73 +107,157 @@
 <section id="module-litstudy.plot">
 <span id="plotting-statistics"></span><h1>Plotting Statistics<a class="headerlink" href="#module-litstudy.plot" title="Permalink to this headline"></a></h1>
 <dl class="py function">
+<dt class="sig sig-object py" id="litstudy.plot.plot_histogram">
+<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keys</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_rotation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vertical</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bar_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_label_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stacked</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relative_to</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_histogram" title="Permalink to this definition"></a></dt>
+<dd><p>This is the general function to plot a histogram (bar plot). All other
+<cite>plot_*_histogram</cite> functions in this module will call this function.</p>
+<p>This function takes a pandas <cite>DataFrame</cite>. Each column represents one
+group and a sequence of bars that will be plotted. The names in the index
+are placed as labels on the axis.</p>
+<p>For instance, a possible input could be
+data frame where the columns are different authors, rows are different
+years, and values are the number of publications per year per author.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax</strong> – The <cite>matplotlib</cite> <cite>Axes</cite> instance the plot will be drawn on. If
+<cite>None</cite>, the current <cite>Axes</cite> instance is used (<cite>plt.gca()</cite>).</p></li>
+<li><p><strong>vertical</strong> – Default bars are horizontal (left to right). Set
+<cite>vertical=True</cite> for vertical bars (bottom to top).</p></li>
+<li><p><strong>bar_width</strong> – Width of bars. Should be at most <cite>1.0</cite> for 100%.</p></li>
+<li><p><strong>label_rotation</strong> – Rotates the xlabels. This is useful if
+<cite>vertical=True</cite> since it can be used to place the
+labels horziontal (<cite>label_rotation=0</cite>), vertical
+(<cite>label_rotation=90</cite>), or diagonal
+(<cite>label_rotation=45</cite>).</p></li>
+<li><p><strong>max_label_length</strong> – Labels longer than this length are shortened.</p></li>
+<li><p><strong>stacked</strong> – By default, different groups are drawn next to each other.
+If <cite>True</cite>, the different groups are stacked on top of each
+other instead.</p></li>
+<li><p><strong>legend</strong> – Show legend.</p></li>
+<li><p><strong>relative_to</strong> – If not <cite>None</cite>, all bars will be plotted as a
+percentage relative to this value.</p></li>
+<li><p><strong>title</strong> – Title of plot (set using <cite>ax.set_title</cite>).</p></li>
+<li><p><strong>xlabel</strong> – Title on the X axis (or Y axis if <cite>vertical=True</cite>).</p></li>
+<li><p><strong>ylabel</strong> – Title on the Y axis (or X axis if <cite>vertical=True</cite>).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="litstudy.plot.plot_year_histogram">
-<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_year_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_year_histogram" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_year_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_year_histogram" title="Permalink to this definition"></a></dt>
 <dd><p>Plot histogram of the number of documents published in each year.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – Passed to <cite>plot_histogram</cite>.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="litstudy.plot.plot_author_histogram">
-<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_author_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_author_histogram" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_author_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_author_histogram" title="Permalink to this definition"></a></dt>
 <dd><p>Plot histogram of the number of documents published per author.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – Passed to <cite>plot_histogram</cite>.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="litstudy.plot.plot_number_authors_histogram">
-<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_number_authors_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_number_authors_histogram" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_number_authors_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_number_authors_histogram" title="Permalink to this definition"></a></dt>
 <dd><p>Plot histogram of the number of authors per document.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – Passed to <cite>plot_histogram</cite>.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="litstudy.plot.plot_author_affiliation_histogram">
-<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_author_affiliation_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_author_affiliation_histogram" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_author_affiliation_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_author_affiliation_histogram" title="Permalink to this definition"></a></dt>
 <dd><p>Plot histogram of the number of documents published per author
 affiliation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – Passed to <cite>plot_histogram</cite>.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="litstudy.plot.plot_language_histogram">
-<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_language_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_language_histogram" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_language_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_language_histogram" title="Permalink to this definition"></a></dt>
 <dd><p>Plot histogram of the number of documents by language.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="litstudy.plot.plot_source_histogram">
-<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_source_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_source_histogram" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_source_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_source_histogram" title="Permalink to this definition"></a></dt>
 <dd><p>Plot histogram of the number of documents by publication source.</p>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="litstudy.plot.plot_source_type_histogram">
-<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_source_type_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_source_type_histogram" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_source_type_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_source_type_histogram" title="Permalink to this definition"></a></dt>
 <dd><p>Plot histogram of the number of documents by publication source
 type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – Passed to <cite>plot_histogram</cite>.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="litstudy.plot.plot_affiliation_histogram">
-<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_affiliation_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_affiliation_histogram" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_affiliation_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_affiliation_histogram" title="Permalink to this definition"></a></dt>
 <dd><p>Plot histogram of the number of documents by author affiliation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – Passed to <cite>plot_histogram</cite>.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="litstudy.plot.plot_country_histogram">
-<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_country_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_country_histogram" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_country_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_country_histogram" title="Permalink to this definition"></a></dt>
 <dd><p>Plot histogram of the number of documents by country of author
-affiliation.</p>
+affiliation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – Passed to <cite>plot_histogram</cite>.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="litstudy.plot.plot_continent_histogram">
-<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_continent_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_continent_histogram" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_continent_histogram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_continent_histogram" title="Permalink to this definition"></a></dt>
 <dd><p>Plot histogram of the number of documents by continent of author
 affiliation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – Passed to <cite>plot_histogram</cite>.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="litstudy.plot.plot_word_distribution">
 <span class="sig-prename descclassname"><span class="pre">litstudy.plot.</span></span><span class="sig-name descname"><span class="pre">plot_word_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="nlp.html#litstudy.nlp.Corpus" title="litstudy.nlp.Corpus"><span class="pre">litstudy.nlp.Corpus</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#litstudy.plot.plot_word_distribution" title="Permalink to this definition"></a></dt>
 <dd><p>Plot the frequency of the top words in the given corpus.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>kwargs</strong> – Passed to <cite>plot_histogram</cite>.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
