@@ -45,21 +45,23 @@ class DocumentSet:
         self.docs = docs
 
     def _refine_docs(self, callback):
-        flags = []
+        new_indices = []
         new_docs = []
+        old_indices = []
         old_docs = []
 
         for i, doc in enumerate(progress_bar(self.docs)):
             new_doc = callback(doc)
-            flags.append(new_doc is not None)
 
             if new_doc is not None:
+                new_indices.append(i)
                 new_docs.append(new_doc)
             else:
+                old_indices.append(i)
                 old_docs.append(doc)
 
-        new_data = self.data.iloc[flags]
-        old_data = self.data.iloc[[not f for f in flags]]
+        new_data = self.data.iloc[new_indices]
+        old_data = self.data.iloc[old_indices]
 
         # FIX: not forget to reset the index
         new_data.reset_index(drop=True, inplace=True)
@@ -369,11 +371,6 @@ class DocumentIdentifier:
         return self._attr.get('doi')
 
     @property
-    def isbn(self) -> Optional[str]:
-        """ Returns the ISBN. """
-        return self._attr.get('isbn')
-
-    @property
     def pubmed(self) -> Optional[str]:
         """ Returns the PubMed ID. """
         return self._attr.get('pubmed')
@@ -602,7 +599,11 @@ class DocumentMapping:
         self.doi = dict()
         self.eid = dict()
 
-    def add(self, doc, value):
+        if docs:
+            for index, doc in enumerate(docs):
+                self.add(doc.id, index)
+
+    def add(self, doc: DocumentIdentifier, value):
         if doc.scopusid:
             self.eid[doc.scopusid] = value
 
@@ -612,7 +613,7 @@ class DocumentMapping:
         if doc.title:
             self.title[canonical(doc.title)] = value
 
-    def get(self, doc):
+    def get(self, doc: DocumentIdentifier):
         result = None
 
         if result is None and doc.scopusid:

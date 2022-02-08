@@ -60,7 +60,6 @@ class BibDocument(Document):
         title = entry['title']
         attr = dict(
                 doi=find_doi(entry),
-                isbn=entry.get('isbn'),
                 pubmed=entry.get('pmid'),
         )
 

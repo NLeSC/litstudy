@@ -72,7 +72,6 @@ class ScopusDocument(Document):
         identifier = DocumentIdentifier(
                 doc.title,
                 doi=doc.doi,
-                isbn=doc.isbn,
                 pubmed=doc.pubmed_id,
                 eid=doc.eid,
         )

@@ -7,7 +7,7 @@ import re
 import requests
 import shelve
 
-from ..types import Document, Author, DocumentSet, DocumentIdentifier
+from ..types import Document, Author, DocumentSet, DocumentIdentifier, Affiliation
 
 
 class CrossRefAuthor(Author):
@@ -30,7 +30,19 @@ class CrossRefAuthor(Author):
 
     @property
     def affiliations(self):
-        return None  # TODO
+        if entries := self.entry.get('affiliation'):
+            return [CrossRefAffiliation(e) for e in entries]
+        else:
+            return None
+
+
+class CrossRefAffiliation(Affiliation):
+    def __init__(self, entry):
+        self.entry = entry
+
+    @property
+    def name(self) -> str:
+        return self.entry['name']
 
 
 class CrossRefDocument(Document):
@@ -123,12 +135,12 @@ CACHE_FILE = '.crossref'
 CROSSREF_URL = 'https://api.crossref.org/works/'
 
 
-def fetch_crossref(doi: str) -> Optional[Document]:
+def fetch_crossref(doi: str, timeout=0.5) -> Optional[Document]:
     """Fetch the metadata for the given DOI from CrossRef.
 
     :returns: The `Document` or `None` if the DOI was not available.
     """
-    def request(doi, timeout=0.5):
+    def request():
         if not doi:
             return None
 
@@ -164,7 +176,7 @@ def fetch_crossref(doi: str) -> Optional[Document]:
             cache[doi] = data
             return data
 
-    data = request(doi)
+    data = request()
     return CrossRefDocument(data) if data else None
 
 
