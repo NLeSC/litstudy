@@ -256,6 +256,6 @@ COUNTRY_TO_CONTINENT = {
         'yemen': 'Asia',
         'zambia': 'Africa',
         'zimbabwe': 'Africa',
-        'åland islands': 'Europe'
+        'åland islands': 'Europe',
         'aland islands': 'Europe'
  }
