@@ -1,6 +1,7 @@
 from litstudy.sources.ris import load_ris_file
 import os
 
+
 def test_load_ris_file():
     path = os.path.dirname(__file__) + '/resources/example.ris'
     docs = load_ris_file(path)

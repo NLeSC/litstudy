@@ -261,7 +261,7 @@ def plot_affiliation_histogram(docs: DocumentSet, **kwargs):
 
 def plot_country_histogram(docs: DocumentSet, **kwargs):
     """ Plot histogram of the number of documents by country of author
-    affiliation 
+    affiliation
 
     :param kwargs: Passed to `plot_histogram`.
     """

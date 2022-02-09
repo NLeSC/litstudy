@@ -1,6 +1,7 @@
 from litstudy.sources.ieee import load_ieee_csv
 import os
 
+
 def test_load_ieee_csv():
     path = os.path.dirname(__file__) + '/resources/ieee.csv'
     docs = load_ieee_csv(path)
