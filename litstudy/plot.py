@@ -81,9 +81,6 @@ def plot_histogram(
         else:
             label_rotation = 0
 
-    if title:
-        ax.set_title(title)
-
     if not ylabel:
         if relative_to is not None:
             ylabel = '% of documents'
@@ -92,20 +89,18 @@ def plot_histogram(
 
     if not vertical:
         ax.grid(b=False, which='both', axis='y')
-
-        if xlabel:
-            ax.set_ylabel(xlabel)
-
-        if ylabel:
-            ax.set_xlabel(ylabel)
+        xlabel, ylabel = ylabel, xlabel
     else:
         ax.grid(b=False, which='both', axis='x')
 
-        if xlabel:
-            ax.set_xlabel(xlabel)
+    if title:
+        ax.set_title(title)
 
-        if ylabel:
-            ax.set_ylabel(ylabel)
+    if xlabel:
+        ax.set_xlabel(xlabel)
+
+    if ylabel:
+        ax.set_ylabel(ylabel)
 
     if keys is None:
         keys = list(data.index)
