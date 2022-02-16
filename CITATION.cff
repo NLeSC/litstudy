@@ -25,6 +25,7 @@ authors:
 identifiers:
   - type: doi
     value: 10.5281/zenodo.3386071
+doi: 10.5281/zenodo.3386071
 repository-code: 'https://github.com/NLeSC/litstudy/'
 url: 'https://nlesc.github.io/litstudy/'
 keywords:
