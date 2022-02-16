@@ -1,15 +1,35 @@
-# YAML 1.2
----
-authors: 
-  -
-    family-names: Heldens
-    given-names: S
-    orcid: "https://orcid.org/0000-0001-8792-6305"
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
 cff-version: 1.2.0
-date-released: 2019-09-04
-license: "Apache-2.0"
-message: "If you use this software, please cite it using these metadata."
-repository-code: "https://github.com/NLeSC/automated-literature-analysis"
-title: "automated-literature-analysis"
-version: "0.0.1"
-...
+title: litstudy
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Stijn
+    family-names: Heldens
+    email: s.heldens@esciencecenter.nl
+    affiliation: Netherlands eScience Center
+    orcid: 'https://orcid.org/0000-0001-8792-6305'
+  - given-names: Alessio
+    family-names: Sclocco
+    email: a.sclocco@esciencecenter.nl
+    affiliation: Netherlands eScience Center
+    orcid: 'https://orcid.org/0000-0003-3278-0518'
+  - given-names: Henk
+    family-names: Dreuning
+    email: h.h.h.dreuning@vu.nl
+    affiliation: University of Amsterdam
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.3386071
+repository-code: 'https://github.com/NLeSC/litstudy/'
+url: 'https://nlesc.github.io/litstudy/'
+keywords:
+  - python
+  - jupyter
+  - literature-review
+license: Apache-2.0
+
