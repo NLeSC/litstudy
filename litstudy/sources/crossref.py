@@ -7,7 +7,8 @@ import re
 import requests
 import shelve
 
-from ..types import Document, Author, DocumentSet, DocumentIdentifier, Affiliation
+from ..types import Document, Author, DocumentSet, DocumentIdentifier, \
+        Affiliation
 
 
 class CrossRefAuthor(Author):
