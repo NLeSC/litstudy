@@ -1,12 +1,26 @@
-from litstudy.types import Document, DocumentSet
+from litstudy.types import Document, DocumentSet, DocumentIdentifier, Author
 from typing import Optional, List
 import feedparser  # type: ignore
 from datetime import datetime
 import time
 
 
+class ArXivAuthor(Author):
+    def __init__(self, entry):
+        self.entry = entry
+
+    @property
+    def name(self):
+        return self.entry
+
+
 class ArXivDocument(Document):
-    def __init__(self, entry) -> None:
+    def __init__(self, entry):
+        identifier = DocumentIdentifier(
+            entry.title,
+        )
+
+        super().__init__(identifier)
         self.entry = entry
 
     @property
@@ -19,7 +33,9 @@ class ArXivDocument(Document):
 
     @property
     def authors(self) -> List:
-        return [name.get('name') for name in self.entry.get('authors')]
+        return [ArXivAuthor(name.get('name'))
+                for name
+                in self.entry.get('authors')]
 
     @property
     def journal_ref(self) -> Optional[str]:
@@ -31,11 +47,26 @@ class ArXivDocument(Document):
                                              "%Y-%m-%dT%H:%M:%SZ")
         return publication_date.date()
 
+    @property
+    def abstract(self) -> Optional[str]:
+        return self.entry.get('summary', None)
 
-def arxiv_query(search_query,
-                start=0,
-                total_results=100,
-                results_per_iteration=100) -> DocumentSet:
+    @property
+    def language(self) -> Optional[str]:
+        return self.entry.get('language', None)
+
+    @property
+    def category(self) -> Optional[List[str]]:
+        '''returns arxiv category for article'''
+        return self.entry.get('tags', None)[0].get('term', None)
+
+
+def search_arxiv(search_query,
+                 start=0,
+                 total_results=100,
+                 results_per_iteration=100,
+                 sleep_time=3) -> DocumentSet:
+
     '''
     Search parameters:
     ----------------------------------------------------------------
@@ -43,18 +74,18 @@ def arxiv_query(search_query,
     start                          #start at the first result
     total_results                  #total results
     results_per_iteration          #results at a time
+    sleep_time                     #number of seconds to wait beetween calls
     ----------------------------------------------------------------
-    Returns(list of dictionary with a following keys)
+    Returns(DocumentSet with a folowing parameters)
     ----------------------------------------------------------------
-    main_author: main_author of the article
     authors: list of authors separated by commas
-    url: url of the article
-    pdf_url: pdf url of the article
     title: title of the article
     abstract: abstract of the article
     published: publish_date in datetime format
-    comment: comment of the article if available
-    arxiv_journal_ref: reference to the journal if existed'''
+    arxiv_journal_ref: reference to the journal if existed
+    doi: digital document identifier
+    keywords: terms relevent to the document
+    language: language document is written in '''
 
     docs = list()
 
@@ -69,8 +100,10 @@ def arxiv_query(search_query,
 
         url = base_url + query
         data = feedparser.parse(url)
-        [docs.append(ArXivDocument(entry)) for entry in data.entries]
-        # sleeping before api calls (recomendation is 3s)
-        time.sleep(3)
+
+        for entry in data.entries:
+            docs.append(ArXivDocument(entry))
+
+        time.sleep(sleep_time)
 
     return DocumentSet(docs)

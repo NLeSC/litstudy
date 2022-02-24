@@ -7,6 +7,7 @@ from .ieee import load_ieee_csv
 from .springer import load_springer_csv
 from .dblp import search_dblp
 from .ris import load_ris_file
+from .arxiv import search_arxiv
 
 __all__ = [
     'refine_crossref',
@@ -22,4 +23,5 @@ __all__ = [
     'load_springer_csv',
     'load_ris_file',
     'search_dblp',
+    'search_arxiv'
 ]
