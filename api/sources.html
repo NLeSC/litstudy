@@ -54,6 +54,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#module-4">dblp</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-5">IEEE Xplore</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-6">Springer Link</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-7">arXiv</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="stats.html">Calculating Statistics</a></li>
@@ -266,6 +267,30 @@ as a <cite>DocumentSet</cite>.</p>
 <span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">load_springer_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.load_springer_csv" title="Permalink to this definition"></a></dt>
 <dd><p>Load CSV file exported from
 <a class="reference external" href="https://link.springer.com/">Springer Link</a>.</p>
+</dd></dl>
+
+</section>
+<section id="module-7">
+<span id="arxiv"></span><h2>arXiv<a class="headerlink" href="#module-7" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.search_arxiv">
+<span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">search_arxiv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_results</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results_per_iteration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sleep_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">litstudy.types.DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.search_arxiv" title="Permalink to this definition"></a></dt>
+<dd><p>search_query = all:electron    #search for electron in all fields
+start                          #start at the first result
+total_results                  #total results
+results_per_iteration          #results at a time
+sleep_time                     #number of seconds to wait beetween calls
+—————————————————————-
+Returns(DocumentSet with a folowing parameters)
+—————————————————————-
+authors: list of authors separated by commas
+title: title of the article
+abstract: abstract of the article
+published: publish_date in datetime format
+arxiv_journal_ref: reference to the journal if existed
+doi: digital document identifier
+keywords: terms relevent to the document
+language: language document is written in</p>
 </dd></dl>
 
 </section>

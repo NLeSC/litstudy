@@ -43,4 +43,8 @@ Springer Link
 .. automodule:: litstudy
   :members: load_springer_csv
 
+arXiv
+---------------
+.. automodule:: litstudy
+  :members: search_arxiv
 
