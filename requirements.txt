@@ -12,3 +12,4 @@ seaborn
 sklearn
 unidecode
 wordcloud
+feedparser
