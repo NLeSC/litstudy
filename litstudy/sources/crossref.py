@@ -31,7 +31,8 @@ class CrossRefAuthor(Author):
 
     @property
     def affiliations(self):
-        if entries := self.entry.get('affiliation'):
+        entries = self.entry.get('affiliation')
+        if entries:
             return [CrossRefAffiliation(e) for e in entries]
         else:
             return None

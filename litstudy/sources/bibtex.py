@@ -29,19 +29,22 @@ def find_doi(entry):
             #   /^10.\d{4,9}/[-._;()/:A-Z0-9]+$/i
             pattern = '10[.][0-9]{4,9}/[-._;()/:a-zA-Z0-9]{5,}'
 
-            if match := re.search(pattern, val):
+            match = re.search(pattern, val)
+            if match:
                 return match[0]
 
         return None
 
-    if result := entry.get('doi', '').strip():
+    result = entry.get('doi', '').strip()
+    if result:
         doi = result
     else:
         doi = None
 
         for key in ['doi', 'link', 'url', 'howpublished']:
             if key in entry:
-                if doi := extract(entry[key]):
+                doi = extract(entry[key])
+                if doi:
                     break
 
         if not doi:
@@ -130,10 +133,12 @@ class BibDocument(Document):
 
     @property
     def publication_source(self):
-        if result := self.entry.get('journal'):
+        result = self.entry.get('journal')
+        if result:
             return result
 
-        if result := self.entry.get('booktitle'):
+        result = self.entry.get('booktitle')
+        if result:
             return result
 
         return None

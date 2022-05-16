@@ -1,4 +1,3 @@
-from __future__ import annotations
 from abc import ABC, abstractmethod
 from datetime import date
 from typing import Optional, List
@@ -69,7 +68,7 @@ class DocumentSet:
 
         return DocumentSet(new_docs, new_data), DocumentSet(old_docs, old_data)
 
-    def add_property(self, name: str, values) -> DocumentSet:
+    def add_property(self, name: str, values) -> "DocumentSet":
         """ Returns a new set which has an additional property added.
 
         :param name: Name of the new property.
@@ -81,7 +80,7 @@ class DocumentSet:
         data[name] = values
         return DocumentSet(self.docs, data)
 
-    def remove_property(self, name: str) -> DocumentSet:
+    def remove_property(self, name: str) -> "DocumentSet":
         """ Returns a new set which has the given property removed.
 
         :param name: Name of the property.
@@ -91,7 +90,7 @@ class DocumentSet:
         data.drop(name)
         return DocumentSet(self.docs, data)
 
-    def filter_docs(self, predicate) -> DocumentSet:
+    def filter_docs(self, predicate) -> "DocumentSet":
         """ Returns a new set for which the provided predicate returned `True`.
 
         :param predicate: A function `Document -> bool`.
@@ -99,7 +98,7 @@ class DocumentSet:
         """
         return self.filter(lambda doc, _: predicate(doc))
 
-    def filter(self, predicate) -> DocumentSet:
+    def filter(self, predicate) -> "DocumentSet":
         """ Returns a new set for which the provided predicate returned `True`.
 
         :param predicate: A function `Document, dict -> bool`. The provided
@@ -114,7 +113,7 @@ class DocumentSet:
 
         return self.select(indices)
 
-    def select(self, indices) -> DocumentSet:
+    def select(self, indices) -> "DocumentSet":
         """ Returns a new set which contains only the documents at the
         provided indices.
 
@@ -162,7 +161,7 @@ class DocumentSet:
 
         return pd.DataFrame(index=range(len(left)), data=data)
 
-    def intersect(self, other: DocumentSet) -> DocumentSet:
+    def intersect(self, other: "DocumentSet") -> "DocumentSet":
         """ Returns a new set which contains the documents provided in
         both `self` and `other`. This is also available as the `&` operator.
 
@@ -177,7 +176,7 @@ class DocumentSet:
         data = DocumentSet._zip_with(self, left, other, right)
         return DocumentSet(docs, data)
 
-    def difference(self, other: DocumentSet) -> DocumentSet:
+    def difference(self, other: "DocumentSet") -> "DocumentSet":
         """ Returns a new set which contains the documents provided in
         `self` but not in `other`. This is also available as the `-` operator.
 
@@ -189,7 +188,7 @@ class DocumentSet:
         indices, _ = DocumentSet._intersect_indices(self, other)
         return self.select(sorted(set(range(len(self))) - set(indices)))
 
-    def union(self, other: DocumentSet) -> DocumentSet:
+    def union(self, other: "DocumentSet") -> "DocumentSet":
         """ Returns a new set which contains the documents provided in
         either `self` and `other`. Duplicate documents in `other` that also
         appear in `self` are discarded. This is also available as the `|`
@@ -215,7 +214,7 @@ class DocumentSet:
 
         return DocumentSet.concat(middle, DocumentSet.concat(left, right))
 
-    def concat(self, other: DocumentSet) -> DocumentSet:
+    def concat(self, other: "DocumentSet") -> "DocumentSet":
         """ Returns a new set which does contain the documents provided in
         either `self` and `other`. Duplicate documents are not removed, see
         `union` instead. This is also available as the `+` operator.
@@ -258,7 +257,7 @@ class DocumentSet:
         docs = self.docs + other.docs
         return DocumentSet(docs, data)
 
-    def unique(self) -> DocumentSet:
+    def unique(self) -> "DocumentSet":
         """ Returns a new set which has all duplicate documents removed.
 
         :returns: The new document set.
@@ -280,7 +279,7 @@ class DocumentSet:
 
         return self.select(indices)
 
-    def sample(self, n, seed=0) -> DocumentSet:
+    def sample(self, n, seed=0) -> "DocumentSet":
         """ Returns a new set which contains `n` randomly chosen documents
         from `self`.
 
@@ -390,7 +389,7 @@ class DocumentIdentifier:
         """ Returns the Semantic Scholar ID. """
         return self._attr.get('s2id')
 
-    def matches(self, other: DocumentIdentifier) -> bool:
+    def matches(self, other: "DocumentIdentifier") -> bool:
         """ Returns `True` iff these two identifiers are equivalent
 
 
@@ -450,12 +449,12 @@ class Document(ABC):
 
     @property
     @abstractmethod
-    def authors(self) -> Optional[List[Author]]:
+    def authors(self) -> Optional[List["Author"]]:
         """ The authors of this document. """
         pass
 
     @property
-    def affiliations(self) -> Optional[List[Affiliation]]:
+    def affiliations(self) -> Optional[List["Affiliation"]]:
         """ The affiliations associated with the authors of this document. """
         authors = self.authors
 

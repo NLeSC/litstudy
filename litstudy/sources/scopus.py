@@ -222,7 +222,8 @@ def refine_scopus(docs: DocumentSet, *, search_title=True
         if isinstance(doc, ScopusDocument):
             return doc
 
-        if doi := id.doi:
+        doi = id.doi
+        if doi:
             try:
                 return ScopusDocument.from_doi(doi)
             except Exception as e:

@@ -44,7 +44,8 @@ def plot_network(g: nx.Graph, *, height='1000px', smooth_edges=None,
     :param largest_component: Only plot the largest connected component of
                               the graph.
     """
-    if isolates := list(nx.isolates(g)):
+    isolates = list(nx.isolates(g))
+    if isolates:
         g = g.copy()
         g.remove_nodes_from(isolates)
 

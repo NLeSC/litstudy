@@ -192,7 +192,8 @@ def extract_country(aff):
     from .continent import COUNTRY_TO_CONTINENT
 
     # Sometimes affiliation has given country
-    if country := aff.country:
+    country = aff.country
+    if country:
         return country
 
     # Sometimes the country is in the affiliation name
@@ -211,7 +212,8 @@ def compute_country_histogram(docs: DocumentSet, **kwargs) -> pd.DataFrame:
         result = set()
         for author in doc.authors or []:
             for aff in author.affiliations or []:
-                if country := extract_country(aff):
+                country = extract_country(aff)
+                if country:
                     result.add(country)
 
         return result
@@ -229,13 +231,15 @@ def compute_continent_histogram(docs: DocumentSet, **kwargs) -> pd.DataFrame:
         result = set()
         for author in doc.authors or []:
             for aff in author.affiliations or []:
-                if country := extract_country(aff):
+                country = extract_country(aff)
+                if country:
                     country = country.strip().lower()
 
                     if country.startswith('the '):
                         country = country[4:]
 
-                    if continent := COUNTRY_TO_CONTINENT.get(country):
+                    continent = COUNTRY_TO_CONTINENT.get(country)
+                    if continent:
                         result.add(continent)
                     else:
                         result.add('Other')
