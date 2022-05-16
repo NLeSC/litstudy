@@ -10,6 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 ### Fixed
 
+## [1.0.1] - 2022-05-16
+
+### Added
+- Support for the arXiv API (Thanks ksilo!)
+
+### Changed
+- Made project compatible with Python 3.6
+
 ## [1.0.0] - 2022-02-17
 
 ### Changed
