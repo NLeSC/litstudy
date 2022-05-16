@@ -2,6 +2,7 @@ from litstudy.types import Document, DocumentSet, DocumentIdentifier, Author
 from typing import Optional, List
 import feedparser  # type: ignore
 from datetime import datetime
+from urllib.parse import urlencode
 import time
 
 
@@ -60,6 +61,8 @@ class ArXivDocument(Document):
         '''returns arxiv category for article'''
         return self.entry.get('tags', None)[0].get('term', None)
 
+# Base api query url
+ARXIV_SEARCH_URL = 'http://export.arxiv.org/api/query'
 
 def search_arxiv(search_query,
                  start=0,
@@ -89,16 +92,14 @@ def search_arxiv(search_query,
 
     docs = list()
 
-    # Base api query url
-    base_url = 'http://export.arxiv.org/api/query?'
-
-    print(f'Searching arXiv for {search_query}')
-
     for i in range(start, total_results, results_per_iteration):
-        query = (f'search_query={search_query}&start={i}&max_results='
-                 f'{results_per_iteration}')
+        query = urlencode(dict(
+            search_query=search_query,
+            start=i,
+            max_results=results_per_iteration
+        ))
 
-        url = base_url + query
+        url = f'{ARXIV_SEARCH_URL}?{query}'
         data = feedparser.parse(url)
 
         for entry in data.entries:
