@@ -1,4 +1,3 @@
-import pytest
 from litstudy.sources.arxiv import search_arxiv
 
 

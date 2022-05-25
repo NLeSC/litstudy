@@ -61,8 +61,10 @@ class ArXivDocument(Document):
         '''returns arxiv category for article'''
         return self.entry.get('tags', None)[0].get('term', None)
 
+
 # Base api query url
 ARXIV_SEARCH_URL = 'http://export.arxiv.org/api/query'
+
 
 def search_arxiv(search_query,
                  start=0,
