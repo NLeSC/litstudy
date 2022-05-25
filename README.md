@@ -8,7 +8,7 @@
 `litstudy` is a Python package that allows analysis of scientific literature from the comfort of a Jupyter notebook.
 It enables selecting scientific publications and study their metadata using visualizations, network analysis, and natural language processing.
 
-In essense, this package offers five features
+In essence, this package offers five features
 
 * Extract metadata of scientific documents from various sources. The data is united by a standard interface, allowing data from different sources to be combined.
 * Filter, select, deduplicate, and annotate collections of documents.
