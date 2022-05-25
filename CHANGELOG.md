@@ -10,6 +10,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 ### Fixed
 
+## [1.0.2] - 2022-05-25
+
+### Changed
+- Remove dependency on fa2. The version of fa2 on pip is broken under Python 3.9+.
+
+### Fixed
+- `litstudy` now works under Python 3.9+.
+
+
 ## [1.0.1] - 2022-05-16
 
 ### Added
@@ -17,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Made project compatible with Python 3.6
+
 
 ## [1.0.0] - 2022-02-17
 
