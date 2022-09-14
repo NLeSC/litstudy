@@ -1,6 +1,6 @@
 from time import sleep
 from typing import Tuple, Optional
-from urllib.parse import urlencode
+from urllib.parse import urlencode, quote_plus
 import logging
 import requests
 import shelve
@@ -119,7 +119,7 @@ def request_paper(key, cache, timeout=DEFAULT_TIMEOUT):
     if cache_key in cache:
         return cache[cache_key]
 
-    url = S2_PAPER_URL + cache_key
+    url = S2_PAPER_URL + quote_plus(key)
 
     try:
         sleep(timeout)
