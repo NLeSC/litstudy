@@ -125,7 +125,7 @@ def request_paper(key, cache, timeout=DEFAULT_TIMEOUT):
         sleep(timeout)
         data = requests.get(url).json()
     except Exception as e:
-        logging.warning(f'failed to retreive {key}: {e}')
+        logging.warning(f'failed to retrieve {key}: {e}')
         return None
 
     if 'paperId' in data:
@@ -133,7 +133,7 @@ def request_paper(key, cache, timeout=DEFAULT_TIMEOUT):
         return data
     else:
         msg = data.get('error') or data.get('message') or 'unknown error'
-        logging.warning(f'failed to retreive {key}: {msg}')
+        logging.warning(f'failed to retrieve {key}: {msg}')
         return None
 
 
