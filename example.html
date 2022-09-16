@@ -14,6 +14,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
@@ -296,6 +297,7 @@ div.nboutput.container div.output_area > div[class^='highlight']{
 }
 
 /* Some additional styling taken form the Jupyter notebook CSS */
+.jp-RenderedHTMLCommon table,
 div.rendered_html table {
   border: none;
   border-collapse: collapse;
@@ -304,10 +306,14 @@ div.rendered_html table {
   font-size: 12px;
   table-layout: fixed;
 }
+.jp-RenderedHTMLCommon thead,
 div.rendered_html thead {
   border-bottom: 1px solid black;
   vertical-align: bottom;
 }
+.jp-RenderedHTMLCommon tr,
+.jp-RenderedHTMLCommon th,
+.jp-RenderedHTMLCommon td,
 div.rendered_html tr,
 div.rendered_html th,
 div.rendered_html td {
@@ -319,12 +325,15 @@ div.rendered_html td {
   max-width: none;
   border: none;
 }
+.jp-RenderedHTMLCommon th,
 div.rendered_html th {
   font-weight: bold;
 }
+.jp-RenderedHTMLCommon tbody tr:nth-child(odd),
 div.rendered_html tbody tr:nth-child(odd) {
   background: #f5f5f5;
 }
+.jp-RenderedHTMLCommon tbody tr:hover,
 div.rendered_html tbody tr:hover {
   background: rgba(66, 165, 245, 0.2);
 }
@@ -352,11 +361,11 @@ div.rendered_html tbody tr:hover {
 }
 </style>
 <section id="Example-of-using-litstudy">
-<h1>Example of using litstudy<a class="headerlink" href="#Example-of-using-litstudy" title="Permalink to this headline"></a></h1>
+<h1>Example of using litstudy<a class="headerlink" href="#Example-of-using-litstudy" title="Permalink to this heading"></a></h1>
 <p>This notebook shows an example of how to use <code class="docutils literal notranslate"><span class="pre">litstudy</span></code> from inside a Jupyter notebook. It shows how to load a dataset, plot statistics, topic modeling, network analysis, and some more advanced features.</p>
 <p>This notebook focuses on the topic of programming model for GPUs. GPUs (Graphic Processing Units) are specialized processors that are used in many data centers and supercomputers for data processing and machine learning. However, programming these devices remaining difficult, which is why there is a plethora of research on developing programming models for them.</p>
 <section id="Imports">
-<h2>Imports<a class="headerlink" href="#Imports" title="Permalink to this headline"></a></h2>
+<h2>Imports<a class="headerlink" href="#Imports" title="Permalink to this heading"></a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -384,7 +393,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Collecting-the-dataset">
-<h2>Collecting the dataset<a class="headerlink" href="#Collecting-the-dataset" title="Permalink to this headline"></a></h2>
+<h2>Collecting the dataset<a class="headerlink" href="#Collecting-the-dataset" title="Permalink to this heading"></a></h2>
 <p>For this, example, we have searched both IEEE Xplore and Springer Link for the query <code class="docutils literal notranslate"><span class="pre">&quot;GPU&quot;</span> <span class="pre">and</span> <span class="pre">&quot;programming</span> <span class="pre">model&quot;</span></code>. IEEE Xplore gives 5 CSV files (1 per page) and Springer Link gives a single CSV file. We load all files and merge the resulting document sets.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -524,7 +533,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="General-statistics">
-<h2>General statistics<a class="headerlink" href="#General-statistics" title="Permalink to this headline"></a></h2>
+<h2>General statistics<a class="headerlink" href="#General-statistics" title="Permalink to this heading"></a></h2>
 <p>litstudy supports plot many general statistics of the document set as histograms. We show some simple examples below.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
@@ -654,7 +663,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </section>
 <section id="Network-analysis">
-<h2>Network analysis<a class="headerlink" href="#Network-analysis" title="Permalink to this headline"></a></h2>
+<h2>Network analysis<a class="headerlink" href="#Network-analysis" title="Permalink to this heading"></a></h2>
 <p>The network below shows an example of a co-citation network. This is a type of network where the strength the of the edges indicates how often two documents have been cited together. Two papers with a high co-citation strength (i.e., stronger edge) are usually highly related.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
@@ -707,7 +716,7 @@ AdjustSpeedAndApplyForces step  took  0.04  seconds
 </div>
 </section>
 <section id="Topic-modeling">
-<h2>Topic modeling<a class="headerlink" href="#Topic-modeling" title="Permalink to this headline"></a></h2>
+<h2>Topic modeling<a class="headerlink" href="#Topic-modeling" title="Permalink to this heading"></a></h2>
 <p>litstudy supports automatic topic discovery based on the words used in documents abstracts. We show an example below. First, we need to build a corpus from the document set. Note that <code class="docutils literal notranslate"><span class="pre">build_corpus</span></code> supports many arguments to tweak the preprocessing stage of building the corpus. In this example, we pass <code class="docutils literal notranslate"><span class="pre">ngram_threshold=0.85</span></code> which will add commonly used n-grams (i.e., frequent consecutive words) to the corpus.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
@@ -898,7 +907,7 @@ Topic 15: [&#39;opencl&#39;, &#39;portability&#39;, &#39;benchmark&#39;, &#39;pl
 </div>
 </section>
 <section id="Advanced-topic-modeling">
-<h2>Advanced topic modeling<a class="headerlink" href="#Advanced-topic-modeling" title="Permalink to this headline"></a></h2>
+<h2>Advanced topic modeling<a class="headerlink" href="#Advanced-topic-modeling" title="Permalink to this heading"></a></h2>
 <p>We can combine the results of topic modeling with the plotting of statistics. Here we show we a simple example.</p>
 <p>One of the topics appears to be on “deep_learning”. First, we find the topic id for the topic that most strongly belongs to “deep_learning”.</p>
 <div class="nbinput nblast docutils container">
