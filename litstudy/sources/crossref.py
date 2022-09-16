@@ -47,21 +47,27 @@ class CrossRefAffiliation(Affiliation):
         return self.entry['name']
 
 
+def _extract_title(entry):
+    # CrossRef returns list of titles from some reason?
+    titles = entry.get('title')
+
+    if titles:
+        return re.sub(r'[\s]+', ' ', ' '.join(titles))
+    else:
+        return None
+
+
 class CrossRefDocument(Document):
     def __init__(self, entry):
-        title = entry.get('title')
+        self.entry = entry
+        title = _extract_title(entry)
         doi = entry.get('DOI')
 
         super().__init__(DocumentIdentifier(title, doi=doi))
-        self.entry = entry
 
     @property
     def title(self) -> str:
-        title = self.entry.get('title')
-        if title:
-            return re.sub(r'[\s]+', ' ', ' '.join(title))
-        else:
-            return None
+        return _extract_title(self.entry)
 
     @property
     def authors(self):
