@@ -10,11 +10,11 @@ def test_fetch_semanticscholar():
     assert doc.title == "Optimal Multi-Object Segmentation with Novel Gradient Vector Flow Based Shape Priors"
 
     doc = fetch_semanticscholar("MAG:112218234")
-    assert doc.title == "Schistosomus Reflexus Syndrome in Olive Ridley Sea Turtles ( Lepidochelys olivacea)"
+    assert doc.title == "Techniques for Measuring Sea Turtles"
 
     doc = fetch_semanticscholar("ACL:W12-3903")
     assert doc.title == "The Study of Effect of Length in Morphological Segmentation of Agglutinative Languages"
 
     doc = fetch_semanticscholar("PMID:19872477")
-    assert doc.title == "THE COMBINATION OF GELATIN WITH HYDROCHLORIC ACID : II. NEW DETERMINATIONS OF THE ISOELECTRIC POINT AND COMBINING CAPACITY OF A PURIFIED GELATIN"
+    assert doc.title == "THE COMBINATION OF GELATIN WITH HYDROCHLORIC ACID"
 
