@@ -46,7 +46,9 @@ Documentation is available [here](https://nlesc.github.io/litstudy/).
 ## Requirements
 The package has been tested for Python 3.6. Required packages are available in `requirements.txt`.
 
-To access the `Scopus` API using `litstudy`, you (or your institute) needs a Scopus subscription and you need to request an Elsevier Developer API key (see [Elsevier Developers](https://dev.elsevier.com/index.jsp).
+`litstudy` supports several data sources.
+Some of these sources (such as semantic Scholar, CrossRef, and arXiv) are openly available.
+However to access the Scopus API, you (or your institute) requires a Scopus subscription and you need to request an Elsevier Developer API key (see [Elsevier Developers](https://dev.elsevier.com/index.jsp).
 
 
 ## License
