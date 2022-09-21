@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 ### Removed
 ### Fixed
+
+## [1.0.3] - 2022-09-21
+
+### Fixed
+
 - Fix bug in the semantic scholar backend that did not fetch papers correctly
 - Fix bug in `fetch_crossref` where document title was not extracted correctly
 
