@@ -16,6 +16,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -47,15 +48,46 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">API reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="types.html">Data Types</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Literature Databases</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#module-litstudy">Scopus</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-0">SemanticScholar</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-1">CrossRef</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-2">bibtex</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-3">RIS</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-4">dblp</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-5">IEEE Xplore</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-6">Springer Link</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-7">arXiv</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-litstudy">Scopus</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.search_scopus"><code class="docutils literal notranslate"><span class="pre">search_scopus()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.refine_scopus"><code class="docutils literal notranslate"><span class="pre">refine_scopus()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-0">SemanticScholar</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.fetch_semanticscholar"><code class="docutils literal notranslate"><span class="pre">fetch_semanticscholar()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.refine_semanticscholar"><code class="docutils literal notranslate"><span class="pre">refine_semanticscholar()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.search_semanticscholar"><code class="docutils literal notranslate"><span class="pre">search_semanticscholar()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-1">CrossRef</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.fetch_crossref"><code class="docutils literal notranslate"><span class="pre">fetch_crossref()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.refine_crossref"><code class="docutils literal notranslate"><span class="pre">refine_crossref()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-2">bibtex</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.load_bibtex"><code class="docutils literal notranslate"><span class="pre">load_bibtex()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-3">RIS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.load_ris_file"><code class="docutils literal notranslate"><span class="pre">load_ris_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-4">dblp</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.search_dblp"><code class="docutils literal notranslate"><span class="pre">search_dblp()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-5">IEEE Xplore</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.load_ieee_csv"><code class="docutils literal notranslate"><span class="pre">load_ieee_csv()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-6">Springer Link</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.load_springer_csv"><code class="docutils literal notranslate"><span class="pre">load_springer_csv()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-7">arXiv</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.search_arxiv"><code class="docutils literal notranslate"><span class="pre">search_arxiv()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="stats.html">Calculating Statistics</a></li>

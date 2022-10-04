@@ -16,6 +16,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -50,7 +51,24 @@
 <li class="toctree-l2"><a class="reference internal" href="stats.html">Calculating Statistics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="network.html">Network Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nlp.html">Language Processing</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Plotting Statistics</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Plotting Statistics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.plot.plot_histogram"><code class="docutils literal notranslate"><span class="pre">plot_histogram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.plot.plot_year_histogram"><code class="docutils literal notranslate"><span class="pre">plot_year_histogram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.plot.plot_author_histogram"><code class="docutils literal notranslate"><span class="pre">plot_author_histogram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.plot.plot_number_authors_histogram"><code class="docutils literal notranslate"><span class="pre">plot_number_authors_histogram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.plot.plot_author_affiliation_histogram"><code class="docutils literal notranslate"><span class="pre">plot_author_affiliation_histogram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.plot.plot_language_histogram"><code class="docutils literal notranslate"><span class="pre">plot_language_histogram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.plot.plot_source_histogram"><code class="docutils literal notranslate"><span class="pre">plot_source_histogram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.plot.plot_source_type_histogram"><code class="docutils literal notranslate"><span class="pre">plot_source_type_histogram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.plot.plot_affiliation_histogram"><code class="docutils literal notranslate"><span class="pre">plot_affiliation_histogram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.plot.plot_country_histogram"><code class="docutils literal notranslate"><span class="pre">plot_country_histogram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.plot.plot_continent_histogram"><code class="docutils literal notranslate"><span class="pre">plot_continent_histogram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.plot.plot_word_distribution"><code class="docutils literal notranslate"><span class="pre">plot_word_distribution()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.plot.plot_embedding"><code class="docutils literal notranslate"><span class="pre">plot_embedding()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.plot.plot_topic_clouds"><code class="docutils literal notranslate"><span class="pre">plot_topic_clouds()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.plot.plot_topic_cloud"><code class="docutils literal notranslate"><span class="pre">plot_topic_cloud()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>

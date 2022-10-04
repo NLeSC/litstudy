@@ -16,6 +16,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -49,7 +50,32 @@
 <li class="toctree-l2"><a class="reference internal" href="sources.html">Literature Databases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="stats.html">Calculating Statistics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="network.html">Network Analysis</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Language Processing</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Language Processing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.nlp.Corpus"><code class="docutils literal notranslate"><span class="pre">Corpus</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.nlp.Corpus.dictionary"><code class="docutils literal notranslate"><span class="pre">Corpus.dictionary</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.nlp.Corpus.frequencies"><code class="docutils literal notranslate"><span class="pre">Corpus.frequencies</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.nlp.build_corpus"><code class="docutils literal notranslate"><span class="pre">build_corpus()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.nlp.TopicModel"><code class="docutils literal notranslate"><span class="pre">TopicModel</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.nlp.TopicModel.doc2topic"><code class="docutils literal notranslate"><span class="pre">TopicModel.doc2topic</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.nlp.TopicModel.topic2token"><code class="docutils literal notranslate"><span class="pre">TopicModel.topic2token</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.nlp.TopicModel.best_documents_for_topic"><code class="docutils literal notranslate"><span class="pre">TopicModel.best_documents_for_topic()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.nlp.TopicModel.document_topics"><code class="docutils literal notranslate"><span class="pre">TopicModel.document_topics()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.nlp.TopicModel.best_token_weights_for_topic"><code class="docutils literal notranslate"><span class="pre">TopicModel.best_token_weights_for_topic()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.nlp.TopicModel.best_tokens_for_topic"><code class="docutils literal notranslate"><span class="pre">TopicModel.best_tokens_for_topic()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.nlp.TopicModel.best_token_for_topic"><code class="docutils literal notranslate"><span class="pre">TopicModel.best_token_for_topic()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.nlp.TopicModel.best_topic_for_token"><code class="docutils literal notranslate"><span class="pre">TopicModel.best_topic_for_token()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.nlp.TopicModel.best_topic_for_documents"><code class="docutils literal notranslate"><span class="pre">TopicModel.best_topic_for_documents()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.nlp.train_nmf_model"><code class="docutils literal notranslate"><span class="pre">train_nmf_model()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.nlp.train_lda_model"><code class="docutils literal notranslate"><span class="pre">train_lda_model()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.nlp.compute_word_distribution"><code class="docutils literal notranslate"><span class="pre">compute_word_distribution()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.nlp.generate_topic_cloud"><code class="docutils literal notranslate"><span class="pre">generate_topic_cloud()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.nlp.calculate_embedding"><code class="docutils literal notranslate"><span class="pre">calculate_embedding()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="plot.html">Plotting Statistics</a></li>
 </ul>
 </li>

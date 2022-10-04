@@ -16,6 +16,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -45,7 +46,67 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../example.html">Example of using litstudy</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">API reference</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Data Types</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Data Types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.types.DocumentSet"><code class="docutils literal notranslate"><span class="pre">DocumentSet</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.DocumentSet.add_property"><code class="docutils literal notranslate"><span class="pre">DocumentSet.add_property()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.DocumentSet.remove_property"><code class="docutils literal notranslate"><span class="pre">DocumentSet.remove_property()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.DocumentSet.filter_docs"><code class="docutils literal notranslate"><span class="pre">DocumentSet.filter_docs()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.DocumentSet.filter"><code class="docutils literal notranslate"><span class="pre">DocumentSet.filter()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.DocumentSet.select"><code class="docutils literal notranslate"><span class="pre">DocumentSet.select()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.DocumentSet.intersect"><code class="docutils literal notranslate"><span class="pre">DocumentSet.intersect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.DocumentSet.difference"><code class="docutils literal notranslate"><span class="pre">DocumentSet.difference()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.DocumentSet.union"><code class="docutils literal notranslate"><span class="pre">DocumentSet.union()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.DocumentSet.concat"><code class="docutils literal notranslate"><span class="pre">DocumentSet.concat()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.DocumentSet.unique"><code class="docutils literal notranslate"><span class="pre">DocumentSet.unique()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.DocumentSet.sample"><code class="docutils literal notranslate"><span class="pre">DocumentSet.sample()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.DocumentSet.itertuples"><code class="docutils literal notranslate"><span class="pre">DocumentSet.itertuples()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.types.DocumentIdentifier"><code class="docutils literal notranslate"><span class="pre">DocumentIdentifier</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.DocumentIdentifier.title"><code class="docutils literal notranslate"><span class="pre">DocumentIdentifier.title</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.DocumentIdentifier.doi"><code class="docutils literal notranslate"><span class="pre">DocumentIdentifier.doi</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.DocumentIdentifier.pubmed"><code class="docutils literal notranslate"><span class="pre">DocumentIdentifier.pubmed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.DocumentIdentifier.arxivid"><code class="docutils literal notranslate"><span class="pre">DocumentIdentifier.arxivid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.DocumentIdentifier.scopusid"><code class="docutils literal notranslate"><span class="pre">DocumentIdentifier.scopusid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.DocumentIdentifier.s2id"><code class="docutils literal notranslate"><span class="pre">DocumentIdentifier.s2id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.DocumentIdentifier.matches"><code class="docutils literal notranslate"><span class="pre">DocumentIdentifier.matches()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.DocumentIdentifier.merge"><code class="docutils literal notranslate"><span class="pre">DocumentIdentifier.merge()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.types.Document"><code class="docutils literal notranslate"><span class="pre">Document</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.Document.id"><code class="docutils literal notranslate"><span class="pre">Document.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.Document.title"><code class="docutils literal notranslate"><span class="pre">Document.title</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.Document.authors"><code class="docutils literal notranslate"><span class="pre">Document.authors</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.Document.affiliations"><code class="docutils literal notranslate"><span class="pre">Document.affiliations</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.Document.publisher"><code class="docutils literal notranslate"><span class="pre">Document.publisher</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.Document.language"><code class="docutils literal notranslate"><span class="pre">Document.language</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.Document.publication_date"><code class="docutils literal notranslate"><span class="pre">Document.publication_date</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.Document.publication_year"><code class="docutils literal notranslate"><span class="pre">Document.publication_year</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.Document.publication_source"><code class="docutils literal notranslate"><span class="pre">Document.publication_source</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.Document.source_type"><code class="docutils literal notranslate"><span class="pre">Document.source_type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.Document.keywords"><code class="docutils literal notranslate"><span class="pre">Document.keywords</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.Document.abstract"><code class="docutils literal notranslate"><span class="pre">Document.abstract</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.Document.citation_count"><code class="docutils literal notranslate"><span class="pre">Document.citation_count</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.Document.references"><code class="docutils literal notranslate"><span class="pre">Document.references</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.Document.citations"><code class="docutils literal notranslate"><span class="pre">Document.citations</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.Document.mentions"><code class="docutils literal notranslate"><span class="pre">Document.mentions()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.types.Affiliation"><code class="docutils literal notranslate"><span class="pre">Affiliation</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.Affiliation.name"><code class="docutils literal notranslate"><span class="pre">Affiliation.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.Affiliation.city"><code class="docutils literal notranslate"><span class="pre">Affiliation.city</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.Affiliation.country"><code class="docutils literal notranslate"><span class="pre">Affiliation.country</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.types.Author"><code class="docutils literal notranslate"><span class="pre">Author</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.Author.name"><code class="docutils literal notranslate"><span class="pre">Author.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.Author.orcid"><code class="docutils literal notranslate"><span class="pre">Author.orcid</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.Author.s2id"><code class="docutils literal notranslate"><span class="pre">Author.s2id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.types.Author.affiliations"><code class="docutils literal notranslate"><span class="pre">Author.affiliations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="sources.html">Literature Databases</a></li>
 <li class="toctree-l2"><a class="reference internal" href="stats.html">Calculating Statistics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="network.html">Network Analysis</a></li>

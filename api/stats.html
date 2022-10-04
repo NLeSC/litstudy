@@ -16,6 +16,7 @@
         <script src="../_static/underscore.js"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -47,7 +48,19 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">API reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="types.html">Data Types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sources.html">Literature Databases</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Calculating Statistics</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Calculating Statistics</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.stats.compute_year_histogram"><code class="docutils literal notranslate"><span class="pre">compute_year_histogram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.stats.compute_number_authors_histogram"><code class="docutils literal notranslate"><span class="pre">compute_number_authors_histogram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.stats.compute_language_histogram"><code class="docutils literal notranslate"><span class="pre">compute_language_histogram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.stats.compute_source_histogram"><code class="docutils literal notranslate"><span class="pre">compute_source_histogram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.stats.compute_source_type_histogram"><code class="docutils literal notranslate"><span class="pre">compute_source_type_histogram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.stats.compute_author_histogram"><code class="docutils literal notranslate"><span class="pre">compute_author_histogram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.stats.compute_author_affiliation_histogram"><code class="docutils literal notranslate"><span class="pre">compute_author_affiliation_histogram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.stats.compute_affiliation_histogram"><code class="docutils literal notranslate"><span class="pre">compute_affiliation_histogram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.stats.compute_country_histogram"><code class="docutils literal notranslate"><span class="pre">compute_country_histogram()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.stats.compute_continent_histogram"><code class="docutils literal notranslate"><span class="pre">compute_continent_histogram()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="network.html">Network Analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nlp.html">Language Processing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot.html">Plotting Statistics</a></li>

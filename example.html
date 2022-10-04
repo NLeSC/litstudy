@@ -16,6 +16,7 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
         <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
         <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -362,8 +363,8 @@ div.rendered_html tbody tr:hover {
 </style>
 <section id="Example-of-using-litstudy">
 <h1>Example of using litstudy<a class="headerlink" href="#Example-of-using-litstudy" title="Permalink to this heading"></a></h1>
-<p>This notebook shows an example of how to use <code class="docutils literal notranslate"><span class="pre">litstudy</span></code> from inside a Jupyter notebook. It shows how to load a dataset, plot statistics, topic modeling, network analysis, and some more advanced features.</p>
-<p>This notebook focuses on the topic of programming model for GPUs. GPUs (Graphic Processing Units) are specialized processors that are used in many data centers and supercomputers for data processing and machine learning. However, programming these devices remaining difficult, which is why there is a plethora of research on developing programming models for them.</p>
+<p>This notebook shows an example of how to use <code class="docutils literal notranslate"><span class="pre">litstudy</span></code> from inside a Jupyter notebook. It shows how to load a dataset, plot statistics, perform topic modeling, do network analysis, and some more advanced features.</p>
+<p>This notebook focuses on the topic of programming model for GPUs. GPUs (Graphic Processing Units) are specialized processors that are used in many data centers and supercomputers for data processing and machine learning. However, programming these devices remaining difficult, which is why there is a plethora of research on developing programming models for GPUs.</p>
 <section id="Imports">
 <h2>Imports<a class="headerlink" href="#Imports" title="Permalink to this heading"></a></h2>
 <div class="nbinput nblast docutils container">
@@ -394,7 +395,7 @@ div.rendered_html tbody tr:hover {
 </section>
 <section id="Collecting-the-dataset">
 <h2>Collecting the dataset<a class="headerlink" href="#Collecting-the-dataset" title="Permalink to this heading"></a></h2>
-<p>For this, example, we have searched both IEEE Xplore and Springer Link for the query <code class="docutils literal notranslate"><span class="pre">&quot;GPU&quot;</span> <span class="pre">and</span> <span class="pre">&quot;programming</span> <span class="pre">model&quot;</span></code>. IEEE Xplore gives 5 CSV files (1 per page) and Springer Link gives a single CSV file. We load all files and merge the resulting document sets.</p>
+<p>For this example, we have queried both IEEE Xplore and Springer Link for <code class="docutils literal notranslate"><span class="pre">&quot;GPU&quot;</span> <span class="pre">and</span> <span class="pre">&quot;programming</span> <span class="pre">model&quot;</span></code>. IEEE Xplore gives 5 CSV files (1 per page) and Springer Link gives a single CSV file. We load all files document sets and merge the resulting document sets.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -449,7 +450,7 @@ div.rendered_html tbody tr:hover {
 1440 paper remaining
 </pre></div></div>
 </div>
-<p>The metadata provided by the CSV files is not great. To solve this, we can lookup the papers on Scopus using <code class="docutils literal notranslate"><span class="pre">refine_scopus</span></code>. This function returns two sets: the set of Scopus documents that were found and the set of original documents not were not found on Scopus. We have two options here: (1) merge the two sets back into one set or (2) discard the documents that were not found. We chose the second option here for simplicity.</p>
+<p>The amount metadata provided by the CSV files is minimal. To enhance the metadata, we can find the corresponding articles on Scopus using <code class="docutils literal notranslate"><span class="pre">refine_scopus</span></code>. This function returns two sets: the set of documents that were found on Scopus and the set of original documents not were not found. We have two options on how to handle these two sets: (1) merge the two sets back into one set or (2) discard the documents that were not found. We chose the second option here for simplicity.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
@@ -505,7 +506,7 @@ div.rendered_html tbody tr:hover {
 <img alt="_images/example_11_0.png" src="_images/example_11_0.png" />
 </div>
 </div>
-<p>It appears there is one document from 1997. This is likely an error since GPUs were not used for general purpose computing before 2006. We can remove this document by filtering on year of publication.</p>
+<p>In this example, we discover that one document was published in 1997. This document should not be in our set since GPUs were not used for general purpose computing before 2006. We can remove this document by filtering on year of publication.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
@@ -514,7 +515,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<p>Finally, we print how many papers are left</p>
+<p>Print how many papers are left</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
@@ -664,7 +665,7 @@ div.rendered_html tbody tr:hover {
 </section>
 <section id="Network-analysis">
 <h2>Network analysis<a class="headerlink" href="#Network-analysis" title="Permalink to this heading"></a></h2>
-<p>The network below shows an example of a co-citation network. This is a type of network where the strength the of the edges indicates how often two documents have been cited together. Two papers with a high co-citation strength (i.e., stronger edge) are usually highly related.</p>
+<p>The network below shows an example of a co-citation network. This is a type of network where nodes represent documents and edges represent pairs of documents that have been cited together simulatenously by other papers. The strength of the edges indicates how often two documents have been cited together. Two papers with a high co-citation strength (i.e., stronger edge) are usually highly related.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
@@ -717,7 +718,8 @@ AdjustSpeedAndApplyForces step  took  0.04  seconds
 </section>
 <section id="Topic-modeling">
 <h2>Topic modeling<a class="headerlink" href="#Topic-modeling" title="Permalink to this heading"></a></h2>
-<p>litstudy supports automatic topic discovery based on the words used in documents abstracts. We show an example below. First, we need to build a corpus from the document set. Note that <code class="docutils literal notranslate"><span class="pre">build_corpus</span></code> supports many arguments to tweak the preprocessing stage of building the corpus. In this example, we pass <code class="docutils literal notranslate"><span class="pre">ngram_threshold=0.85</span></code> which will add commonly used n-grams (i.e., frequent consecutive words) to the corpus.</p>
+<p>litstudy supports automatic topic discovery based on the words used in documents abstracts. We show an example below. First, we need to build a corpus from the document set. Note that <code class="docutils literal notranslate"><span class="pre">build_corpus</span></code> supports many arguments to tweak the preprocessing stage of building the corpus. In this example, we pass <code class="docutils literal notranslate"><span class="pre">ngram_threshold=0.85</span></code>. This argument adds commonly used n-grams (i.e., frequent consecutive words) to the corpus. For instance, <code class="docutils literal notranslate"><span class="pre">artificial</span></code> and <code class="docutils literal notranslate"><span class="pre">intelligence</span></code> is a bigram, so a token
+<code class="docutils literal notranslate"><span class="pre">artificial_intelligence</span></code> is added to the corpus.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
@@ -726,7 +728,7 @@ AdjustSpeedAndApplyForces step  took  0.04  seconds
 </pre></div>
 </div>
 </div>
-<p>We can compute a word distribution using <code class="docutils literal notranslate"><span class="pre">litstudy.compute_word_distribution</span></code> which how often each word occurs across all documents. In this example, we filter out the bigrams by only showing the words that contain an <code class="docutils literal notranslate"><span class="pre">_</span></code>. We see that words such as <code class="docutils literal notranslate"><span class="pre">artificial</span> <span class="pre">intelligence</span></code> and <code class="docutils literal notranslate"><span class="pre">trade</span> <span class="pre">offs</span></code> have been recognized as common bigrams.</p>
+<p>We can compute a word distribution using <code class="docutils literal notranslate"><span class="pre">litstudy.compute_word_distribution</span></code> which shows how often each word occurs across all documents. In this example, we focus only on n-grams by selecting tokens that contain a <code class="docutils literal notranslate"><span class="pre">_</span></code>. We see that words such as <code class="docutils literal notranslate"><span class="pre">artificial</span> <span class="pre">intelligence</span></code> and <code class="docutils literal notranslate"><span class="pre">trade</span> <span class="pre">offs</span></code> indeed have been recognized as common bigrams.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
@@ -828,7 +830,7 @@ AdjustSpeedAndApplyForces step  took  0.04  seconds
 <img alt="_images/example_35_0.png" src="_images/example_35_0.png" />
 </div>
 </div>
-<p>The word distribution looks like what we would expect. Next, we run an NMF topic model for 15 topics.</p>
+<p>This word distribution looks normal. Next, we train an NMF topic model. Topic modeling is a technique from natural language processing for discovering abstract “topics” in a set of document. We need to manually select the number of desired topics. Here we choose 15 topics. It is recommended to experiment with more or less topics to obtain topics that are more fine-grained or more coarse-grained</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
@@ -838,7 +840,7 @@ AdjustSpeedAndApplyForces step  took  0.04  seconds
 </pre></div>
 </div>
 </div>
-<p>To understand the result of NMF, we can, for example, print the top 3 words for each topics.</p>
+<p>To understand the result of NMF, we can print the top 3 words for each topic.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
@@ -870,7 +872,7 @@ Topic 14: [&#39;intel&#39;, &#39;matrix&#39;, &#39;phi&#39;, &#39;xeon&#39;, &#3
 Topic 15: [&#39;opencl&#39;, &#39;portability&#39;, &#39;benchmark&#39;, &#39;platforms&#39;, &#39;sycl&#39;]
 </pre></div></div>
 </div>
-<p>An alternative way to visualize the output of NMF is to plot each discovered topic as a word cloud. The size of the words indicate the importance of each word for that topic.</p>
+<p>An alternative way to visualize the output of NMF is to plot each discovered topic as a word cloud. The size of each word in a cloud indicate the importance of that word for that topic.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
@@ -887,8 +889,8 @@ Topic 15: [&#39;opencl&#39;, &#39;portability&#39;, &#39;benchmark&#39;, &#39;pl
 <img alt="_images/example_41_0.png" src="_images/example_41_0.png" />
 </div>
 </div>
-<p>These 15 topics look promising. For example, there is one topic on graphs, one on OpenACC, one on OpenCL, one on FPGAs, etc.</p>
-<p>We can visualize the results as a “landscape” plot. This is a visual appealing way to place documents on a map. The documents are placed such that similar documents are located closed to each other. However, this is a non-linear embedding so the distances between the documents are not linear.</p>
+<p>These 15 topics look promising. For example, there is one topic on graphs, one on OpenACC (the open accelerators programming standard), one on OpenCL (the open compute language), one on FPGAs (field-programmable gate array), etc.</p>
+<p>We can visualize the results as a “landscape” plot. This is a visual appealing way to place documents on 2D plane. The documents are placed such that similar documents are located closed to each other. However, this is a non-linear embedding so the distances between the documents are not linear.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
@@ -946,7 +948,7 @@ Machine Learning and Deep Learning frameworks and libraries for large-scale data
 </pre></div></div>
 </div>
 <p>Next, we annotate the document set with a “dl_topic” tag for document that strongly belong to this topic (i.e., weight above a certain threshold).</p>
-<p>After this, we define two groups: documents that have the tag “dl_topic” and documents that do not have this tag. We can, for example, print the publications over the years to see if interest in deep learning has increased or decreased over the years.</p>
+<p>After this, we define two groups: documents that have the tag “dl_topic” and documents that do not have this tag. Now we can, for instance, print the publications over the years to see if interest in deep learning has increased or decreased over the years.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
@@ -973,7 +975,7 @@ Machine Learning and Deep Learning frameworks and libraries for large-scale data
 <img alt="_images/example_50_0.png" src="_images/example_50_0.png" />
 </div>
 </div>
-<p>The histogram shows that interest in deep learning is clearly rising over the years. We can even calculate the exact amount by calculating the percentage of documents on deep learning each year. The example below shows that this percentage has increased from just 3.4% in 2011 to 13.6% in 2021.</p>
+<p>The histogram shows that interest in deep learning has clearly risen over the years. We can even calculate the exact amount by calculating the percentage of documents on deep learning each year. The example below shows that this percentage has increased from just 3.4% in 2011 to 13.6% in 2021.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
@@ -1105,7 +1107,7 @@ Machine Learning and Deep Learning frameworks and libraries for large-scale data
 </table>
 </div></div>
 </div>
-<p>Alternatively, we can plot the two groups for the publications source. We can see that some journals/conferences have more focus on deep learning (for example, “Neural Computing and Applications”), while others have no or few publications on this topic (for example, “Journal of Real Time Image Processing”).</p>
+<p>Alternatively, we can plot the two groups for the publications source. We can see that some journals/conferences have a strong focus on deep learning (e.g. “Neural Computing and Applications”), while others have no or few publications on deep learning (e.g. “Journal of Real Time Image Processing”).</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
