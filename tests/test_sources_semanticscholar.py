@@ -5,6 +5,7 @@ def test_load_s2_file():
     search_semanticscholar('exascale', limit=10)
     # assert 1==2
 
+
 def test_fetch_semanticscholar():
     doc = fetch_semanticscholar("arXiv:1705.10311")
     assert doc.title == "Optimal Multi-Object Segmentation with Novel Gradient Vector Flow Based Shape Priors"
@@ -17,4 +18,3 @@ def test_fetch_semanticscholar():
 
     doc = fetch_semanticscholar("PMID:19872477")
     assert doc.title == "THE COMBINATION OF GELATIN WITH HYDROCHLORIC ACID"
-

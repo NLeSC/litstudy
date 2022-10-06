@@ -1,7 +1,8 @@
+from ..common import progress_bar
 from datetime import date
 from time import sleep
 from typing import Tuple, Optional
-from urllib.parse import quote_plus
+from urllib.parse import quote_plus, urlencode
 import logging
 import re
 import requests
@@ -204,3 +205,88 @@ def refine_crossref(docs: DocumentSet, timeout=0.5
         return fetch_crossref(doc.id.doi, timeout)
 
     return docs._refine_docs(callback)
+
+
+def _fetch_dois(params: dict, timeout: float, limit: int):
+    dois = []
+
+    params = dict(params)
+    params["cursor"] = "*"  # The cursor should be * on first request
+    params["rows"] = 100  # Fetch 100 results per request
+
+    while True:
+        query_string = urlencode(params)
+        url = CROSSREF_URL + "?" + query_string
+
+        try:
+            response = requests.get(url).json()
+        except Exception as e:
+            logging.warn(f'failed to retrieve {url}: {e}')
+            return None
+
+        # Status should be "ok"
+        if response["status"] != "ok":
+            raise ValueError(f"failed to retrieve {url}: {response}")
+
+        sleep(timeout)
+
+        data = response["message"]
+        items = data["items"]
+        params["cursor"] = data["next-cursor"]
+
+        # If no more items are found, break from loop
+        if not items:
+            break
+
+        # Append to dois
+        for item in items:
+            doi = item["DOI"]
+            dois.append(doi)
+
+        # If hit limit, break from loop
+        if limit and len(dois) > limit:
+            dois = dois[:limit]
+            break
+
+    return dois
+
+
+def search_crossref(query: str, limit: int = None, timeout: float = 0.5,
+                    options: dict = dict()) -> DocumentSet:
+    """ Submit the query to the CrossRef API.
+
+    :param query: The search query.
+    :param limit: Maximum number of results to retrieve. ``None`` is unlimited.
+    :param timeout: Timeout in seconds between each request to throttle
+                    server communication
+    :param options: Additional parameters that are passed to the ``/works``
+                    endpoint of CrossRef (see `CrossRef API`
+                    <https://api.crossref.org>`_). Options are `sort` and
+                    `filter`.
+    """
+    if not query:
+        return DocumentSet()
+
+    params = dict()
+    params["query"] = query
+    params["select"] = "DOI"
+
+    for key, value in options.items():
+        params[key] = value
+
+    cache_params = dict(params)
+    cache_params["limit"] = limit
+    cache_key = urlencode(cache_params)
+
+    with shelve.open(CACHE_FILE) as cache:
+        if cache_key not in cache:
+            dois = _fetch_dois(params, timeout, limit)
+            cache[cache_key] = dois
+        else:
+            dois = cache[cache_key]
+
+    docs = []
+    for doi in progress_bar(dois):
+        docs.append(fetch_crossref(doi))
+
+    return DocumentSet(docs)

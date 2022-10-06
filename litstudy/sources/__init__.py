@@ -2,7 +2,7 @@ from .scopus import search_scopus, refine_scopus, fetch_scopus
 from .bibtex import load_bibtex
 from .semanticscholar import fetch_semanticscholar, search_semanticscholar, \
                              refine_semanticscholar
-from .crossref import fetch_crossref, refine_crossref
+from .crossref import fetch_crossref, refine_crossref, search_crossref
 from .ieee import load_ieee_csv
 from .springer import load_springer_csv
 from .dblp import search_dblp
@@ -12,6 +12,7 @@ from .arxiv import search_arxiv
 __all__ = [
     'refine_crossref',
     'fetch_crossref',
+    'search_crossref',
     'refine_semanticscholar',
     'search_semanticscholar',
     'fetch_semanticscholar',
