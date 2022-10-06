@@ -63,6 +63,29 @@ See [CHANGELOG.md](https://github.com/NLeSC/litstudy/blob/master/CHANGELOG.md).
 See [CONTRIBUTING.md](https://github.com/NLeSC/litstudy/blob/master/CONTRIBUTING.md).
 
 
+## Citation
+If you use `litstudy` in you work, please cite the following publication:
+
+> S. Heldens, A. Sclocco, H. Dreuning, B. van Werkhoven, P. Hijma, J. Maassen & R.V. van Nieuwpoort (2022), "litstudy: A Python package for literature reviews", SoftwareX 20
+
+
+As BibTeX:
+
+```
+@article{litstudy,
+    title = {litstudy: A Python package for literature reviews},
+    journal = {SoftwareX},
+    volume = {20},
+    pages = {101207},
+    year = {2022},
+    issn = {2352-7110},
+    doi = {https://doi.org/10.1016/j.softx.2022.101207},
+    url = {https://www.sciencedirect.com/science/article/pii/S235271102200125X},
+    author = {S. Heldens and A. Sclocco and H. Dreuning and B. {van Werkhoven} and P. Hijma and J. Maassen and R. V. {van Nieuwpoort}},
+}
+```
+
+
 ## Related work
 
 Don't forget to check out these other amazing software packages!
