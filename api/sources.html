@@ -112,9 +112,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="index.html">API reference</a> &raquo;</li>
-      <li>Literature Databases</li>
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">API reference</a></li>
+      <li class="breadcrumb-item active">Literature Databases</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/api/sources.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -308,7 +308,9 @@ as a <cite>DocumentSet</cite>.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="litstudy.search_arxiv">
 <span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">search_arxiv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_results</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results_per_iteration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sleep_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.search_arxiv" title="Permalink to this definition"></a></dt>
-<dd><p>search_query = all:electron    #search for electron in all fields
+<dd><section id="search-parameters">
+<h3>Search parameters:<a class="headerlink" href="#search-parameters" title="Permalink to this heading"></a></h3>
+<p>search_query = all:electron    #search for electron in all fields
 start                          #start at the first result
 total_results                  #total results
 results_per_iteration          #results at a time
@@ -324,6 +326,7 @@ arxiv_journal_ref: reference to the journal if existed
 doi: digital document identifier
 keywords: terms relevent to the document
 language: language document is written in</p>
+</section>
 </dd></dl>
 
 </section>
