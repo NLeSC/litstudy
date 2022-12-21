@@ -1,4 +1,5 @@
 from ..types import Document, Author, DocumentSet, DocumentIdentifier
+from ..common import robust_open
 import logging
 
 
@@ -70,7 +71,7 @@ def load_ris_file(path: str) -> DocumentSet:
     """ Load the RIS file at the given `path` as a `DocumentSet`. """
     docs = []
 
-    with open(path, newline='') as f:
+    with robust_open(path) as f:
         authors = []
         keywords = []
         attr = dict()
