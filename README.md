@@ -44,7 +44,7 @@ Documentation is available [here](https://nlesc.github.io/litstudy/).
 
 
 ## Requirements
-The package has been tested for Python 3.6. Required packages are available in `requirements.txt`.
+The package has been tested for Python 3.7. Required packages are available in `requirements.txt`.
 
 `litstudy` supports several data sources.
 Some of these sources (such as semantic Scholar, CrossRef, and arXiv) are openly available.
