@@ -1,7 +1,6 @@
 import csv
-
 from ..types import Document, DocumentSet, DocumentIdentifier
-
+from ..common import robust_open
 
 class SpringerDocument(Document):
     def __init__(self, entry):
@@ -42,7 +41,7 @@ def load_springer_csv(path: str) -> DocumentSet:
     """ Load CSV file exported from
     `Springer Link <https://link.springer.com/>`_.
     """
-    with open(path, newline='') as f:
+    with robust_open(path) as f:
         lines = csv.DictReader(f)
         docs = [SpringerDocument(line) for line in lines]
         return DocumentSet(docs)

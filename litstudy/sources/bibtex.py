@@ -1,4 +1,5 @@
 from ..types import Document, DocumentSet, DocumentIdentifier, Author
+from ..common import robust_open
 # from bibtexparser.customization import convert_to_unicode
 from bibtexparser.latexenc import latex_to_unicode
 import bibtexparser
@@ -188,7 +189,7 @@ def load_bibtex(path: str) -> DocumentSet:
     parser = bibtexparser.bparser.BibTexParser(common_strings=True)
     parser.customization = decode
 
-    with open(path) as f:
+    with robust_open(path) as f:
         data = bibtexparser.load(f, parser=parser)
 
     docs = [BibDocument(e) for e in data.entries if e.get('title')]
