@@ -1,5 +1,6 @@
 from ..types import Document, Author, DocumentSet, DocumentIdentifier, \
                     Affiliation
+from ..common import robust_open
 import csv
 
 
@@ -99,7 +100,7 @@ def load_ieee_csv(path: str) -> DocumentSet:
     """ Import CSV file exported from
     `IEEE Xplore <https://ieeexplore.ieee.org/search/searchresult.jsp>`_.
     """
-    with open(path, newline='') as f:
+    with robust_open(path) as f:
         lines = csv.DictReader(f)
         docs = [IEEEDocument(line) for line in lines]
         return DocumentSet(docs)
