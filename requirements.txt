@@ -8,7 +8,7 @@ pybliometrics
 pyvis
 requests
 seaborn
-sklearn
+scikit-learn
 unidecode
 wordcloud
 feedparser
