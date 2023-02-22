@@ -332,26 +332,21 @@ as a <cite>DocumentSet</cite>.</p>
 <span id="arxiv"></span><h2>arXiv<a class="headerlink" href="#module-7" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="litstudy.search_arxiv">
-<span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">search_arxiv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">search_query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_results</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results_per_iteration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sleep_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.search_arxiv" title="Permalink to this definition"></a></dt>
-<dd><section id="search-parameters">
-<h3>Search parameters:<a class="headerlink" href="#search-parameters" title="Permalink to this heading"></a></h3>
-<p>search_query = all:electron    #search for electron in all fields
-start                          #start at the first result
-total_results                  #total results
-results_per_iteration          #results at a time
-sleep_time                     #number of seconds to wait beetween calls
-—————————————————————-
-Returns(DocumentSet with a folowing parameters)
-—————————————————————-
-authors: list of authors separated by commas
-title: title of the article
-abstract: abstract of the article
-published: publish_date in datetime format
-arxiv_journal_ref: reference to the journal if existed
-doi: digital document identifier
-keywords: terms relevent to the document
-language: language document is written in</p>
-</section>
+<span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">search_arxiv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_results</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'descending'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_by</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'submittedDate'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sleep_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.search_arxiv" title="Permalink to this definition"></a></dt>
+<dd><p>Search <a class="reference external" href="https://arxiv.org/">arXiv</a>.</p>
+<p>Each returned document contains the following attributes:
+title, authors, doi, journal_ref, publication_date, abstract, language, and category</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query</strong> – The query as described in the <a class="reference external" href="https://info.arxiv.org/help/api/user-manual.html#query_details">arXiv API use manual</a>.</p></li>
+<li><p><strong>max_results</strong> – The maximum number of results to return.</p></li>
+<li><p><strong>start</strong> – Skip the first <code class="docutils literal notranslate"><span class="pre">start</span></code> documents from the results.</p></li>
+<li><p><strong>batch_size</strong> – The number documents to fetch per request.</p></li>
+<li><p><strong>sleep_time</strong> – The time to wait in seconds between each HTTP requests.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
