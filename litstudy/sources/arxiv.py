@@ -92,7 +92,7 @@ def search_arxiv(query,
     batch_size = int(batch_size)
 
     while len(docs) < max_results:
-        query = urlencode(dict(
+        url_query = urlencode(dict(
             search_query=query,
             start=start,
             max_results=min(max_results - len(docs), batch_size),
@@ -100,7 +100,7 @@ def search_arxiv(query,
             sortBy=sort_by,
         ))
 
-        url = f'{ARXIV_SEARCH_URL}?{query}'
+        url = f'{ARXIV_SEARCH_URL}?{url_query}'
         data = feedparser.parse(url)
 
         if not data.entries:
