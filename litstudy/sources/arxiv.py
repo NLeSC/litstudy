@@ -66,43 +66,47 @@ class ArXivDocument(Document):
 ARXIV_SEARCH_URL = 'http://export.arxiv.org/api/query'
 
 
-def search_arxiv(search_query,
-                 start=0,
-                 total_results=100,
-                 results_per_iteration=100,
-                 sleep_time=3) -> DocumentSet:
+def search_arxiv(query,
+        start=0,
+        max_results=2000,
+        batch_size=100,
+        sort_order='descending',
+        sort_by='submittedDate',
+        sleep_time=3) -> DocumentSet:
 
+    '''Search `arXiv <https://arxiv.org/>`_.
+
+    Each returned document contains the following attributes:
+    title, authors, doi, journal_ref, publication_date, abstract, language, and category
+
+    :param query: The query as described in the `arXiv API use manual <https://info.arxiv.org/help/api/user-manual.html#query_details>`_.
+    :param max_results: The maximum number of results to return.
+    :param start: Skip the first ``start`` documents from the results.
+    :param batch_size: The number documents to fetch per request.
+    :param sleep_time: The time to wait in seconds between each HTTP requests.
     '''
-    Search parameters:
-    ----------------------------------------------------------------
-    search_query = all:electron    #search for electron in all fields
-    start                          #start at the first result
-    total_results                  #total results
-    results_per_iteration          #results at a time
-    sleep_time                     #number of seconds to wait beetween calls
-    ----------------------------------------------------------------
-    Returns(DocumentSet with a folowing parameters)
-    ----------------------------------------------------------------
-    authors: list of authors separated by commas
-    title: title of the article
-    abstract: abstract of the article
-    published: publish_date in datetime format
-    arxiv_journal_ref: reference to the journal if existed
-    doi: digital document identifier
-    keywords: terms relevent to the document
-    language: language document is written in '''
 
     docs = list()
+    start = int(start)
+    max_results = int(max_results)
+    batch_size = int(batch_size)
 
-    for i in range(start, total_results, results_per_iteration):
+    while len(docs) < max_results:
         query = urlencode(dict(
-            search_query=search_query,
-            start=i,
-            max_results=results_per_iteration
+            search_query=query,
+            start=start,
+            max_results=min(max_results - len(docs), batch_size),
+            sortOrder=sort_order,
+            sortBy=sort_by,
         ))
 
         url = f'{ARXIV_SEARCH_URL}?{query}'
         data = feedparser.parse(url)
+
+        if not data.entries:
+            break
+
+        start += len(data.entries)
 
         for entry in data.entries:
             docs.append(ArXivDocument(entry))
