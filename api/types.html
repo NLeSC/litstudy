@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Data Types &mdash; litstudy 0.1 documentation</title>
@@ -11,10 +11,8 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -30,11 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> litstudy
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            litstudy
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -45,6 +47,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../index.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../example.html">Example of using litstudy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">API reference</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Data Types</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#litstudy.types.DocumentSet"><code class="docutils literal notranslate"><span class="pre">DocumentSet</span></code></a><ul>
@@ -115,6 +118,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NLeSC/litstudy">Github repository</a></li>
 </ul>
 
         </div>
@@ -130,7 +134,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">API reference</a></li>
       <li class="breadcrumb-item active">Data Types</li>
       <li class="wy-breadcrumbs-aside">
@@ -191,14 +195,14 @@ performing modifications in-place.</p>
 <span class="sig-name descname"><span class="pre">add_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.types.DocumentSet.add_property" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a new set which has an additional property added.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> – Name of the new property.</p></li>
 <li><p><strong>values</strong> – List of values. Should be the same length as the
 number of documents in this set.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The new document set.</p>
 </dd>
 </dl>
@@ -209,10 +213,10 @@ number of documents in this set.</p></li>
 <span class="sig-name descname"><span class="pre">remove_property</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.types.DocumentSet.remove_property" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a new set which has the given property removed.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>name</strong> – Name of the property.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The new document set.</p>
 </dd>
 </dl>
@@ -223,10 +227,10 @@ number of documents in this set.</p></li>
 <span class="sig-name descname"><span class="pre">filter_docs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predicate</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.types.DocumentSet.filter_docs" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a new set for which the provided predicate returned <cite>True</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>predicate</strong> – A function <cite>Document -&gt; bool</cite>.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The new document set.</p>
 </dd>
 </dl>
@@ -237,11 +241,11 @@ number of documents in this set.</p></li>
 <span class="sig-name descname"><span class="pre">filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">predicate</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.types.DocumentSet.filter" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a new set for which the provided predicate returned <cite>True</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>predicate</strong> – A function <cite>Document, dict -&gt; bool</cite>. The provided
 dict stores the properties of the document.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The new document set.</p>
 </dd>
 </dl>
@@ -253,11 +257,11 @@ dict stores the properties of the document.</p>
 <dd><p>Returns a new set which contains only the documents at the
 provided indices.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>indices</strong> – Any input accepted by <cite>pandas.DataFrame.iloc</cite> such
 as a list of integer.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The new document set.</p>
 </dd>
 </dl>
@@ -269,7 +273,7 @@ as a list of integer.</p>
 <dd><p>Returns a new set which contains the documents provided in
 both <cite>self</cite> and <cite>other</cite>. This is also available as the <cite>&amp;</cite> operator.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The new document set.</p>
 </dd>
 </dl>
@@ -281,7 +285,7 @@ both <cite>self</cite> and <cite>other</cite>. This is also available as the <ci
 <dd><p>Returns a new set which contains the documents provided in
 <cite>self</cite> but not in <cite>other</cite>. This is also available as the <cite>-</cite> operator.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The new document set.</p>
 </dd>
 </dl>
@@ -295,7 +299,7 @@ either <cite>self</cite> and <cite>other</cite>. Duplicate documents in <cite>ot
 appear in <cite>self</cite> are discarded. This is also available as the <cite>|</cite>
 operator.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The new document set.</p>
 </dd>
 </dl>
@@ -308,7 +312,7 @@ operator.</p>
 either <cite>self</cite> and <cite>other</cite>. Duplicate documents are not removed, see
 <cite>union</cite> instead. This is also available as the <cite>+</cite> operator.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The new document set.</p>
 </dd>
 </dl>
@@ -319,7 +323,7 @@ either <cite>self</cite> and <cite>other</cite>. Duplicate documents are not rem
 <span class="sig-name descname"><span class="pre">unique</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.types.DocumentSet.unique" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a new set which has all duplicate documents removed.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The new document set.</p>
 </dd>
 </dl>
@@ -331,7 +335,7 @@ either <cite>self</cite> and <cite>other</cite>. Duplicate documents are not rem
 <dd><p>Returns a new set which contains <cite>n</cite> randomly chosen documents
 from <cite>self</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The new document set.</p>
 </dd>
 </dl>
@@ -357,37 +361,37 @@ provide all these identifiers. This class stores all possible identifiers
 that a document has.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="litstudy.types.DocumentIdentifier.title">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">title</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#litstudy.types.DocumentIdentifier.title" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">title</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#litstudy.types.DocumentIdentifier.title" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the title.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="litstudy.types.DocumentIdentifier.doi">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">doi</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#litstudy.types.DocumentIdentifier.doi" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">doi</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#litstudy.types.DocumentIdentifier.doi" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the DOI (example: 10.1093/ajae/aaq063).</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="litstudy.types.DocumentIdentifier.pubmed">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pubmed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#litstudy.types.DocumentIdentifier.pubmed" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pubmed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#litstudy.types.DocumentIdentifier.pubmed" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the PubMed ID.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="litstudy.types.DocumentIdentifier.arxivid">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">arxivid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#litstudy.types.DocumentIdentifier.arxivid" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">arxivid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#litstudy.types.DocumentIdentifier.arxivid" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the arXiv ID.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="litstudy.types.DocumentIdentifier.scopusid">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">scopusid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#litstudy.types.DocumentIdentifier.scopusid" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">scopusid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#litstudy.types.DocumentIdentifier.scopusid" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the Scopus ID.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="litstudy.types.DocumentIdentifier.s2id">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">s2id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#litstudy.types.DocumentIdentifier.s2id" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">s2id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#litstudy.types.DocumentIdentifier.s2id" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the Semantic Scholar ID.</p>
 </dd></dl>
 
@@ -431,57 +435,57 @@ in case that method is not overridden.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="litstudy.types.Document.authors">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">authors</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#litstudy.types.Author" title="litstudy.types.Author"><span class="pre">Author</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#litstudy.types.Document.authors" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">authors</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#litstudy.types.Author" title="litstudy.types.Author"><span class="pre">Author</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#litstudy.types.Document.authors" title="Permalink to this definition"></a></dt>
 <dd><p>The authors of this document.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="litstudy.types.Document.affiliations">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">affiliations</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#litstudy.types.Affiliation" title="litstudy.types.Affiliation"><span class="pre">Affiliation</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#litstudy.types.Document.affiliations" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">affiliations</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#litstudy.types.Affiliation" title="litstudy.types.Affiliation"><span class="pre">Affiliation</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#litstudy.types.Document.affiliations" title="Permalink to this definition"></a></dt>
 <dd><p>The affiliations associated with the authors of this document.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="litstudy.types.Document.publisher">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">publisher</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#litstudy.types.Document.publisher" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">publisher</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#litstudy.types.Document.publisher" title="Permalink to this definition"></a></dt>
 <dd><p>The publisher of this document.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="litstudy.types.Document.language">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">language</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#litstudy.types.Document.language" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">language</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#litstudy.types.Document.language" title="Permalink to this definition"></a></dt>
 <dd><p>The language this document is written in.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="litstudy.types.Document.publication_date">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">publication_date</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">date</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#litstudy.types.Document.publication_date" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">publication_date</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">date</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#litstudy.types.Document.publication_date" title="Permalink to this definition"></a></dt>
 <dd><p>The data of publication.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="litstudy.types.Document.publication_year">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">publication_year</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#litstudy.types.Document.publication_year" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">publication_year</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#litstudy.types.Document.publication_year" title="Permalink to this definition"></a></dt>
 <dd><p>The year of publication.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="litstudy.types.Document.publication_source">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">publication_source</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#litstudy.types.Document.publication_source" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">publication_source</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#litstudy.types.Document.publication_source" title="Permalink to this definition"></a></dt>
 <dd><p>The name of the publication source (i.e., journal name,
 conference name, etc.)</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="litstudy.types.Document.source_type">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">source_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#litstudy.types.Document.source_type" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">source_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#litstudy.types.Document.source_type" title="Permalink to this definition"></a></dt>
 <dd><p>The type of publication source (i.e., journal, conference
 proceedings, book, etc.)</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="litstudy.types.Document.keywords">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">keywords</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#litstudy.types.Document.keywords" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">keywords</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#litstudy.types.Document.keywords" title="Permalink to this definition"></a></dt>
 <dd><p>The keywords of this document. What exactly consistutes as
 keywords depends on the data source (author keywords, generated
 keywords, topic categories), but is should be a list of strings.</p>
@@ -489,25 +493,25 @@ keywords, topic categories), but is should be a list of strings.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="litstudy.types.Document.abstract">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">abstract</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#litstudy.types.Document.abstract" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">abstract</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#litstudy.types.Document.abstract" title="Permalink to this definition"></a></dt>
 <dd><p>The abstract of this document.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="litstudy.types.Document.citation_count">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">citation_count</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#litstudy.types.Document.citation_count" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">citation_count</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#litstudy.types.Document.citation_count" title="Permalink to this definition"></a></dt>
 <dd><p>The number of citations that this document received.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="litstudy.types.Document.references">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">references</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#litstudy.types.DocumentIdentifier" title="litstudy.types.DocumentIdentifier"><span class="pre">DocumentIdentifier</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#litstudy.types.Document.references" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">references</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#litstudy.types.DocumentIdentifier" title="litstudy.types.DocumentIdentifier"><span class="pre">DocumentIdentifier</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#litstudy.types.Document.references" title="Permalink to this definition"></a></dt>
 <dd><p>The list of other documents that are cited by this document.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="litstudy.types.Document.citations">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">citations</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#litstudy.types.DocumentIdentifier" title="litstudy.types.DocumentIdentifier"><span class="pre">DocumentIdentifier</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#litstudy.types.Document.citations" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">citations</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#litstudy.types.DocumentIdentifier" title="litstudy.types.DocumentIdentifier"><span class="pre">DocumentIdentifier</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#litstudy.types.Document.citations" title="Permalink to this definition"></a></dt>
 <dd><p>The list of other documents that cite this document.</p>
 </dd></dl>
 
@@ -532,13 +536,13 @@ title, abstract, or keywords.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="litstudy.types.Affiliation.city">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">city</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#litstudy.types.Affiliation.city" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">city</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#litstudy.types.Affiliation.city" title="Permalink to this definition"></a></dt>
 <dd><p>City the affiliation is located in.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="litstudy.types.Affiliation.country">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">country</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#litstudy.types.Affiliation.country" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">country</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#litstudy.types.Affiliation.country" title="Permalink to this definition"></a></dt>
 <dd><p>Country the affiliation is located in.</p>
 </dd></dl>
 
@@ -556,19 +560,19 @@ title, abstract, or keywords.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="litstudy.types.Author.orcid">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">orcid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#litstudy.types.Author.orcid" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">orcid</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#litstudy.types.Author.orcid" title="Permalink to this definition"></a></dt>
 <dd><p>The ORCID of the author.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="litstudy.types.Author.s2id">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">s2id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#litstudy.types.Author.s2id" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">s2id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#litstudy.types.Author.s2id" title="Permalink to this definition"></a></dt>
 <dd><p>The SemanticScholar ID of the author.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="litstudy.types.Author.affiliations">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">affiliations</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#litstudy.types.Affiliation" title="litstudy.types.Affiliation"><span class="pre">Affiliation</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#litstudy.types.Author.affiliations" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">affiliations</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#litstudy.types.Affiliation" title="litstudy.types.Affiliation"><span class="pre">Affiliation</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#litstudy.types.Author.affiliations" title="Permalink to this definition"></a></dt>
 <dd><p>The affiliations this author is associated with.</p>
 </dd></dl>
 

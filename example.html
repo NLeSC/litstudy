@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Example of using litstudy &mdash; litstudy 0.1 documentation</title>
@@ -11,10 +11,8 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -23,7 +21,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="API reference" href="api/index.html" />
+    <link rel="next" title="Frequently Asked Questions" href="faq.html" />
     <link rel="prev" title="Installation Guide" href="installation.html" /> 
 </head>
 
@@ -32,11 +30,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> litstudy
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            litstudy
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -55,8 +57,10 @@
 <li class="toctree-l2"><a class="reference internal" href="#Advanced-topic-modeling">Advanced topic modeling</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">Frequently Asked Questions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">API reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NLeSC/litstudy">Github repository</a></li>
 </ul>
 
         </div>
@@ -72,7 +76,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Example of using litstudy</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/example.ipynb.txt" rel="nofollow"> View page source</a>
@@ -372,24 +376,24 @@ div.rendered_html tbody tr:hover {
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Import other libraries
-import os
-import sys
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sbs
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import other libraries</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sbs</span>
 
-# Options for plots
-plt.rcParams[&#39;figure.figsize&#39;] = (10, 6)
-sbs.set(&#39;paper&#39;)
+<span class="c1"># Options for plots</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="n">sbs</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s1">&#39;paper&#39;</span><span class="p">)</span>
 
-# Import litstudy
-path = os.path.abspath(os.path.join(&#39;..&#39;))
-if path not in sys.path:
-    sys.path.append(path)
+<span class="c1"># Import litstudy</span>
+<span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;..&#39;</span><span class="p">))</span>
+<span class="k">if</span> <span class="n">path</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
-import litstudy
+<span class="kn">import</span> <span class="nn">litstudy</span>
 </pre></div>
 </div>
 </div>
@@ -401,21 +405,21 @@ import litstudy
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Load the CSV files
-docs1 = litstudy.load_ieee_csv(&#39;data/ieee_1.csv&#39;)
-docs2 = litstudy.load_ieee_csv(&#39;data/ieee_2.csv&#39;)
-docs3 = litstudy.load_ieee_csv(&#39;data/ieee_3.csv&#39;)
-docs4 = litstudy.load_ieee_csv(&#39;data/ieee_4.csv&#39;)
-docs5 = litstudy.load_ieee_csv(&#39;data/ieee_5.csv&#39;)
-docs_ieee = docs1 | docs2 | docs3 | docs4 | docs5
-print(len(docs_ieee), &#39;papers loaded from IEEE&#39;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the CSV files</span>
+<span class="n">docs1</span> <span class="o">=</span> <span class="n">litstudy</span><span class="o">.</span><span class="n">load_ieee_csv</span><span class="p">(</span><span class="s1">&#39;data/ieee_1.csv&#39;</span><span class="p">)</span>
+<span class="n">docs2</span> <span class="o">=</span> <span class="n">litstudy</span><span class="o">.</span><span class="n">load_ieee_csv</span><span class="p">(</span><span class="s1">&#39;data/ieee_2.csv&#39;</span><span class="p">)</span>
+<span class="n">docs3</span> <span class="o">=</span> <span class="n">litstudy</span><span class="o">.</span><span class="n">load_ieee_csv</span><span class="p">(</span><span class="s1">&#39;data/ieee_3.csv&#39;</span><span class="p">)</span>
+<span class="n">docs4</span> <span class="o">=</span> <span class="n">litstudy</span><span class="o">.</span><span class="n">load_ieee_csv</span><span class="p">(</span><span class="s1">&#39;data/ieee_4.csv&#39;</span><span class="p">)</span>
+<span class="n">docs5</span> <span class="o">=</span> <span class="n">litstudy</span><span class="o">.</span><span class="n">load_ieee_csv</span><span class="p">(</span><span class="s1">&#39;data/ieee_5.csv&#39;</span><span class="p">)</span>
+<span class="n">docs_ieee</span> <span class="o">=</span> <span class="n">docs1</span> <span class="o">|</span> <span class="n">docs2</span> <span class="o">|</span> <span class="n">docs3</span> <span class="o">|</span> <span class="n">docs4</span> <span class="o">|</span> <span class="n">docs5</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">docs_ieee</span><span class="p">),</span> <span class="s1">&#39;papers loaded from IEEE&#39;</span><span class="p">)</span>
 
-docs_springer = litstudy.load_springer_csv(&#39;data/springer.csv&#39;)
-print(len(docs_springer), &#39;papers loaded from Springer&#39;)
+<span class="n">docs_springer</span> <span class="o">=</span> <span class="n">litstudy</span><span class="o">.</span><span class="n">load_springer_csv</span><span class="p">(</span><span class="s1">&#39;data/springer.csv&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">docs_springer</span><span class="p">),</span> <span class="s1">&#39;papers loaded from Springer&#39;</span><span class="p">)</span>
 
-# Merge the two document sets
-docs_csv = docs_ieee | docs_springer
-print(len(docs_csv), &#39;papers loaded from CSV&#39;)
+<span class="c1"># Merge the two document sets</span>
+<span class="n">docs_csv</span> <span class="o">=</span> <span class="n">docs_ieee</span> <span class="o">|</span> <span class="n">docs_springer</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">docs_csv</span><span class="p">),</span> <span class="s1">&#39;papers loaded from CSV&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -434,11 +438,11 @@ print(len(docs_csv), &#39;papers loaded from CSV&#39;)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>docs_exclude = litstudy.load_ris_file(&#39;data/exclude.ris&#39;)
-docs_remaining = docs_csv - docs_exclude
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">docs_exclude</span> <span class="o">=</span> <span class="n">litstudy</span><span class="o">.</span><span class="n">load_ris_file</span><span class="p">(</span><span class="s1">&#39;data/exclude.ris&#39;</span><span class="p">)</span>
+<span class="n">docs_remaining</span> <span class="o">=</span> <span class="n">docs_csv</span> <span class="o">-</span> <span class="n">docs_exclude</span>
 
-print(len(docs_exclude), &#39;papers were excluded&#39;)
-print(len(docs_remaining), &#39;paper remaining&#39;)
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">docs_exclude</span><span class="p">),</span> <span class="s1">&#39;papers were excluded&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">docs_remaining</span><span class="p">),</span> <span class="s1">&#39;paper remaining&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -456,13 +460,13 @@ print(len(docs_remaining), &#39;paper remaining&#39;)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>import logging
-logging.getLogger().setLevel(logging.CRITICAL)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">CRITICAL</span><span class="p">)</span>
 
-docs_scopus, docs_notfound = litstudy.refine_scopus(docs_remaining)
+<span class="n">docs_scopus</span><span class="p">,</span> <span class="n">docs_notfound</span> <span class="o">=</span> <span class="n">litstudy</span><span class="o">.</span><span class="n">refine_scopus</span><span class="p">(</span><span class="n">docs_remaining</span><span class="p">)</span>
 
-print(len(docs_scopus), &#39;papers found on Scopus&#39;)
-print(len(docs_notfound), &#39;papers were not found and were discarded&#39;)
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">docs_scopus</span><span class="p">),</span> <span class="s1">&#39;papers found on Scopus&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">docs_notfound</span><span class="p">),</span> <span class="s1">&#39;papers were not found and were discarded&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -496,7 +500,7 @@ print(len(docs_notfound), &#39;papers were not found and were discarded&#39;)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>litstudy.plot_year_histogram(docs_scopus);
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">litstudy</span><span class="o">.</span><span class="n">plot_year_histogram</span><span class="p">(</span><span class="n">docs_scopus</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -512,7 +516,7 @@ print(len(docs_notfound), &#39;papers were not found and were discarded&#39;)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>docs = docs_scopus.filter_docs(lambda d: d.publication_year &gt;= 2000)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">docs</span> <span class="o">=</span> <span class="n">docs_scopus</span><span class="o">.</span><span class="n">filter_docs</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="o">.</span><span class="n">publication_year</span> <span class="o">&gt;=</span> <span class="mi">2000</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -521,7 +525,7 @@ print(len(docs_notfound), &#39;papers were not found and were discarded&#39;)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>print(len(docs), &#39;papers remaining&#39;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">docs</span><span class="p">),</span> <span class="s1">&#39;papers remaining&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -541,7 +545,7 @@ print(len(docs_notfound), &#39;papers were not found and were discarded&#39;)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>litstudy.plot_year_histogram(docs, vertical=True);
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">litstudy</span><span class="o">.</span><span class="n">plot_year_histogram</span><span class="p">(</span><span class="n">docs</span><span class="p">,</span> <span class="n">vertical</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -556,7 +560,7 @@ print(len(docs_notfound), &#39;papers were not found and were discarded&#39;)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>litstudy.plot_affiliation_histogram(docs, limit=15);
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">litstudy</span><span class="o">.</span><span class="n">plot_affiliation_histogram</span><span class="p">(</span><span class="n">docs</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">15</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -571,7 +575,7 @@ print(len(docs_notfound), &#39;papers were not found and were discarded&#39;)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>litstudy.plot_author_histogram(docs);
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">litstudy</span><span class="o">.</span><span class="n">plot_author_histogram</span><span class="p">(</span><span class="n">docs</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -586,7 +590,7 @@ print(len(docs_notfound), &#39;papers were not found and were discarded&#39;)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>litstudy.plot_language_histogram(docs);
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">litstudy</span><span class="o">.</span><span class="n">plot_language_histogram</span><span class="p">(</span><span class="n">docs</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -601,7 +605,7 @@ print(len(docs_notfound), &#39;papers were not found and were discarded&#39;)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>litstudy.plot_number_authors_histogram(docs);
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">litstudy</span><span class="o">.</span><span class="n">plot_number_authors_histogram</span><span class="p">(</span><span class="n">docs</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -616,13 +620,13 @@ print(len(docs_notfound), &#39;papers were not found and were discarded&#39;)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># This names are long, which is why a short abbreviation is provided.
-mapping = {
-    &quot;IEEE International parallel and distributed processing symposium IPDPS&quot;: &quot;IEEE IPDPS&quot;,
-    &quot;IEEE International parallel and distributed processing symposium workshops IPDPSW&quot;: &quot;IEEE IPDPS Workshops&quot;,
-}
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># This names are long, which is why a short abbreviation is provided.</span>
+<span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;IEEE International parallel and distributed processing symposium IPDPS&quot;</span><span class="p">:</span> <span class="s2">&quot;IEEE IPDPS&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;IEEE International parallel and distributed processing symposium workshops IPDPSW&quot;</span><span class="p">:</span> <span class="s2">&quot;IEEE IPDPS Workshops&quot;</span><span class="p">,</span>
+<span class="p">}</span>
 
-litstudy.plot_source_histogram(docs, mapper=mapping, limit=15);
+<span class="n">litstudy</span><span class="o">.</span><span class="n">plot_source_histogram</span><span class="p">(</span><span class="n">docs</span><span class="p">,</span> <span class="n">mapper</span><span class="o">=</span><span class="n">mapping</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">15</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -637,7 +641,7 @@ litstudy.plot_source_histogram(docs, mapper=mapping, limit=15);
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>litstudy.plot_country_histogram(docs, limit=15);
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">litstudy</span><span class="o">.</span><span class="n">plot_country_histogram</span><span class="p">(</span><span class="n">docs</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">15</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -652,7 +656,7 @@ litstudy.plot_source_histogram(docs, mapper=mapping, limit=15);
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>litstudy.plot_continent_histogram(docs);
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">litstudy</span><span class="o">.</span><span class="n">plot_continent_histogram</span><span class="p">(</span><span class="n">docs</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -671,7 +675,7 @@ litstudy.plot_source_histogram(docs, mapper=mapping, limit=15);
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>litstudy.plot_cocitation_network(docs, max_edges=500)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">litstudy</span><span class="o">.</span><span class="n">plot_cocitation_network</span><span class="p">(</span><span class="n">docs</span><span class="p">,</span> <span class="n">max_edges</span><span class="o">=</span><span class="mi">500</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -725,7 +729,7 @@ AdjustSpeedAndApplyForces step  took  0.04  seconds
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>corpus = litstudy.build_corpus(docs, ngram_threshold=0.8)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">corpus</span> <span class="o">=</span> <span class="n">litstudy</span><span class="o">.</span><span class="n">build_corpus</span><span class="p">(</span><span class="n">docs</span><span class="p">,</span> <span class="n">ngram_threshold</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -734,7 +738,7 @@ AdjustSpeedAndApplyForces step  took  0.04  seconds
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>litstudy.compute_word_distribution(corpus).filter(like=&#39;_&#39;, axis=0).sort_index()
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">litstudy</span><span class="o">.</span><span class="n">compute_word_distribution</span><span class="p">(</span><span class="n">corpus</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">like</span><span class="o">=</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -819,8 +823,8 @@ AdjustSpeedAndApplyForces step  took  0.04  seconds
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>plt.figure(figsize=(20, 3))
-litstudy.plot_word_distribution(corpus, limit=50, title=&quot;Top words&quot;, vertical=True, label_rotation=45);
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">litstudy</span><span class="o">.</span><span class="n">plot_word_distribution</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Top words&quot;</span><span class="p">,</span> <span class="n">vertical</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">label_rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -836,8 +840,8 @@ litstudy.plot_word_distribution(corpus, limit=50, title=&quot;Top words&quot;, v
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>num_topics = 15
-topic_model = litstudy.train_nmf_model(corpus, num_topics, max_iter=250)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_topics</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="n">topic_model</span> <span class="o">=</span> <span class="n">litstudy</span><span class="o">.</span><span class="n">train_nmf_model</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">num_topics</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">250</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -846,8 +850,8 @@ topic_model = litstudy.train_nmf_model(corpus, num_topics, max_iter=250)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>for i in range(num_topics):
-    print(f&#39;Topic {i+1}:&#39;, topic_model.best_tokens_for_topic(i))
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_topics</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Topic </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1">:&#39;</span><span class="p">,</span> <span class="n">topic_model</span><span class="o">.</span><span class="n">best_tokens_for_topic</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
@@ -878,8 +882,8 @@ Topic 15: [&#39;opencl&#39;, &#39;portability&#39;, &#39;benchmark&#39;, &#39;pl
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>plt.figure(figsize=(15, 5))
-litstudy.plot_topic_clouds(topic_model, ncols=5);
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">litstudy</span><span class="o">.</span><span class="n">plot_topic_clouds</span><span class="p">(</span><span class="n">topic_model</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">5</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -896,8 +900,8 @@ litstudy.plot_topic_clouds(topic_model, ncols=5);
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>plt.figure(figsize=(20, 20))
-litstudy.plot_embedding(corpus, topic_model);
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+<span class="n">litstudy</span><span class="o">.</span><span class="n">plot_embedding</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">topic_model</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -917,7 +921,7 @@ litstudy.plot_embedding(corpus, topic_model);
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>topic_id = topic_model.best_topic_for_token(&#39;deep_learning&#39;)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">topic_id</span> <span class="o">=</span> <span class="n">topic_model</span><span class="o">.</span><span class="n">best_topic_for_token</span><span class="p">(</span><span class="s1">&#39;deep_learning&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -926,8 +930,8 @@ litstudy.plot_embedding(corpus, topic_model);
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>for doc_id in topic_model.best_documents_for_topic(topic_id, limit=10):
-    print(docs[int(doc_id)].title)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">doc_id</span> <span class="ow">in</span> <span class="n">topic_model</span><span class="o">.</span><span class="n">best_documents_for_topic</span><span class="p">(</span><span class="n">topic_id</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">docs</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">doc_id</span><span class="p">)]</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -954,18 +958,18 @@ Machine Learning and Deep Learning frameworks and libraries for large-scale data
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>threshold = 0.2
-dl_topic = topic_model.doc2topic[:, topic_id] &gt; threshold
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">threshold</span> <span class="o">=</span> <span class="mf">0.2</span>
+<span class="n">dl_topic</span> <span class="o">=</span> <span class="n">topic_model</span><span class="o">.</span><span class="n">doc2topic</span><span class="p">[:,</span> <span class="n">topic_id</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">threshold</span>
 
-docs = docs.add_property(&#39;dl_topic&#39;, dl_topic)
+<span class="n">docs</span> <span class="o">=</span> <span class="n">docs</span><span class="o">.</span><span class="n">add_property</span><span class="p">(</span><span class="s1">&#39;dl_topic&#39;</span><span class="p">,</span> <span class="n">dl_topic</span><span class="p">)</span>
 
 
-groups = {
-    &#39;deep learning related&#39;: &#39;dl_topic&#39;,
-    &#39;other&#39;: &#39;not dl_topic&#39;,
-}
+<span class="n">groups</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;deep learning related&#39;</span><span class="p">:</span> <span class="s1">&#39;dl_topic&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;other&#39;</span><span class="p">:</span> <span class="s1">&#39;not dl_topic&#39;</span><span class="p">,</span>
+<span class="p">}</span>
 
-litstudy.plot_year_histogram(docs, groups=groups, stacked=True);
+<span class="n">litstudy</span><span class="o">.</span><span class="n">plot_year_histogram</span><span class="p">(</span><span class="n">docs</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">,</span> <span class="n">stacked</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -981,8 +985,8 @@ litstudy.plot_year_histogram(docs, groups=groups, stacked=True);
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>table = litstudy.compute_year_histogram(docs, groups=groups)
-table.div(table.sum(axis=1), axis=0) * 100
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">litstudy</span><span class="o">.</span><span class="n">compute_year_histogram</span><span class="p">(</span><span class="n">docs</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">)</span>
+<span class="n">table</span><span class="o">.</span><span class="n">div</span><span class="p">(</span><span class="n">table</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
 </pre></div>
 </div>
 </div>
@@ -1113,8 +1117,8 @@ table.div(table.sum(axis=1), axis=0) * 100
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>plt.figure(figsize=(10, 10))
-litstudy.plot_source_histogram(docs, groups=groups, limit=25, stacked=True);
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">litstudy</span><span class="o">.</span><span class="n">plot_source_histogram</span><span class="p">(</span><span class="n">docs</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">stacked</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -1130,20 +1134,20 @@ litstudy.plot_source_histogram(docs, groups=groups, limit=25, stacked=True);
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span># Compute histogram by publication venue
-table = litstudy.compute_source_histogram(docs, groups=groups)
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute histogram by publication venue</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">litstudy</span><span class="o">.</span><span class="n">compute_source_histogram</span><span class="p">(</span><span class="n">docs</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">)</span>
 
-# Add column &#39;total&#39;
-table[&#39;total&#39;] = table[&#39;deep learning related&#39;] + table[&#39;other&#39;]
+<span class="c1"># Add column &#39;total&#39;</span>
+<span class="n">table</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="s1">&#39;deep learning related&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">table</span><span class="p">[</span><span class="s1">&#39;other&#39;</span><span class="p">]</span>
 
-# Remove rare venues that have less than 5 publications
-table = table[table[&#39;total&#39;] &gt;= 5]
+<span class="c1"># Remove rare venues that have less than 5 publications</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="n">table</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">5</span><span class="p">]</span>
 
-# Add column &#39;ratio&#39;
-table[&#39;ratio&#39;] = table[&#39;deep learning related&#39;] / table[&#39;total&#39;] * 100
+<span class="c1"># Add column &#39;ratio&#39;</span>
+<span class="n">table</span><span class="p">[</span><span class="s1">&#39;ratio&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">table</span><span class="p">[</span><span class="s1">&#39;deep learning related&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">table</span><span class="p">[</span><span class="s1">&#39;total&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span>
 
-# Sort by ratio in descending order
-table.sort_values(by=&#39;ratio&#39;, ascending=False)
+<span class="c1"># Sort by ratio in descending order</span>
+<span class="n">table</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;ratio&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1434,7 +1438,7 @@ table.sort_values(by=&#39;ratio&#39;, ascending=False)
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="installation.html" class="btn btn-neutral float-left" title="Installation Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="api/index.html" class="btn btn-neutral float-right" title="API reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="faq.html" class="btn btn-neutral float-right" title="Frequently Asked Questions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Literature Databases &mdash; litstudy 0.1 documentation</title>
@@ -11,10 +11,8 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -30,11 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> litstudy
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            litstudy
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -45,6 +47,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../index.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../example.html">Example of using litstudy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">API reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="types.html">Data Types</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Literature Databases</a><ul>
@@ -62,6 +65,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#module-1">CrossRef</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#litstudy.fetch_crossref"><code class="docutils literal notranslate"><span class="pre">fetch_crossref()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#litstudy.refine_crossref"><code class="docutils literal notranslate"><span class="pre">refine_crossref()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.search_crossref"><code class="docutils literal notranslate"><span class="pre">search_crossref()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#module-2">bibtex</a><ul>
@@ -97,6 +101,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NLeSC/litstudy">Github repository</a></li>
 </ul>
 
         </div>
@@ -112,7 +117,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">API reference</a></li>
       <li class="breadcrumb-item active">Literature Databases</li>
       <li class="wy-breadcrumbs-aside">
@@ -154,10 +159,10 @@
 <span id="scopus"></span><h2>Scopus<a class="headerlink" href="#module-litstudy" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="litstudy.search_scopus">
-<span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">search_scopus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.search_scopus" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">search_scopus</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.search_scopus" title="Permalink to this definition"></a></dt>
 <dd><p>Submit the given query to the Scopus API.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>limit</strong> – Restrict results the first <cite>limit</cite> documents.</p>
 </dd>
 </dl>
@@ -175,7 +180,7 @@ performing a fuzzy search based on their title. This is not ideal
 and can lead to false positives (i.e., another document is found having
 the same title), thus it can be disabled if necessary.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>search_title</strong> – Flag to toggle searching by title.</p>
 </dd>
 </dl>
@@ -186,7 +191,7 @@ the same title), thus it can be disabled if necessary.</p>
 <span id="semanticscholar"></span><h2>SemanticScholar<a class="headerlink" href="#module-0" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="litstudy.fetch_semanticscholar">
-<span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">fetch_semanticscholar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">set</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="types.html#litstudy.types.Document" title="litstudy.types.Document"><span class="pre">Document</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#litstudy.fetch_semanticscholar" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">fetch_semanticscholar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">set</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="types.html#litstudy.types.Document" title="litstudy.types.Document"><span class="pre">Document</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#litstudy.fetch_semanticscholar" title="Permalink to this definition"></a></dt>
 <dd><p>Fetch SemanticScholar metadata for the given key. The key can be
 one of the following (see <a class="reference external" href="https://www.semanticscholar.org/product/api">API reference</a>):</p>
 <ul class="simple">
@@ -199,7 +204,7 @@ one of the following (see <a class="reference external" href="https://www.semant
 <li><p>Corpus ID (example format: <cite>CorpusID:37220927</cite>)</p></li>
 </ul>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The <cite>Document</cite> if it was found and <cite>None</cite> otherwise.</p>
 </dd>
 </dl>
@@ -216,7 +221,7 @@ were not found or do not have a DOI.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="litstudy.search_semanticscholar">
-<span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">search_semanticscholar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.search_semanticscholar" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">search_semanticscholar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.search_semanticscholar" title="Permalink to this definition"></a></dt>
 <dd><p>Submit the given query to SemanticScholar and return the results
 as a <cite>DocumentSet</cite>.</p>
 </dd></dl>
@@ -226,10 +231,10 @@ as a <cite>DocumentSet</cite>.</p>
 <span id="crossref"></span><h2>CrossRef<a class="headerlink" href="#module-1" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="litstudy.fetch_crossref">
-<span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">fetch_crossref</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="types.html#litstudy.types.Document" title="litstudy.types.Document"><span class="pre">Document</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#litstudy.fetch_crossref" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">fetch_crossref</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="types.html#litstudy.types.Document" title="litstudy.types.Document"><span class="pre">Document</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#litstudy.fetch_crossref" title="Permalink to this definition"></a></dt>
 <dd><p>Fetch the metadata for the given DOI from CrossRef.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The <cite>Document</cite> or <cite>None</cite> if the DOI was not available.</p>
 </dd>
 </dl>
@@ -242,9 +247,29 @@ as a <cite>DocumentSet</cite>.</p>
 set. Returns a tuple of two sets: the documents retrieved from CrossRef
 and the remaining documents (i.e., without DOI or not found).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>timeout</strong> – Timeout in seconds between each request to throttle
 server communication.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.search_crossref">
+<span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">search_crossref</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.search_crossref" title="Permalink to this definition"></a></dt>
+<dd><p>Submit the query to the CrossRef API.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query</strong> – The search query.</p></li>
+<li><p><strong>limit</strong> – Maximum number of results to retrieve. <code class="docutils literal notranslate"><span class="pre">None</span></code> is unlimited.</p></li>
+<li><p><strong>timeout</strong> – Timeout in seconds between each request to throttle
+server communication</p></li>
+<li><p><strong>options</strong> – Additional parameters that are passed to the <code class="docutils literal notranslate"><span class="pre">/works</span></code>
+endpoint of CrossRef (see <cite>CrossRef API</cite>
+&lt;<a class="reference external" href="https://api.crossref.org">https://api.crossref.org</a>&gt;`_). Options are <cite>sort</cite> and
+<cite>filter</cite>.</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -276,7 +301,7 @@ server communication.</p>
 <dd><p>Perform the given <cite>query</cite> on the DBLP API and return the results
 as a <cite>DocumentSet</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>limit</strong> – The maximum number of documents to retrieve.</p>
 </dd>
 </dl>

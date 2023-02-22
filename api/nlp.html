@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Language Processing &mdash; litstudy 0.1 documentation</title>
@@ -11,10 +11,8 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
         <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
@@ -30,11 +28,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> litstudy
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            litstudy
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -45,6 +47,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../index.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../example.html">Example of using litstudy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">Frequently Asked Questions</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">API reference</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="types.html">Data Types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sources.html">Literature Databases</a></li>
@@ -80,6 +83,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/NLeSC/litstudy">Github repository</a></li>
 </ul>
 
         </div>
@@ -95,7 +99,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">API reference</a></li>
       <li class="breadcrumb-item active">Language Processing</li>
       <li class="wy-breadcrumbs-aside">
@@ -164,7 +168,7 @@ word frequency vector for each document. This preprocessing stage is
 highly customizable, thus it is advised to experiment with the many
 parameters.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>remove_words</strong> – list of words that should be ignored while building
 the word frequency vectors.</p></li>
@@ -186,7 +190,7 @@ to <cite>gensim.models.phrases.Phrases</cite> to detect
 common n-grams.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>a <cite>Corpus object</cite>.</p>
 </dd>
 </dl>
@@ -266,7 +270,7 @@ to that document.</p>
 <span class="sig-prename descclassname"><span class="pre">litstudy.nlp.</span></span><span class="sig-name descname"><span class="pre">train_nmf_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#litstudy.nlp.Corpus" title="litstudy.nlp.Corpus"><span class="pre">Corpus</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_topics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#litstudy.nlp.TopicModel" title="litstudy.nlp.TopicModel"><span class="pre">TopicModel</span></a></span></span><a class="headerlink" href="#litstudy.nlp.train_nmf_model" title="Permalink to this definition"></a></dt>
 <dd><p>Train a topic model using NMF.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>num_topics</strong> – The number of topics to train.</p></li>
 <li><p><strong>seed</strong> – The seed used for random number generation.</p></li>
@@ -283,7 +287,7 @@ times.</p></li>
 <span class="sig-prename descclassname"><span class="pre">litstudy.nlp.</span></span><span class="sig-name descname"><span class="pre">train_lda_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#litstudy.nlp.Corpus" title="litstudy.nlp.Corpus"><span class="pre">Corpus</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_topics</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#litstudy.nlp.TopicModel" title="litstudy.nlp.TopicModel"><span class="pre">TopicModel</span></a></span></span><a class="headerlink" href="#litstudy.nlp.train_lda_model" title="Permalink to this definition"></a></dt>
 <dd><p>Train a topic model using LDA.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>num_topics</strong> – The number of topics to train.</p></li>
 <li><p><strong>seed</strong> – The seed used for random number generation.</p></li>
@@ -305,7 +309,7 @@ documents that mention that word.</p>
 <span class="sig-prename descclassname"><span class="pre">litstudy.nlp.</span></span><span class="sig-name descname"><span class="pre">generate_topic_cloud</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#litstudy.nlp.TopicModel" title="litstudy.nlp.TopicModel"><span class="pre">TopicModel</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">topic_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_font_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">75</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">background_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'white'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">WordCloud</span></span></span><a class="headerlink" href="#litstudy.nlp.generate_topic_cloud" title="Permalink to this definition"></a></dt>
 <dd><p>Generate a word cloud for the given topic from the given topic model.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>cmap</strong> – The color map used to color the words.</p></li>
 <li><p><strong>max_font_size</strong> – Size of the word which most strongly belongs to the
@@ -322,7 +326,7 @@ topic. The other words are scaled accordingly.</p></li>
 <dd><p>Calculate a document embedding that assigns each document in the
 corpus a N-d position based on the word usage.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A list of N-d tuples for the documents in the corpus.</p>
 </dd>
 </dl>

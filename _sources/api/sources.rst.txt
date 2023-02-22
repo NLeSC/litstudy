@@ -15,7 +15,7 @@ SemanticScholar
 CrossRef
 ---------------
 .. automodule:: litstudy
-  :members: fetch_crossref, refine_crossref
+  :members: fetch_crossref, refine_crossref, search_crossref
 
 bibtex
 ---------------
