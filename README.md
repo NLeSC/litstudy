@@ -17,6 +17,12 @@ In essence, this package offers five features
 * Topic discovery based on natural language processing (NLP) allows automatic discovery of popular topics.
 
 
+## Frequently Asked Questions
+If you have any questions or run into an error, see the [_Frequently Asked Questions_](https://nlesc.github.io/litstudy/faq.html) section of the [documentation](https://nlesc.github.io/litstudy/).
+If your question or error is not on the list, please check the [GitHub issue tracker](https://github.com/NLeSC/litstudy/issues) for a similar issue or
+create a [new issue](https://github.com/NLeSC/litstudy/issues/new).
+
+
 ## Example
 An example notebook is available in `notebooks/example.ipynb` and [here](https://nlesc.github.io/litstudy/example.html).
 
