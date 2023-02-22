@@ -22,8 +22,11 @@ Example Notebook
    Introduction <self>
    installation
    example
+   faq
    api/index
    license
+   Github repository <https://github.com/NLeSC/litstudy>
+
 
 
 
