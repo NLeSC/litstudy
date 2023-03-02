@@ -8,21 +8,23 @@ from .springer import load_springer_csv
 from .dblp import search_dblp
 from .ris import load_ris_file
 from .arxiv import search_arxiv
+from .csv import load_csv
 
 __all__ = [
-    'refine_crossref',
     'fetch_crossref',
-    'search_crossref',
-    'refine_semanticscholar',
-    'search_semanticscholar',
-    'fetch_semanticscholar',
-    'refine_scopus',
-    'search_scopus',
     'fetch_scopus',
+    'fetch_semanticscholar',
     'load_bibtex',
+    'load_csv',
     'load_ieee_csv',
-    'load_springer_csv',
     'load_ris_file',
+    'load_springer_csv',
+    'refine_crossref',
+    'refine_scopus',
+    'refine_semanticscholar',
+    'search_arxiv',
+    'search_crossref',
     'search_dblp',
-    'search_arxiv'
+    'search_scopus',
+    'search_semanticscholar',
 ]
