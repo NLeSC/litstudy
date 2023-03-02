@@ -68,27 +68,31 @@
 <li class="toctree-l4"><a class="reference internal" href="#litstudy.search_crossref"><code class="docutils literal notranslate"><span class="pre">search_crossref()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#module-2">bibtex</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#litstudy.load_bibtex"><code class="docutils literal notranslate"><span class="pre">load_bibtex()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-2">CSV</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.load_csv"><code class="docutils literal notranslate"><span class="pre">load_csv()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#module-3">RIS</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#litstudy.load_ris_file"><code class="docutils literal notranslate"><span class="pre">load_ris_file()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#module-4">dblp</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#litstudy.search_dblp"><code class="docutils literal notranslate"><span class="pre">search_dblp()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#module-5">IEEE Xplore</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-3">IEEE Xplore</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#litstudy.load_ieee_csv"><code class="docutils literal notranslate"><span class="pre">load_ieee_csv()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#module-6">Springer Link</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-4">Springer Link</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#litstudy.load_springer_csv"><code class="docutils literal notranslate"><span class="pre">load_springer_csv()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#module-7">arXiv</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-5">bibtex</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.load_bibtex"><code class="docutils literal notranslate"><span class="pre">load_bibtex()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-6">RIS</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.load_ris_file"><code class="docutils literal notranslate"><span class="pre">load_ris_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-7">dblp</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#litstudy.search_dblp"><code class="docutils literal notranslate"><span class="pre">search_dblp()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-8">arXiv</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#litstudy.search_arxiv"><code class="docutils literal notranslate"><span class="pre">search_arxiv()</span></code></a></li>
 </ul>
 </li>
@@ -276,7 +280,69 @@ endpoint of CrossRef (see <cite>CrossRef API</cite>
 
 </section>
 <section id="module-2">
-<span id="bibtex"></span><h2>bibtex<a class="headerlink" href="#module-2" title="Permalink to this heading"></a></h2>
+<span id="csv"></span><h2>CSV<a class="headerlink" href="#module-2" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.load_csv">
+<span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">load_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dialect</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dialect</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title_field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">authors_field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">abstract_field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">citation_field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.load_csv" title="Permalink to this definition"></a></dt>
+<dd><p>Load an abitrary CSV file and parse its contents as a <code class="docutils literal notranslate"><span class="pre">DocumentSet</span></code>
+on a best effort basis.</p>
+<p>An attempt is made to guess the purpose of the fields of the CSV file
+based on their names. For example, the date of publication is likely
+given by a field named something like “Publication Date”,
+“Year of Publication”, or “Published Year”. In case the field name
+cannot be determined, it is possible to explicitly set the purpose of
+field names by passing additional parameters. For example, <code class="docutils literal notranslate"><span class="pre">date_field</span></code>
+explicit sets name of the date field.</p>
+<p>The CSV is parsed using the given <code class="docutils literal notranslate"><span class="pre">dialect</span></code>. If not dialect is given, an
+attempt is made to guess the dialect based on the file’s content.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> – Name of CSV file.</p></li>
+<li><p><strong>dialect</strong> – Used to read the CSV file.</p></li>
+<li><p><strong>title_field</strong> – Field name for <code class="docutils literal notranslate"><span class="pre">title</span></code>.</p></li>
+<li><p><strong>authors_field</strong> – Field name for <code class="docutils literal notranslate"><span class="pre">authors</span></code>.</p></li>
+<li><p><strong>abstract_field</strong> – Field name for <code class="docutils literal notranslate"><span class="pre">abstract</span></code>.</p></li>
+<li><p><strong>citation_field</strong> – Field name for <code class="docutils literal notranslate"><span class="pre">citation_count</span></code>.</p></li>
+<li><p><strong>date_field</strong> – Field name for <code class="docutils literal notranslate"><span class="pre">publication_date</span></code> or</p></li>
+<li><p><strong>filter</strong> – Optional function applied to each loaded record. This</p></li>
+</ul>
+</dd>
+</dl>
+<p>function can be used to, for example, add or delete fields.</p>
+<p>Examples:
+<a href="#id1"><span class="problematic" id="id2">``</span></a>`
+docs = litstudy.load_csv(“my_data.csv”,</p>
+<blockquote>
+<div><p>title_field=”Document Title”,
+date_field=”Pub Date”)</p>
+</div></blockquote>
+<p><a href="#id3"><span class="problematic" id="id4">``</span></a><a href="#id5"><span class="problematic" id="id6">`</span></a></p>
+</dd></dl>
+
+</section>
+<section id="module-3">
+<span id="ieee-xplore"></span><h2>IEEE Xplore<a class="headerlink" href="#module-3" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.load_ieee_csv">
+<span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">load_ieee_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.load_ieee_csv" title="Permalink to this definition"></a></dt>
+<dd><p>Import CSV file exported from
+<a class="reference external" href="https://ieeexplore.ieee.org/search/searchresult.jsp">IEEE Xplore</a>.</p>
+</dd></dl>
+
+</section>
+<section id="module-4">
+<span id="springer-link"></span><h2>Springer Link<a class="headerlink" href="#module-4" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.load_springer_csv">
+<span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">load_springer_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.load_springer_csv" title="Permalink to this definition"></a></dt>
+<dd><p>Load CSV file exported from
+<a class="reference external" href="https://link.springer.com/">Springer Link</a>.</p>
+</dd></dl>
+
+</section>
+<section id="module-5">
+<span id="bibtex"></span><h2>bibtex<a class="headerlink" href="#module-5" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="litstudy.load_bibtex">
 <span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">load_bibtex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.load_bibtex" title="Permalink to this definition"></a></dt>
@@ -284,8 +350,8 @@ endpoint of CrossRef (see <cite>CrossRef API</cite>
 </dd></dl>
 
 </section>
-<section id="module-3">
-<span id="ris"></span><h2>RIS<a class="headerlink" href="#module-3" title="Permalink to this heading"></a></h2>
+<section id="module-6">
+<span id="ris"></span><h2>RIS<a class="headerlink" href="#module-6" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="litstudy.load_ris_file">
 <span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">load_ris_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.load_ris_file" title="Permalink to this definition"></a></dt>
@@ -293,8 +359,8 @@ endpoint of CrossRef (see <cite>CrossRef API</cite>
 </dd></dl>
 
 </section>
-<section id="module-4">
-<span id="dblp"></span><h2>dblp<a class="headerlink" href="#module-4" title="Permalink to this heading"></a></h2>
+<section id="module-7">
+<span id="dblp"></span><h2>dblp<a class="headerlink" href="#module-7" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="litstudy.search_dblp">
 <span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">search_dblp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.search_dblp" title="Permalink to this definition"></a></dt>
@@ -308,28 +374,8 @@ as a <cite>DocumentSet</cite>.</p>
 </dd></dl>
 
 </section>
-<section id="module-5">
-<span id="ieee-xplore"></span><h2>IEEE Xplore<a class="headerlink" href="#module-5" title="Permalink to this heading"></a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="litstudy.load_ieee_csv">
-<span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">load_ieee_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.load_ieee_csv" title="Permalink to this definition"></a></dt>
-<dd><p>Import CSV file exported from
-<a class="reference external" href="https://ieeexplore.ieee.org/search/searchresult.jsp">IEEE Xplore</a>.</p>
-</dd></dl>
-
-</section>
-<section id="module-6">
-<span id="springer-link"></span><h2>Springer Link<a class="headerlink" href="#module-6" title="Permalink to this heading"></a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="litstudy.load_springer_csv">
-<span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">load_springer_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.load_springer_csv" title="Permalink to this definition"></a></dt>
-<dd><p>Load CSV file exported from
-<a class="reference external" href="https://link.springer.com/">Springer Link</a>.</p>
-</dd></dl>
-
-</section>
-<section id="module-7">
-<span id="arxiv"></span><h2>arXiv<a class="headerlink" href="#module-7" title="Permalink to this heading"></a></h2>
+<section id="module-8">
+<span id="arxiv"></span><h2>arXiv<a class="headerlink" href="#module-8" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="litstudy.search_arxiv">
 <span class="sig-prename descclassname"><span class="pre">litstudy.</span></span><span class="sig-name descname"><span class="pre">search_arxiv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_results</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'descending'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sort_by</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'submittedDate'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sleep_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="types.html#litstudy.types.DocumentSet" title="litstudy.types.DocumentSet"><span class="pre">DocumentSet</span></a></span></span><a class="headerlink" href="#litstudy.search_arxiv" title="Permalink to this definition"></a></dt>
