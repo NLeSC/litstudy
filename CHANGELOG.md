@@ -10,6 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 ### Fixed
 
+## [1.0.4] - 2023-03-02
+### Added
+- Add `load_csv` function
+- Add `search_crossref` function
+
+### Fixed
+- Fix issue where CSV files could not be parsed due to BOM marker
+
 ## [1.0.3] - 2022-09-21
 
 ### Fixed
