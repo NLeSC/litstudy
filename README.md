@@ -1,4 +1,8 @@
 # LitStudy
+
+![Logo](https://raw.githubusercontent.com/nlesc/litstudy/master/docs/logo.png#gh-light-mode-only)
+![Logo](https://raw.githubusercontent.com/nlesc/litstudy/master/docs/logo_dm.png#gh-dark-mode-only)
+
 [![github](https://img.shields.io/badge/github-repo-000.svg?logo=github&labelColor=gray&color=blue)](https://github.com/NLeSC/litstudy/)
 [![DOI](https://zenodo.org/badge/206312286.svg)](https://zenodo.org/badge/latestdoi/206312286)
 [![License](https://img.shields.io/github/license/nlesc/litstudy)](https://github.com/NLeSC/litstudy/blob/master/LICENSE)
