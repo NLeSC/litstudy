@@ -38,4 +38,4 @@ It is likely that your Scopus API key is invalid, in which case see `How to use 
 
 My question is not in this list?
 --------------------------------
-If your question is not in this list, please create an issue on the `GitHub issue tracker <https://github.com/NLeSC/litstudy/issues/new>`_.
+If your question is not in this list, please create a new issue on `GitHub <https://github.com/NLeSC/litstudy/issues/new>`_.
