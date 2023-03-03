@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="english" >
 <head>
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
@@ -170,22 +170,22 @@ parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>remove_words</strong> – list of words that should be ignored while building
+<li><p><strong>remove_words</strong> -- list of words that should be ignored while building
 the word frequency vectors.</p></li>
-<li><p><strong>min_word_length</strong> – Words shorter than this are ignored.</p></li>
-<li><p><strong>min_docs</strong> – Words that occur in fewer than this many documents are
+<li><p><strong>min_word_length</strong> -- Words shorter than this are ignored.</p></li>
+<li><p><strong>min_docs</strong> -- Words that occur in fewer than this many documents are
 ignored.</p></li>
-<li><p><strong>max_docs_ratio</strong> – Words that occur in more than this document are
+<li><p><strong>max_docs_ratio</strong> -- Words that occur in more than this document are
 ignored. Should be ratio between 0 and 1.</p></li>
-<li><p><strong>max_tokens</strong> – Only the top most common tokens are preserved.</p></li>
-<li><p><strong>replace_words</strong> – Replace words by other words. Must be a <cite>dict</cite>
+<li><p><strong>max_tokens</strong> -- Only the top most common tokens are preserved.</p></li>
+<li><p><strong>replace_words</strong> -- Replace words by other words. Must be a <cite>dict</cite>
 containing <em>original word</em> to <em>replacement word</em>
 pairs.</p></li>
-<li><p><strong>custom_bigrams</strong> – Add custom bigrams. Must be a <cite>dict</cite> where keys
+<li><p><strong>custom_bigrams</strong> -- Add custom bigrams. Must be a <cite>dict</cite> where keys
 are <cite>(first, second)</cite> tuples and values are
 replacements. For example, the key can be
-<cite>(“Big”, “Data”)</cite> and the value <cite>“BigData”</cite>.</p></li>
-<li><p><strong>ngram_threshold</strong> – Threshold used for n-gram detection. Is passed
+<cite>(&quot;Big&quot;, &quot;Data&quot;)</cite> and the value <cite>&quot;BigData&quot;</cite>.</p></li>
+<li><p><strong>ngram_threshold</strong> -- Threshold used for n-gram detection. Is passed
 to <cite>gensim.models.phrases.Phrases</cite> to detect
 common n-grams.</p></li>
 </ul>
@@ -272,9 +272,9 @@ to that document.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>num_topics</strong> – The number of topics to train.</p></li>
-<li><p><strong>seed</strong> – The seed used for random number generation.</p></li>
-<li><p><strong>max_iter</strong> – The maximum number of iterations to use for training.
+<li><p><strong>num_topics</strong> -- The number of topics to train.</p></li>
+<li><p><strong>seed</strong> -- The seed used for random number generation.</p></li>
+<li><p><strong>max_iter</strong> -- The maximum number of iterations to use for training.
 More iterations mean better results, but longer training
 times.</p></li>
 </ul>
@@ -289,9 +289,9 @@ times.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>num_topics</strong> – The number of topics to train.</p></li>
-<li><p><strong>seed</strong> – The seed used for random number generation.</p></li>
-<li><p><strong>kwargs</strong> – Arguments passed to <cite>gensim.models.lda.LdaModel</cite>.</p></li>
+<li><p><strong>num_topics</strong> -- The number of topics to train.</p></li>
+<li><p><strong>seed</strong> -- The seed used for random number generation.</p></li>
+<li><p><strong>kwargs</strong> -- Arguments passed to <cite>gensim.models.lda.LdaModel</cite>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -311,10 +311,10 @@ documents that mention that word.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>cmap</strong> – The color map used to color the words.</p></li>
-<li><p><strong>max_font_size</strong> – Size of the word which most strongly belongs to the
+<li><p><strong>cmap</strong> -- The color map used to color the words.</p></li>
+<li><p><strong>max_font_size</strong> -- Size of the word which most strongly belongs to the
 topic. The other words are scaled accordingly.</p></li>
-<li><p><strong>background_color</strong> – Background color.</p></li>
+<li><p><strong>background_color</strong> -- Background color.</p></li>
 </ul>
 </dd>
 </dl>

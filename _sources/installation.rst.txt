@@ -1,7 +1,7 @@
 Installation Guide
 ==================
 
-litstudy is available on pip! If you have Python installed (version 3.6 or greater), just use the following command to install litstudy.
+litStudy is available on pip! If you have Python installed (version 3.6 or greater), just use the following command to install litstudy.
 
 
 .. code-block:: bash
@@ -12,7 +12,7 @@ litstudy is available on pip! If you have Python installed (version 3.6 or great
 Jupyter
 -------
 
-To use litstudy from a Jupyter notebook, use the following command:
+To use LitStudy from a Jupyter notebook, use the following command:
 
 .. code-block:: bash
 

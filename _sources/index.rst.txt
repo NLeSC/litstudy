@@ -3,20 +3,15 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-The litstudy documentation
+The LitStudy documentation
 ====================================
 
-litstudy is a Python package that enables analysis of scientific literature from the comfort of a Jypyter notebook.
-The package allows one to select scientific publications and study their metadata using visualizations, network analysis, and natural language processing.
+.. mdinclude:: ../README.md
 
-Example Notebook
-----------------
-.. image:: images/notebook.png
-   :width: 500
-   :target: example.html
 
 .. toctree::
    :maxdepth: 2
+   :hidden:
    :caption: Contents:
 
    Introduction <self>
