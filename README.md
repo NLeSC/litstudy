@@ -1,11 +1,15 @@
-# litstudy
+# LitStudy
+
+![Logo](https://raw.githubusercontent.com/nlesc/litstudy/master/docs/logo.png#gh-light-mode-only)
+![Logo](https://raw.githubusercontent.com/nlesc/litstudy/master/docs/logo_dm.png#gh-dark-mode-only)
+
 [![github](https://img.shields.io/badge/github-repo-000.svg?logo=github&labelColor=gray&color=blue)](https://github.com/NLeSC/litstudy/)
 [![DOI](https://zenodo.org/badge/206312286.svg)](https://zenodo.org/badge/latestdoi/206312286)
 [![License](https://img.shields.io/github/license/nlesc/litstudy)](https://github.com/NLeSC/litstudy/blob/master/LICENSE)
 [![Version](https://img.shields.io/pypi/v/litstudy)](https://pypi.org/project/litstudy/)
 [![Build and Test](https://github.com/NLeSC/litstudy/actions/workflows/python-app.yml/badge.svg)](https://github.com/NLeSC/litstudy/actions/)
 
-`litstudy` is a Python package that allows analysis of scientific literature from the comfort of a Jupyter notebook.
+LitStudy is a Python package that allows analysis of scientific literature from the comfort of a Jupyter notebook.
 It enables selecting scientific publications and study their metadata using visualizations, network analysis, and natural language processing.
 
 In essence, this package offers five features
@@ -30,7 +34,7 @@ An example notebook is available in `notebooks/example.ipynb` and [here](https:/
 
 
 ## Installation Guide
-litstudy is available on PyPI!
+LitStudy is available on PyPI!
 Full installation guide is available [here](https://nlesc.github.io/litstudy/installation.html).
 
 ```bash
@@ -70,7 +74,7 @@ See [CONTRIBUTING.md](https://github.com/NLeSC/litstudy/blob/master/CONTRIBUTING
 
 
 ## Citation
-If you use `litstudy` in you work, please cite the following publication:
+If you use LitStudy in you work, please cite the following publication:
 
 > S. Heldens, A. Sclocco, H. Dreuning, B. van Werkhoven, P. Hijma, J. Maassen & R.V. van Nieuwpoort (2022), "litstudy: A Python package for literature reviews", SoftwareX 20
 
