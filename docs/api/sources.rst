@@ -17,6 +17,21 @@ CrossRef
 .. automodule:: litstudy
   :members: fetch_crossref, refine_crossref, search_crossref
 
+CSV
+---------------
+.. automodule:: litstudy
+  :members: load_csv
+
+IEEE Xplore
+---------------
+.. automodule:: litstudy
+  :members: load_ieee_csv
+
+Springer Link
+---------------
+.. automodule:: litstudy
+  :members: load_springer_csv
+
 bibtex
 ---------------
 .. automodule:: litstudy
@@ -32,16 +47,6 @@ dblp
 ---------------
 .. automodule:: litstudy
   :members: search_dblp
-
-IEEE Xplore
----------------
-.. automodule:: litstudy
-  :members: load_ieee_csv
-
-Springer Link
----------------
-.. automodule:: litstudy
-  :members: load_springer_csv
 
 arXiv
 ---------------
