@@ -90,19 +90,19 @@ class ScholarDocument(Document):
         return fetch_semanticscholar(id)
 
 
-S2_PAPER_URL = 'http://api.semanticscholar.org/v1/paper/'
+S2_PAPER_URL = 'https://api.semanticscholar.org/v1/paper/'
 S2_QUERY_URL = 'https://api.semanticscholar.org/graph/v1/paper/search'
 CACHE_FILE = '.semantischolar'
 DEFAULT_TIMEOUT = 3.05  # 100 requests per 5 minutes
 
 
-def request_results(query, offset, cache, timeout=DEFAULT_TIMEOUT):
+def request_query(query, offset, limit, cache, timeout=DEFAULT_TIMEOUT):
     cache_key = f'results={query};{offset}'
     if cache_key in cache:
         return cache[cache_key]
 
     url = S2_QUERY_URL
-    params = dict(offset=offset, query=query, limit=100)
+    params = dict(offset=offset, query=query, limit=limit)
     reply = requests.get(url, params=params)
     response = reply.json()
 
@@ -195,34 +195,45 @@ def refine_semanticscholar(docs: DocumentSet
     return docs._refine_docs(callback)
 
 
-def search_semanticscholar(query: str, *, limit: int = None) -> DocumentSet:
-    """ Submit the given query to SemanticScholar and return the results
+def search_semanticscholar(query: str, *, limit: int = None, batch_size:int = 250) -> DocumentSet:
+    """ Submit the given query to SemanticScholar API and return the results
     as a `DocumentSet`.
+
+    :param query: The search query to submit.
+    :param limit: The maximum number of results to return.
+    :param batch_size: The number of results to retrieve per request.
     """
 
     if not query:
-        raise Exception('invalid query: {query}')
+        raise Exception('no query specified in `search_semanticscholar`')
 
     docs = []
 
     with shelve.open(CACHE_FILE) as cache:
-        offset = 0
         paper_ids = []
 
         while True:
-            data = request_results(query, offset, cache)
-            if not data:
+            offset = len(paper_ids)
+
+            response = request_query(query, offset, batch_size, cache)
+            if not response:
                 break
 
-            records = data['data']
-            offset += len(records)
+            records = response['data']
+            total = response['total']
 
             for record in records:
                 paper_ids.append(record['paperId'])
 
-            if limit is not None and len(paper_ids) > limit:
+            # Check if we reached the total number of papers
+            if len(paper_ids) >= total:
+                break
+
+            # Check if we exceeded the user-defined limit
+            if limit is not None and len(paper_ids) >= limit:
                 paper_ids = paper_ids[:limit]
                 break
+
 
         for paper_id in progress_bar(paper_ids):
             doc = request_paper(paper_id, cache)

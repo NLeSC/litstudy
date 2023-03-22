@@ -2,8 +2,11 @@ from litstudy.sources.semanticscholar import search_semanticscholar, fetch_seman
 
 
 def test_load_s2_file():
-    search_semanticscholar('exascale', limit=10)
-    # assert 1==2
+    docs = search_semanticscholar('exascale', limit=10)
+    assert len(docs) == 10
+
+    docs = search_semanticscholar('litstudy')
+    assert any(doc.id.doi == "10.2139/ssrn.4079400" for doc in docs)
 
 
 def test_fetch_semanticscholar():
