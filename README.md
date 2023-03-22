@@ -8,16 +8,16 @@
 [![Version](https://img.shields.io/pypi/v/litstudy)](https://pypi.org/project/litstudy/)
 [![Build and Test](https://github.com/NLeSC/litstudy/actions/workflows/python-app.yml/badge.svg)](https://github.com/NLeSC/litstudy/actions/)
 
-LitStudy is a Python package that allows analysis of scientific literature from the comfort of a Jupyter notebook.
-It enables selecting scientific publications and study their metadata using visualizations, network analysis, and natural language processing.
+LitStudy is a Python package that enables analysis of scientific literature from the comfort of a Jupyter notebook. It provides the ability to select scientific publications and study their metadata through the use of visualizations, network analysis, and natural language processing.
 
-In essence, this package offers five features
 
-* Extract metadata of scientific documents from various sources. The data is united by a standard interface, allowing data from different sources to be combined.
+In essence, this package offers five main features:
+
+* Extract metadata from scientific documents sourced from various locations. The data is presented in a standardized interface, allowing for the combination of data from different sources.
 * Filter, select, deduplicate, and annotate collections of documents.
-* Compute and plot general statistics of document sets (e.g., statistics on authors, venues, publication years, etc.)
-* Generate and plot various bibliographic networks as an interactive visualization.
-* Topic discovery based on natural language processing (NLP) allows automatic discovery of popular topics.
+* Compute and plot general statistics for document sets, such as statistics on authors, venues, and publication years.
+* Generate and plot various bibliographic networks as interactive visualizations.
+* Topic discovery using natural language processing (NLP) allows for the automatic discovery of popular topics.
 
 
 ## Frequently Asked Questions
@@ -67,7 +67,7 @@ Full installation guide is available [here](https://nlesc.github.io/litstudy/ins
 pip install litstudy
 ```
 
-Or install the lastest development version directly from GitHub:
+Or install the latest development version directly from GitHub:
 
 ```bash
 pip install git+https://github.com/NLeSC/litstudy
