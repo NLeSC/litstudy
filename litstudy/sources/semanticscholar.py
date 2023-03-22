@@ -195,13 +195,13 @@ def refine_semanticscholar(docs: DocumentSet) -> Tuple[DocumentSet, DocumentSet]
     return docs._refine_docs(callback)
 
 
-def search_semanticscholar(query: str, *, limit: int = None, batch_size: int = 250) -> DocumentSet:
+def search_semanticscholar(query: str, *, limit: int = None, batch_size: int = 100) -> DocumentSet:
     """Submit the given query to SemanticScholar API and return the results
     as a `DocumentSet`.
 
     :param query: The search query to submit.
     :param limit: The maximum number of results to return.
-    :param batch_size: The number of results to retrieve per request.
+    :param batch_size: The number of results to retrieve per request. Must be at most 100.
     """
 
     if not query:
