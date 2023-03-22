@@ -10,14 +10,14 @@ from ..types import Document, Author, DocumentSet, DocumentIdentifier
 
 
 def extract_id(item):
-    if item is None or not item.get('title'):
+    if item is None or not item.get("title"):
         return None
 
     return DocumentIdentifier(
-            item['title'],
-            doi=item.get('doi'),
-            arxivid=item.get('arxivId'),
-            s2id=item.get('paperId'),
+        item["title"],
+        doi=item.get("doi"),
+        arxivid=item.get("arxivId"),
+        s2id=item.get("paperId"),
     )
 
 
@@ -34,7 +34,7 @@ class ScholarAuthor(Author):
 
     @property
     def name(self):
-        return self.entry.get('name')
+        return self.entry.get("name")
 
     @property
     def orcid(self):
@@ -48,11 +48,11 @@ class ScholarDocument(Document):
 
     @property
     def title(self) -> str:
-        return self.entry.get('title')
+        return self.entry.get("title")
 
     @property
     def authors(self):
-        authors = self.entry.get('authors')
+        authors = self.entry.get("authors")
         if not authors:
             return None
 
@@ -60,44 +60,44 @@ class ScholarDocument(Document):
 
     @property
     def publication_year(self):
-        return self.entry.get('year')
+        return self.entry.get("year")
 
     @property
     def publication_source(self):
-        return self.entry.get('venue')
+        return self.entry.get("venue")
 
     @property
     def abstract(self):
-        return self.entry.get('abstract')
+        return self.entry.get("abstract")
 
     @property
     def citations(self):
-        return extract_ids(self.entry.get('citations'))
+        return extract_ids(self.entry.get("citations"))
 
     @property
     def citation_count(self):
-        return self.entry.get('numCitedBy')
+        return self.entry.get("numCitedBy")
 
     @property
     def references(self):
-        return extract_ids(self.entry.get('references'))
+        return extract_ids(self.entry.get("references"))
 
     def __repr__(self):
-        return f'<{self.title}>'
+        return f"<{self.title}>"
 
     @staticmethod
     def load(id):
         return fetch_semanticscholar(id)
 
 
-S2_PAPER_URL = 'https://api.semanticscholar.org/v1/paper/'
-S2_QUERY_URL = 'https://api.semanticscholar.org/graph/v1/paper/search'
-CACHE_FILE = '.semantischolar'
+S2_PAPER_URL = "https://api.semanticscholar.org/v1/paper/"
+S2_QUERY_URL = "https://api.semanticscholar.org/graph/v1/paper/search"
+CACHE_FILE = ".semantischolar"
 DEFAULT_TIMEOUT = 3.05  # 100 requests per 5 minutes
 
 
 def request_query(query, offset, limit, cache, timeout=DEFAULT_TIMEOUT):
-    cache_key = f'results={query};{offset}'
+    cache_key = f"results={query};{offset}"
     if cache_key in cache:
         return cache[cache_key]
 
@@ -106,9 +106,9 @@ def request_query(query, offset, limit, cache, timeout=DEFAULT_TIMEOUT):
     reply = requests.get(url, params=params)
     response = reply.json()
 
-    if 'data' not in response:
-        msg = response.get('error') or response.get('message') or 'unknown'
-        raise Exception(f'error while fetching {reply.url}: {msg}')
+    if "data" not in response:
+        msg = response.get("error") or response.get("message") or "unknown"
+        raise Exception(f"error while fetching {reply.url}: {msg}")
 
     cache[cache_key] = response
     return response
@@ -125,15 +125,15 @@ def request_paper(key, cache, timeout=DEFAULT_TIMEOUT):
         sleep(timeout)
         data = requests.get(url).json()
     except Exception as e:
-        logging.warning(f'failed to retrieve {key}: {e}')
+        logging.warning(f"failed to retrieve {key}: {e}")
         return None
 
-    if 'paperId' in data:
+    if "paperId" in data:
         cache[cache_key] = data
         return data
     else:
-        msg = data.get('error') or data.get('message') or 'unknown error'
-        logging.warning(f'failed to retrieve {key}: {msg}')
+        msg = data.get("error") or data.get("message") or "unknown error"
+        logging.warning(f"failed to retrieve {key}: {msg}")
         return None
 
 
@@ -166,10 +166,10 @@ def fetch_semanticscholar(key: set) -> Optional[Document]:
                 data = request_paper(key.doi, cache)
 
             if data is None and key.pubmed:
-                data = request_paper(f'PMID:{key.pubmed}', cache)
+                data = request_paper(f"PMID:{key.pubmed}", cache)
 
             if data is None and key.arxivid:
-                data = request_paper(f'arXiv:{key.arxivid}', cache)
+                data = request_paper(f"arXiv:{key.arxivid}", cache)
         else:
             data = request_paper(key, cache)
 
@@ -179,13 +179,13 @@ def fetch_semanticscholar(key: set) -> Optional[Document]:
     return ScholarDocument(data)
 
 
-def refine_semanticscholar(docs: DocumentSet
-                           ) -> Tuple[DocumentSet, DocumentSet]:
+def refine_semanticscholar(docs: DocumentSet) -> Tuple[DocumentSet, DocumentSet]:
     """Attempt to fetch SemanticScholar metadata for each document in the
     given set based on their DOIs. Returns a tuple containing two sets: the
     documents available on SemanticScholar and the remaining documents that
     were not found or do not have a DOI.
     """
+
     def callback(doc):
         if isinstance(doc, ScholarDocument):
             return doc
@@ -195,8 +195,8 @@ def refine_semanticscholar(docs: DocumentSet
     return docs._refine_docs(callback)
 
 
-def search_semanticscholar(query: str, *, limit: int = None, batch_size:int = 250) -> DocumentSet:
-    """ Submit the given query to SemanticScholar API and return the results
+def search_semanticscholar(query: str, *, limit: int = None, batch_size: int = 250) -> DocumentSet:
+    """Submit the given query to SemanticScholar API and return the results
     as a `DocumentSet`.
 
     :param query: The search query to submit.
@@ -205,7 +205,7 @@ def search_semanticscholar(query: str, *, limit: int = None, batch_size:int = 25
     """
 
     if not query:
-        raise Exception('no query specified in `search_semanticscholar`')
+        raise Exception("no query specified in `search_semanticscholar`")
 
     docs = []
 
@@ -219,11 +219,11 @@ def search_semanticscholar(query: str, *, limit: int = None, batch_size:int = 25
             if not response:
                 break
 
-            records = response['data']
-            total = response['total']
+            records = response["data"]
+            total = response["total"]
 
             for record in records:
-                paper_ids.append(record['paperId'])
+                paper_ids.append(record["paperId"])
 
             # Check if we reached the total number of papers
             if len(paper_ids) >= total:
@@ -234,13 +234,12 @@ def search_semanticscholar(query: str, *, limit: int = None, batch_size:int = 25
                 paper_ids = paper_ids[:limit]
                 break
 
-
         for paper_id in progress_bar(paper_ids):
             doc = request_paper(paper_id, cache)
 
             if doc:
                 docs.append(ScholarDocument(doc))
             else:
-                logging.warn(f'could not find paper id {paper_id}')
+                logging.warn(f"could not find paper id {paper_id}")
 
     return DocumentSet(docs)

@@ -2,20 +2,18 @@ import csv
 from ..types import Document, DocumentSet, DocumentIdentifier
 from ..common import robust_open
 
+
 class SpringerDocument(Document):
     def __init__(self, entry):
-        doi = entry['Item DOI'] or None
-        title = entry['Item Title']
+        doi = entry["Item DOI"] or None
+        title = entry["Item Title"]
 
-        super().__init__(DocumentIdentifier(
-                title,
-                doi=doi
-        ))
+        super().__init__(DocumentIdentifier(title, doi=doi))
         self.entry = entry
 
     @property
     def title(self) -> str:
-        return self.entry['Item Title']
+        return self.entry["Item Title"]
 
     @property
     def authors(self):
@@ -27,18 +25,18 @@ class SpringerDocument(Document):
 
     @property
     def publisher(self):
-        return 'springer'
+        return "springer"
 
     @property
     def publication_year(self):
         try:
-            return int(self.entry['Publication Year'])
+            return int(self.entry["Publication Year"])
         except Exception:
             return None
 
 
 def load_springer_csv(path: str) -> DocumentSet:
-    """ Load CSV file exported from
+    """Load CSV file exported from
     `Springer Link <https://link.springer.com/>`_.
     """
     with robust_open(path) as f:

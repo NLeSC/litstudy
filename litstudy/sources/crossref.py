@@ -8,8 +8,7 @@ import re
 import requests
 import shelve
 
-from ..types import Document, Author, DocumentSet, DocumentIdentifier, \
-        Affiliation
+from ..types import Document, Author, DocumentSet, DocumentIdentifier, Affiliation
 
 
 class CrossRefAuthor(Author):
@@ -18,21 +17,21 @@ class CrossRefAuthor(Author):
 
     @property
     def name(self):
-        given = self.entry.get('given', '')
-        family = self.entry.get('family', '')
+        given = self.entry.get("given", "")
+        family = self.entry.get("family", "")
 
         if not given and not family:
             return None
 
-        return f'{given} {family}'.strip()
+        return f"{given} {family}".strip()
 
     @property
     def orcid(self):
-        return self.entry.get('ORCID')
+        return self.entry.get("ORCID")
 
     @property
     def affiliations(self):
-        entries = self.entry.get('affiliation')
+        entries = self.entry.get("affiliation")
         if entries:
             return [CrossRefAffiliation(e) for e in entries]
         else:
@@ -45,15 +44,15 @@ class CrossRefAffiliation(Affiliation):
 
     @property
     def name(self) -> str:
-        return self.entry['name']
+        return self.entry["name"]
 
 
 def _extract_title(entry):
     # CrossRef returns list of titles from some reason?
-    titles = entry.get('title')
+    titles = entry.get("title")
 
     if titles:
-        return re.sub(r'[\s]+', ' ', ' '.join(titles))
+        return re.sub(r"[\s]+", " ", " ".join(titles))
     else:
         return None
 
@@ -62,7 +61,7 @@ class CrossRefDocument(Document):
     def __init__(self, entry):
         self.entry = entry
         title = _extract_title(entry)
-        doi = entry.get('DOI')
+        doi = entry.get("DOI")
 
         super().__init__(DocumentIdentifier(title, doi=doi))
 
@@ -72,21 +71,21 @@ class CrossRefDocument(Document):
 
     @property
     def authors(self):
-        authors = self.entry.get('author', [])
+        authors = self.entry.get("author", [])
         return [CrossRefAuthor(a) for a in authors]
 
     @property
     def publisher(self):
-        return self.entry.get('publisher')
+        return self.entry.get("publisher")
 
     @property
     def language(self):
-        return self.get('language')
+        return self.get("language")
 
     @property
     def publication_date(self):
         try:
-            parts = self.entry['published-print']['date-parts']
+            parts = self.entry["published-print"]["date-parts"]
             year = int(parts[0])
             month = int(parts[1])
             return date(year, month, 1)
@@ -96,13 +95,13 @@ class CrossRefDocument(Document):
     @property
     def publication_year(self):
         try:
-            return int(self.entry['published-print']['date-parts'][0])
+            return int(self.entry["published-print"]["date-parts"][0])
         except Exception:
             return None
 
     @property
     def publication_source(self):
-        source = self.entry.get('container-title')
+        source = self.entry.get("container-title")
         if source:
             return source[0]
         else:
@@ -110,12 +109,12 @@ class CrossRefDocument(Document):
 
     @property
     def abstract(self):
-        return self.entry.get('abstract')
+        return self.entry.get("abstract")
 
     @property
     def citation_count(self):
         try:
-            return int(self.entry['is-referenced-by-count'])
+            return int(self.entry["is-referenced-by-count"])
         except Exception:
             return None
 
@@ -123,9 +122,9 @@ class CrossRefDocument(Document):
     def references(self):
         output = []
 
-        for ref in self.entry.get('reference', []):
-            title = ref.get('unstructured')
-            doi = ref.get('DOI')
+        for ref in self.entry.get("reference", []):
+            title = ref.get("unstructured")
+            doi = ref.get("DOI")
 
             if title or doi:
                 output.append(DocumentIdentifier(title, doi=doi))
@@ -133,15 +132,15 @@ class CrossRefDocument(Document):
         return output
 
     def __repr__(self):
-        return f'<{self.title}>'
+        return f"<{self.title}>"
 
     @staticmethod
     def load(doi):
         return fetch_crossref(doi)
 
 
-CACHE_FILE = '.crossref'
-CROSSREF_URL = 'https://api.crossref.org/works/'
+CACHE_FILE = ".crossref"
+CROSSREF_URL = "https://api.crossref.org/works/"
 
 
 def fetch_crossref(doi: str, timeout=0.5) -> Optional[Document]:
@@ -149,6 +148,7 @@ def fetch_crossref(doi: str, timeout=0.5) -> Optional[Document]:
 
     :returns: The `Document` or `None` if the DOI was not available.
     """
+
     def request():
         if not doi:
             return None
@@ -162,7 +162,7 @@ def fetch_crossref(doi: str, timeout=0.5) -> Optional[Document]:
             try:
                 response = requests.get(url)
             except Exception as e:
-                logging.warn(f'failed to retrieve {doi}: {e}')
+                logging.warn(f"failed to retrieve {doi}: {e}")
                 return None
 
             sleep(timeout)
@@ -170,16 +170,15 @@ def fetch_crossref(doi: str, timeout=0.5) -> Optional[Document]:
             code = response.status_code
             if code == 200:
                 try:
-                    data = response.json()['message']
+                    data = response.json()["message"]
                 except Exception as e:
-                    logging.warn(f'invalid output from {url}: {e}')
+                    logging.warn(f"invalid output from {url}: {e}")
                     return None
             elif code == 404:
-                logging.warn(f'failed to retrieve {doi}: resource not found')
+                logging.warn(f"failed to retrieve {doi}: resource not found")
                 data = None
             else:
-                logging.warn(
-                        f'failed to retrieve {doi} ({code}): {response.text}')
+                logging.warn(f"failed to retrieve {doi} ({code}): {response.text}")
                 return None
 
             cache[doi] = data
@@ -189,8 +188,7 @@ def fetch_crossref(doi: str, timeout=0.5) -> Optional[Document]:
     return CrossRefDocument(data) if data else None
 
 
-def refine_crossref(docs: DocumentSet, timeout=0.5
-                    ) -> Tuple[DocumentSet, DocumentSet]:
+def refine_crossref(docs: DocumentSet, timeout=0.5) -> Tuple[DocumentSet, DocumentSet]:
     """Attempts to fetch metadata from CrossRef for each document in the given
     set. Returns a tuple of two sets: the documents retrieved from CrossRef
     and the remaining documents (i.e., without DOI or not found).
@@ -198,6 +196,7 @@ def refine_crossref(docs: DocumentSet, timeout=0.5
     :param timeout: Timeout in seconds between each request to throttle
         server communication.
     """
+
     def callback(doc):
         if isinstance(doc, CrossRefDocument):
             return doc
@@ -221,7 +220,7 @@ def _fetch_dois(params: dict, timeout: float, limit: int):
         try:
             response = requests.get(url).json()
         except Exception as e:
-            logging.warn(f'failed to retrieve {url}: {e}')
+            logging.warn(f"failed to retrieve {url}: {e}")
             return None
 
         # Status should be "ok"
@@ -251,9 +250,10 @@ def _fetch_dois(params: dict, timeout: float, limit: int):
     return dois
 
 
-def search_crossref(query: str, limit: int = None, timeout: float = 0.5,
-                    options: dict = dict()) -> DocumentSet:
-    """ Submit the query to the CrossRef API.
+def search_crossref(
+    query: str, limit: int = None, timeout: float = 0.5, options: dict = dict()
+) -> DocumentSet:
+    """Submit the query to the CrossRef API.
 
     :param query: The search query.
     :param limit: Maximum number of results to retrieve. ``None`` is unlimited.

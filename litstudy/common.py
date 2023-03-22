@@ -9,27 +9,32 @@ try:
 
     def progress_bar(it):
         return tqdm(it)
+
 except ImportError:
+
     def progress_bar(it):
         return it
 
-STOPWORDS = set([
-    '',
-    'and',
-    'at',
-    'for',
-    'in',
-    'into',
-    'of',
-    'on',
-    'onto',
-    'over',
-    'the',
-    'to',
-    'ltd',
-    'corporation',
-    'corp',
-])
+
+STOPWORDS = set(
+    [
+        "",
+        "and",
+        "at",
+        "for",
+        "in",
+        "into",
+        "of",
+        "on",
+        "onto",
+        "over",
+        "the",
+        "to",
+        "ltd",
+        "corporation",
+        "corp",
+    ]
+)
 
 
 def canonical(key, aggresive=True, stopwords=None):
@@ -39,7 +44,7 @@ def canonical(key, aggresive=True, stopwords=None):
     if aggresive:
         key = unidecode(key).lower()
 
-    tokens = re.split(r'[\W]+', key)
+    tokens = re.split(r"[\W]+", key)
     new_tokens = []
 
     for token in tokens:
@@ -51,7 +56,7 @@ def canonical(key, aggresive=True, stopwords=None):
 
         new_tokens.append(token)
 
-    return ' '.join(new_tokens)
+    return " ".join(new_tokens)
 
 
 def fuzzy_match(lhs, rhs):
@@ -91,7 +96,7 @@ class FuzzyMatcher:
 
 
 def robust_open(path, errors="replace"):
-    """ This function can be used as a drop-in replacement when using
+    """This function can be used as a drop-in replacement when using
     `with open(path) as f:` to read a file. However, the normal `open` function
     is fragile since it attempts to open the file using the default system
     character encoding and fails immediately when a character cannot be

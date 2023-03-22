@@ -6,7 +6,7 @@ import logging
 
 class DBLPDocument(Document):
     def __init__(self, entry, authors):
-        id = DocumentIdentifier(entry['title'], doi=entry.get('doi'))
+        id = DocumentIdentifier(entry["title"], doi=entry.get("doi"))
         super().__init__(id)
 
         self.entry = entry
@@ -14,33 +14,33 @@ class DBLPDocument(Document):
 
     @property
     def title(self):
-        return self.entry.get('title')
+        return self.entry.get("title")
 
     @property
     def publication_year(self):
         try:
-            return int(self.entry.get('year'))
+            return int(self.entry.get("year"))
         except Exception:
             return None
 
     @property
     def publication_type(self):
-        return self.entry.get('type')
+        return self.entry.get("type")
 
     @property
     def publication_source(self):
-        return self.entry.get('venue')
+        return self.entry.get("venue")
 
     @property
     def publisher(self):
-        return self.entry.get('publisher')
+        return self.entry.get("publisher")
 
     @property
     def authors(self):
         return self._authors
 
     def __repr__(self):
-        return f'<{self.title}>'
+        return f"<{self.title}>"
 
 
 class DBLPAuthor(Author):
@@ -57,15 +57,15 @@ class DBLPAuthor(Author):
         return self._name
 
     def __repr__(self):
-        return f'<{self.name}>'
+        return f"<{self.name}>"
 
 
 def process_authors(entry, author_cache):
     # Sometimes, authors is not a valid key
-    if 'authors' not in entry:
+    if "authors" not in entry:
         return None
 
-    inputs = entry['authors']['author']
+    inputs = entry["authors"]["author"]
     outputs = []
 
     # Sometimes, inputs is nothing? (empty str or null)
@@ -82,8 +82,8 @@ def process_authors(entry, author_cache):
 
     # Sometimes inputs is list
     for author in inputs:
-        pid = author['@pid']
-        name = author['text']
+        pid = author["@pid"]
+        name = author["text"]
 
         if pid not in author_cache:
             author_cache[pid] = DBLPAuthor(pid, name)
@@ -93,8 +93,8 @@ def process_authors(entry, author_cache):
     return outputs
 
 
-CACHE_FILE = '.dblp'
-DBLP_URL = 'http://dblp.org/search/publ/api'
+CACHE_FILE = ".dblp"
+DBLP_URL = "http://dblp.org/search/publ/api"
 
 
 def search_dblp(query: str, *, limit=None) -> DocumentSet:
@@ -104,7 +104,7 @@ def search_dblp(query: str, *, limit=None) -> DocumentSet:
     :param limit: The maximum number of documents to retrieve.
     """
 
-    attr = dict(format='json', h=100, q=query, f=0)
+    attr = dict(format="json", h=100, q=query, f=0)
     offset = 0
 
     docs = []
@@ -112,34 +112,34 @@ def search_dblp(query: str, *, limit=None) -> DocumentSet:
 
     with shelve.open(CACHE_FILE) as cache:
         while True:
-            key = f'{query};{offset}'
+            key = f"{query};{offset}"
 
             if key not in cache:
-                attr['f'] = offset
+                attr["f"] = offset
                 req = requests.get(DBLP_URL, params=attr)
-                cache[key] = req.json().get('result')
+                cache[key] = req.json().get("result")
 
             data = cache[key]
 
             if not data:
                 break
 
-            status = data.get('status').get('text')
-            if status != 'OK':
-                logging.warning(f'expecting status OK, got status {status}')
+            status = data.get("status").get("text")
+            if status != "OK":
+                logging.warning(f"expecting status OK, got status {status}")
                 break
 
-            if 'hits' not in data or 'hit' not in data['hits']:
+            if "hits" not in data or "hit" not in data["hits"]:
                 break
 
-            entries = data['hits']['hit']
+            entries = data["hits"]["hit"]
             offset += len(entries)
 
             if not entries:
                 break
 
             for entry in entries:
-                entry = entry['info']
+                entry = entry["info"]
 
                 authors = process_authors(entry, author_cache)
                 docs.append(DBLPDocument(entry, authors))

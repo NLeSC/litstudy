@@ -19,11 +19,7 @@ class CsvDocument(Document):
         self.fields = fields
         self.record = record
 
-        id = DocumentIdentifier(
-                self.title,
-                doi=self._field("doi"),
-                pubmed=self._field("pubmed")
-        )
+        id = DocumentIdentifier(self.title, doi=self._field("doi"), pubmed=self._field("pubmed"))
         super().__init__(id)
 
     def __getitem__(self, key):
@@ -163,17 +159,17 @@ def find_field(columns, possible_names):
 
 
 def load_csv(
-        path: str,
-        dialect: "csv.Dialect" = None,
-        title_field: str = None,
-        authors_field: str = None,
-        abstract_field: str = None,
-        citation_field: str = None,
-        date_field: str = None,
-        source_field: str = None,
-        filter=None,
-        ) -> DocumentSet:
-    """ Load an abitrary CSV file and parse its contents as a ``DocumentSet``
+    path: str,
+    dialect: "csv.Dialect" = None,
+    title_field: str = None,
+    authors_field: str = None,
+    abstract_field: str = None,
+    citation_field: str = None,
+    date_field: str = None,
+    source_field: str = None,
+    filter=None,
+) -> DocumentSet:
+    """Load an abitrary CSV file and parse its contents as a ``DocumentSet``
     on a best effort basis.
 
     An attempt is made to guess the purpose of the fields of the CSV file
@@ -234,82 +230,121 @@ def load_csv(
 
     # Guess the field names
     fields = dict(
-        title=title_field or find_field(columns, [
-            "title",
-        ]),
-        authors=authors_field or find_field(columns, [
-            "authors",
-            "author(s)",
-            "author",
-            "names",
-            "people",
-            "person",
-            "persons",
-        ]),
-        abstract=abstract_field or find_field(columns, [
-            "abstract",
-            "description",
-            "content",
-            "text",
-            "short text",
-            "body",
-        ]),
-        citation=citation_field or find_field(columns, [
-            "citation count",
-            "citations count",
-            "number of citations",
-            "number citations",
-            "cited by",
-            "citations",
-            "cited",
-        ]),
-        date=date_field or find_field(columns, [
-            "pub date",
-            "datum",
-            "date of publication",
-            "published date",
-            "publishing date",
-            "pub year",
-            "year of publication",
-            "published year",
-            "publishing year",
-            "date",
-            "year",
-        ]),
-        source=source_field or find_field(columns, [
-            "source title",
-            "source name",
-            "source",
-            "conference name",
-        ]),
-        pubmed=find_field(columns, [
-            "pubmed",
-            "pubmedid",
-            "pubmed id",
-        ]),
-        doi=find_field(columns, [
-            "doi",
-            "object identifier",
-            "object identification",
-        ]),
-        keywords=find_field(columns, [
-            "keywords",
-            "tags",
-            "categories",
-            "keys",
-            "indices",
-            "author keywords",
-            "author tags",
-        ]),
-        publisher=find_field(columns, [
-            "publisher",
-            "publisher name",
-        ]),
-        language=find_field(columns, [
-            "language",
-            "lang",
-            "original language",
-        ]),
+        title=title_field
+        or find_field(
+            columns,
+            [
+                "title",
+            ],
+        ),
+        authors=authors_field
+        or find_field(
+            columns,
+            [
+                "authors",
+                "author(s)",
+                "author",
+                "names",
+                "people",
+                "person",
+                "persons",
+            ],
+        ),
+        abstract=abstract_field
+        or find_field(
+            columns,
+            [
+                "abstract",
+                "description",
+                "content",
+                "text",
+                "short text",
+                "body",
+            ],
+        ),
+        citation=citation_field
+        or find_field(
+            columns,
+            [
+                "citation count",
+                "citations count",
+                "number of citations",
+                "number citations",
+                "cited by",
+                "citations",
+                "cited",
+            ],
+        ),
+        date=date_field
+        or find_field(
+            columns,
+            [
+                "pub date",
+                "datum",
+                "date of publication",
+                "published date",
+                "publishing date",
+                "pub year",
+                "year of publication",
+                "published year",
+                "publishing year",
+                "date",
+                "year",
+            ],
+        ),
+        source=source_field
+        or find_field(
+            columns,
+            [
+                "source title",
+                "source name",
+                "source",
+                "conference name",
+            ],
+        ),
+        pubmed=find_field(
+            columns,
+            [
+                "pubmed",
+                "pubmedid",
+                "pubmed id",
+            ],
+        ),
+        doi=find_field(
+            columns,
+            [
+                "doi",
+                "object identifier",
+                "object identification",
+            ],
+        ),
+        keywords=find_field(
+            columns,
+            [
+                "keywords",
+                "tags",
+                "categories",
+                "keys",
+                "indices",
+                "author keywords",
+                "author tags",
+            ],
+        ),
+        publisher=find_field(
+            columns,
+            [
+                "publisher",
+                "publisher name",
+            ],
+        ),
+        language=find_field(
+            columns,
+            [
+                "language",
+                "lang",
+                "original language",
+            ],
+        ),
     )
 
     docs = [CsvDocument(record, fields) for record in records]

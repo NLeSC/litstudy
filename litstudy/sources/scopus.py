@@ -1,6 +1,5 @@
 from ..common import progress_bar, canonical
-from ..types import Document, DocumentSet, DocumentIdentifier, Author, \
-                   Affiliation
+from ..types import Document, DocumentSet, DocumentIdentifier, Author, Affiliation
 from collections import defaultdict
 from datetime import date
 from typing import Tuple, Optional
@@ -9,7 +8,7 @@ import random
 import shelve
 
 
-SCOPUS_CACHE = '.scopus'
+SCOPUS_CACHE = ".scopus"
 
 
 class ScopusAuthor(Author):
@@ -39,17 +38,17 @@ class ScopusAffiliation(Affiliation):
         return self._affiliation.country or None
 
     def __repr__(self):
-        return f'<{self.name}>'
+        return f"<{self.name}>"
 
 
 class ScopusDocument(Document):
     @staticmethod
-    def from_identifier(id, id_type, view='FULL'):
+    def from_identifier(id, id_type, view="FULL"):
         from pybliometrics.scopus import AbstractRetrieval
         from pybliometrics.scopus.exception import Scopus404Error
 
         with shelve.open(SCOPUS_CACHE) as cache:
-            key = id + '_found'
+            key = id + "_found"
             if cache.get(key) is False:
                 raise Scopus404Error()
 
@@ -62,18 +61,18 @@ class ScopusDocument(Document):
 
     @staticmethod
     def from_eid(eid, **kwargs):
-        return ScopusDocument.from_identifier(eid, 'eid', **kwargs)
+        return ScopusDocument.from_identifier(eid, "eid", **kwargs)
 
     @staticmethod
     def from_doi(doi, **kwargs):
-        return ScopusDocument.from_identifier(doi, 'doi', **kwargs)
+        return ScopusDocument.from_identifier(doi, "doi", **kwargs)
 
     def __init__(self, doc):
         identifier = DocumentIdentifier(
-                doc.title,
-                doi=doc.doi,
-                pubmed=doc.pubmed_id,
-                eid=doc.eid,
+            doc.title,
+            doi=doc.doi,
+            pubmed=doc.pubmed_id,
+            eid=doc.eid,
         )
 
         super().__init__(identifier)
@@ -89,7 +88,7 @@ class ScopusDocument(Document):
             items = defaultdict(list)
 
             for aff in self.doc.authorgroup:
-                name = f'{aff.indexed_name} (AUID: {aff.auid})'
+                name = f"{aff.indexed_name} (AUID: {aff.auid})"
                 items[name].append(ScopusAffiliation(aff))
 
             return [ScopusAuthor(a, f) for a, f in items.items()]
@@ -130,11 +129,13 @@ class ScopusDocument(Document):
             return None
 
         for ref in self.doc.references:
-            refs.append(DocumentIdentifier(
-                ref.title,
-                eid=ref.id,
-                doi=ref.doi,
-            ))
+            refs.append(
+                DocumentIdentifier(
+                    ref.title,
+                    eid=ref.id,
+                    doi=ref.doi,
+                )
+            )
 
         return refs
 
@@ -154,7 +155,7 @@ class ScopusDocument(Document):
 
         if self.doc.coverDate:
             try:
-                year, month, day = self.doc.coverDate.split('-')
+                year, month, day = self.doc.coverDate.split("-")
                 return date(int(year), int(month), int(day))
             except Exception:
                 pass
@@ -162,11 +163,11 @@ class ScopusDocument(Document):
         return None
 
     def __repr__(self):
-        return f'<{self.title}>'
+        return f"<{self.title}>"
 
 
 def fetch_scopus(key: str) -> Optional[Document]:
-    """ Fetch the document on Scopus for the given key. The key can be one of
+    """Fetch the document on Scopus for the given key. The key can be one of
     the following options:
 
     * DOI
@@ -178,13 +179,13 @@ def fetch_scopus(key: str) -> Optional[Document]:
 
 
 def search_scopus(query: str, *, limit: int = None) -> DocumentSet:
-    """ Submit the given query to the Scopus API.
+    """Submit the given query to the Scopus API.
 
     :param limit: Restrict results the first `limit` documents.
     """
     from pybliometrics.scopus import ScopusSearch
 
-    search = ScopusSearch(query, view='STANDARD')
+    search = ScopusSearch(query, view="STANDARD")
     eids = list(search.get_eids())
     docs = []
 
@@ -200,8 +201,7 @@ def search_scopus(query: str, *, limit: int = None) -> DocumentSet:
     return DocumentSet(docs)
 
 
-def refine_scopus(docs: DocumentSet, *, search_title=True
-                  ) -> Tuple[DocumentSet, DocumentSet]:
+def refine_scopus(docs: DocumentSet, *, search_title=True) -> Tuple[DocumentSet, DocumentSet]:
     """Attempt to fetch Scopus metadata for each document in the given
     set. Returns a tuple containing two sets: the documents available on
     Scopus and the remaining documents not found on Scopus.
@@ -227,17 +227,17 @@ def refine_scopus(docs: DocumentSet, *, search_title=True
             try:
                 return ScopusDocument.from_doi(doi)
             except Exception as e:
-                logging.warn(f'no document found for DOI {doi}: {e}')
+                logging.warn(f"no document found for DOI {doi}: {e}")
                 return None
 
         title = canonical(id.title)
         if len(title) > 10 and search_title:
-            query = f'TITLE({title})'
-            response = ScopusSearch(query, view='STANDARD', download=False)
+            query = f"TITLE({title})"
+            response = ScopusSearch(query, view="STANDARD", download=False)
             nresults = response.get_results_size()
 
             if nresults > 0 and nresults < 10:
-                response = ScopusSearch(query, view='STANDARD')
+                response = ScopusSearch(query, view="STANDARD")
 
                 for record in response.results or []:
                     if canonical(record.title) == title:

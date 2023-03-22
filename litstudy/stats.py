@@ -4,8 +4,7 @@ from .types import DocumentSet
 import pandas as pd
 
 
-def compute_histogram(docs, fun, keys=None, sort_by_key=False, groups=None,
-                      limit=None):
+def compute_histogram(docs, fun, keys=None, sort_by_key=False, groups=None, limit=None):
     if isinstance(groups, list):
         groups = dict((v, v) for v in groups)
 
@@ -56,27 +55,25 @@ def compute_histogram(docs, fun, keys=None, sort_by_key=False, groups=None,
 
     columns = groups.columns
     if len(columns):
-        data = [[counts[item, index]
-                for index in range(len(columns))]
-                for item in totals.index]
+        data = [[counts[item, index] for index in range(len(columns))] for item in totals.index]
     else:
-        columns = ['Frequency']
+        columns = ["Frequency"]
         data = totals
 
     return pd.DataFrame(
-            data,
-            index=totals.index,
-            columns=columns,
+        data,
+        index=totals.index,
+        columns=columns,
     )
 
 
 def compute_groups_histogram(docs: DocumentSet, **kwargs) -> pd.DataFrame:
-    return compute_histogram(docs, lambda _: ['Frequency'], **kwargs).T
+    return compute_histogram(docs, lambda _: ["Frequency"], **kwargs).T
 
 
 def compute_year_histogram(docs: DocumentSet, **kwargs) -> pd.DataFrame:
-    """ Compute a histogram of the number of documents published in each
-    year. """
+    """Compute a histogram of the number of documents published in each
+    year."""
     years = [doc.publication_year for doc in docs]
     min_year = min(year for year in years if year)
     max_year = max(year for year in years if year)
@@ -88,21 +85,20 @@ def compute_year_histogram(docs: DocumentSet, **kwargs) -> pd.DataFrame:
     return compute_histogram(docs, extract, keys=keys, **kwargs)
 
 
-def compute_number_authors_histogram(docs: DocumentSet, max_authors=10,
-                                     **kwargs) -> pd.DataFrame:
-    """ Compute a histogram of the number of authors per document.
+def compute_number_authors_histogram(docs: DocumentSet, max_authors=10, **kwargs) -> pd.DataFrame:
+    """Compute a histogram of the number of authors per document.
 
     :param max_authors: If a document has more than `max_author` authors, it
                         is it is listed as a special "max authors" category.
     """
-    keys = ['NA'] + list(range(1, max_authors + 1)) + [f'>{max_authors}']
+    keys = ["NA"] + list(range(1, max_authors + 1)) + [f">{max_authors}"]
 
     def extract(doc):
         n = len(doc.authors or [])
         if n == 0:
-            yield 'NA'
+            yield "NA"
         elif n > max_authors:
-            yield '>{max_authors}'
+            yield ">{max_authors}"
         else:
             yield n
 
@@ -110,7 +106,8 @@ def compute_number_authors_histogram(docs: DocumentSet, max_authors=10,
 
 
 def compute_language_histogram(docs: DocumentSet, **kwargs) -> pd.DataFrame:
-    """ Compute a histogram of number of documents by language. """
+    """Compute a histogram of number of documents by language."""
+
     def extract(doc):
         if doc.language:
             yield doc.language
@@ -127,29 +124,29 @@ def default_mapper(mapper):
         return mapper
 
 
-def compute_source_histogram(docs: DocumentSet, mapper=None, **kwargs
-                             ) -> pd.DataFrame:
-    """ Compute a histogram of number of documents by publication source. """
+def compute_source_histogram(docs: DocumentSet, mapper=None, **kwargs) -> pd.DataFrame:
+    """Compute a histogram of number of documents by publication source."""
     mapper = default_mapper(mapper)
 
     def extract(doc):
         source = doc.publication_source
-        yield mapper.get(source) if source else '(unknown)'
+        yield mapper.get(source) if source else "(unknown)"
 
     return compute_histogram(docs, extract, **kwargs)
 
 
-def compute_source_type_histogram(docs: DocumentSet, **kwargs
-                                  ) -> pd.DataFrame:
-    """ Compute a histogram of number of documents by source type. """
+def compute_source_type_histogram(docs: DocumentSet, **kwargs) -> pd.DataFrame:
+    """Compute a histogram of number of documents by source type."""
+
     def extract(doc):
-        yield doc.source_type or '(unknown)'
+        yield doc.source_type or "(unknown)"
 
     return compute_histogram(docs, extract, **kwargs)
 
 
 def compute_author_histogram(docs: DocumentSet, **kwargs) -> pd.DataFrame:
-    """ Compute a histogram of number of documents by author name. """
+    """Compute a histogram of number of documents by author name."""
+
     def extract(doc):
         for author in doc.authors or []:
             yield author.name
@@ -157,23 +154,22 @@ def compute_author_histogram(docs: DocumentSet, **kwargs) -> pd.DataFrame:
     return compute_histogram(docs, extract, **kwargs)
 
 
-def compute_author_affiliation_histogram(docs: DocumentSet, **kwargs
-                                         ) -> pd.DataFrame:
-    """ Compute a histogram of number of documents by (author name,
+def compute_author_affiliation_histogram(docs: DocumentSet, **kwargs) -> pd.DataFrame:
+    """Compute a histogram of number of documents by (author name,
     affiliation name) combinations. This can help reduce conflicts where there
     are many authors of the same name working for different affiliations."""
+
     def extract(doc):
         for author in doc.authors or []:
             for affiliation in author.affiliations or []:
                 if author.name and affiliation.name:
-                    yield f'{author.name}, {affiliation.name}'
+                    yield f"{author.name}, {affiliation.name}"
 
     return compute_histogram(docs, extract, **kwargs)
 
 
-def compute_affiliation_histogram(docs: DocumentSet, mapper=None, **kwargs
-                                  ) -> pd.DataFrame:
-    """ Compute a histogram of number of documents by affiliation name. """
+def compute_affiliation_histogram(docs: DocumentSet, mapper=None, **kwargs) -> pd.DataFrame:
+    """Compute a histogram of number of documents by affiliation name."""
     mapper = default_mapper(mapper)
 
     def extract(doc):
@@ -207,7 +203,8 @@ def extract_country(aff):
 
 
 def compute_country_histogram(docs: DocumentSet, **kwargs) -> pd.DataFrame:
-    """ Compute a histogram of number of documents by affiliation country. """
+    """Compute a histogram of number of documents by affiliation country."""
+
     def extract(doc):
         result = set()
         for author in doc.authors or []:
@@ -222,8 +219,8 @@ def compute_country_histogram(docs: DocumentSet, **kwargs) -> pd.DataFrame:
 
 
 def compute_continent_histogram(docs: DocumentSet, **kwargs) -> pd.DataFrame:
-    """ Compute a histogram of number of documents by affiliation
-        continent.
+    """Compute a histogram of number of documents by affiliation
+    continent.
     """
     from .continent import COUNTRY_TO_CONTINENT
 
@@ -235,14 +232,14 @@ def compute_continent_histogram(docs: DocumentSet, **kwargs) -> pd.DataFrame:
                 if country:
                     country = country.strip().lower()
 
-                    if country.startswith('the '):
+                    if country.startswith("the "):
                         country = country[4:]
 
                     continent = COUNTRY_TO_CONTINENT.get(country)
                     if continent:
                         result.add(continent)
                     else:
-                        result.add('Other')
+                        result.add("Other")
 
         return result
 

@@ -55,8 +55,7 @@ def preprocess_merge_bigrams(texts, bigrams):
 
 def preprocess_merge_ngrams(texts, threshold):
     texts = list(texts)
-    phrases = gensim.models.phrases.Phrases(texts, threshold=threshold,
-                                            scoring='npmi')
+    phrases = gensim.models.phrases.Phrases(texts, threshold=threshold, scoring="npmi")
 
     for text in texts:
         for word, score in phrases.analyze_sentence(text):
@@ -108,18 +107,16 @@ def preprocess_smart_stemming(texts):
 
 
 class Corpus:
-    """ Contains the word-frequency vectors for a set of documents. See
-        `build_corpus` for more information.
+    """Contains the word-frequency vectors for a set of documents. See
+    `build_corpus` for more information.
     """
+
     def __init__(self, docs, filters, max_tokens):
         corpus = []
 
         for doc in docs:
-            text = (doc.title or '') + ' ' + (doc.abstract or ' ')
-            tokens = gensim.utils.tokenize(
-                    text,
-                    lowercase=True,
-                    deacc=True)
+            text = (doc.title or "") + " " + (doc.abstract or " ")
+            tokens = gensim.utils.tokenize(text, lowercase=True, deacc=True)
 
             corpus.append(list(tokens))
 
@@ -141,11 +138,19 @@ class Corpus:
         """
 
 
-def build_corpus(docs: DocumentSet, *, remove_words=None, min_word_length=3,
-                 min_docs=5, max_docs_ratio=0.75, max_tokens=5000,
-                 replace_words=None, custom_bigrams=None, ngram_threshold=None
-                 ) -> Corpus:
-    """ Build a `Corpus` object.
+def build_corpus(
+    docs: DocumentSet,
+    *,
+    remove_words=None,
+    min_word_length=3,
+    min_docs=5,
+    max_docs_ratio=0.75,
+    max_tokens=5000,
+    replace_words=None,
+    custom_bigrams=None,
+    ngram_threshold=None
+) -> Corpus:
+    """Build a `Corpus` object.
 
     This function takes the words from the title/abstract of the given
     documents, preprocesses the tokens, and returns a corpus consisting of a
@@ -185,8 +190,7 @@ def build_corpus(docs: DocumentSet, *, remove_words=None, min_word_length=3,
         filters.append(lambda w: preprocess_replace_words(w, replace_words))
 
     if min_word_length:
-        filters.append(lambda w: preprocess_remove_short(w,
-                       min_length=min_word_length))
+        filters.append(lambda w: preprocess_remove_short(w, min_length=min_word_length))
 
     filters.append(preprocess_stopwords)
 
@@ -203,7 +207,7 @@ def build_corpus(docs: DocumentSet, *, remove_words=None, min_word_length=3,
 
 
 class TopicModel:
-    """ Topic model trained by one of the `train_*_model` functions. """
+    """Topic model trained by one of the `train_*_model` functions."""
 
     def __init__(self, dictionary, doc2topic, topic2token):
         self.dictionary = dictionary
@@ -221,19 +225,19 @@ class TopicModel:
         self.num_topics = len(topic2token)
 
     def best_documents_for_topic(self, topic_id: int, limit=5) -> List[int]:
-        """ Returns the documents that most strongly belong to the given
+        """Returns the documents that most strongly belong to the given
         topic.
         """
         return np.argsort(self.doc2topic[:, topic_id])[::-1][:limit]
 
     def document_topics(self, doc_id: int):
-        """ Returns a numpy array indicating the weights towards the different
+        """Returns a numpy array indicating the weights towards the different
         topic for the given document. These weight sum up to one.
         """
         return self.doc2topic[doc_id]
 
     def best_token_weights_for_topic(self, topic_id: int, limit=5):
-        """ Returns a list of `(token, weight)` tuples for the tokens that
+        """Returns a list of `(token, weight)` tuples for the tokens that
         most strongly belong to the given topic.
         """
         dic = self.dictionary
@@ -243,32 +247,31 @@ class TopicModel:
         return [(dic[i], weights[i]) for i in indices]
 
     def best_tokens_for_topic(self, topic_id: int, limit=5):
-        """ Returns the top tokens that most strongly belong to the given
-        topic. """
+        """Returns the top tokens that most strongly belong to the given
+        topic."""
         results = self.best_token_weights_for_topic(topic_id, limit=limit)
         return [w for w, _ in results]
 
     def best_token_for_topic(self, topic_id: int) -> str:
-        """ Returns the token that most strongly belongs to the given
-        topic. """
+        """Returns the token that most strongly belongs to the given
+        topic."""
         return self.best_tokens_for_topic(topic_id, limit=1)[0]
 
     def best_topic_for_token(self, token) -> int:
-        """ Returns the topic index that most strongly belongs to the given
-        token. """
+        """Returns the topic index that most strongly belongs to the given
+        token."""
         index = self.dictionary.token2id[token]
         return np.argmax(self.topic2token[:, index])
 
     def best_topic_for_documents(self) -> List[int]:
-        """ Returns the topic for each document that most strongly belongs
+        """Returns the topic for each document that most strongly belongs
         to that document.
         """
         return np.argmax(self.doc2topic, axis=1)
 
 
-def train_nmf_model(corpus: Corpus, num_topics: int, seed=0, max_iter=500
-                    ) -> TopicModel:
-    """ Train a topic model using NMF.
+def train_nmf_model(corpus: Corpus, num_topics: int, seed=0, max_iter=500) -> TopicModel:
+    """Train a topic model using NMF.
 
     :param num_topics: The number of topics to train.
     :param seed: The seed used for random number generation.
@@ -283,14 +286,15 @@ def train_nmf_model(corpus: Corpus, num_topics: int, seed=0, max_iter=500
 
     tfidf = gensim.models.tfidfmodel.TfidfModel(dictionary=dic)
     model = gensim.models.nmf.Nmf(
-            list(tfidf[freqs]),
-            num_topics=num_topics,
-            passes=max_iter,
-            random_state=seed,
-            w_stop_condition=1e-9,
-            h_stop_condition=1e-9,
-            w_max_iter=50,
-            h_max_iter=50)
+        list(tfidf[freqs]),
+        num_topics=num_topics,
+        passes=max_iter,
+        random_state=seed,
+        w_stop_condition=1e-9,
+        h_stop_condition=1e-9,
+        w_max_iter=50,
+        h_max_iter=50,
+    )
 
     doc2topic = corpus2dense(model[freqs], num_topics).T
     topic2token = model.get_topics()
@@ -298,9 +302,8 @@ def train_nmf_model(corpus: Corpus, num_topics: int, seed=0, max_iter=500
     return TopicModel(dic, doc2topic, topic2token)
 
 
-def train_lda_model(corpus: Corpus, num_topics, seed=0, **kwargs
-                    ) -> TopicModel:
-    """ Train a topic model using LDA.
+def train_lda_model(corpus: Corpus, num_topics, seed=0, **kwargs) -> TopicModel:
+    """Train a topic model using LDA.
 
     :param num_topics: The number of topics to train.
     :param seed: The seed used for random number generation.
@@ -320,7 +323,7 @@ def train_lda_model(corpus: Corpus, num_topics, seed=0, **kwargs
 
 
 def compute_word_distribution(corpus: Corpus, *, limit=None) -> pd.DataFrame:
-    """ Returns dataframe that indicates, for each word, the number of
+    """Returns dataframe that indicates, for each word, the number of
     documents that mention that word.
     """
     counter = defaultdict(int)
@@ -334,16 +337,13 @@ def compute_word_distribution(corpus: Corpus, *, limit=None) -> pd.DataFrame:
     if limit is not None:
         keys = keys[:limit]
 
-    return pd.DataFrame(
-            index=[dic[i] for i in keys],
-            data=dict(count=[counter[i] for i in keys])
-    )
+    return pd.DataFrame(index=[dic[i] for i in keys], data=dict(count=[counter[i] for i in keys]))
 
 
-def generate_topic_cloud(model: TopicModel, topic_id: int, cmap=None,
-                         max_font_size=75, background_color='white'
-                         ) -> wordcloud.WordCloud:
-    """ Generate a word cloud for the given topic from the given topic model.
+def generate_topic_cloud(
+    model: TopicModel, topic_id: int, cmap=None, max_font_size=75, background_color="white"
+) -> wordcloud.WordCloud:
+    """Generate a word cloud for the given topic from the given topic model.
 
     :param cmap: The color map used to color the words.
     :param max_font_size: Size of the word which most strongly belongs to the
@@ -351,7 +351,7 @@ def generate_topic_cloud(model: TopicModel, topic_id: int, cmap=None,
     :param background_color: Background color.
     """
     if cmap is None:
-        cmap = 'Blues'
+        cmap = "Blues"
 
     cmap = plt.get_cmap(cmap)
 
@@ -365,26 +365,26 @@ def generate_topic_cloud(model: TopicModel, topic_id: int, cmap=None,
             words[dic[i]] = vec[i] / maximum
 
     def get_color(word, **kwargs):
-        weight = kwargs['font_size'] / 75.0 * 0.7 + 0.3
+        weight = kwargs["font_size"] / 75.0 * 0.7 + 0.3
         r, g, b = np.array(cmap(weight)[:3]) * 255
-        return 'rgb({}, {}, {})'.format(int(r), int(g), int(b))
+        return "rgb({}, {}, {})".format(int(r), int(g), int(b))
 
     wc = wordcloud.WordCloud(
-            prefer_horizontal=True,
-            max_font_size=max_font_size,
-            background_color=background_color,
-            color_func=get_color,
-            scale=2,
-            relative_scaling=0.5)
+        prefer_horizontal=True,
+        max_font_size=max_font_size,
+        background_color=background_color,
+        color_func=get_color,
+        scale=2,
+        relative_scaling=0.5,
+    )
 
     wc.fit_words(words)
 
     return wc
 
 
-def calculate_embedding(corpus: Corpus, *, rank=2, svd_dims=50, perplexity=30,
-                        seed=0):
-    """ Calculate a document embedding that assigns each document in the
+def calculate_embedding(corpus: Corpus, *, rank=2, svd_dims=50, perplexity=30, seed=0):
+    """Calculate a document embedding that assigns each document in the
     corpus a N-d position based on the word usage.
 
     :returns: A list of N-d tuples for the documents in the corpus.
@@ -403,6 +403,7 @@ def calculate_embedding(corpus: Corpus, *, rank=2, svd_dims=50, perplexity=30,
     else:
         components = tfidf
 
-    model = TSNE(rank, metric='cosine', square_distances=True,
-                 perplexity=perplexity, random_state=seed)
+    model = TSNE(
+        rank, metric="cosine", square_distances=True, perplexity=perplexity, random_state=seed
+    )
     return model.fit_transform(components)

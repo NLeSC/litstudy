@@ -10,7 +10,7 @@ from .common import fuzzy_match, canonical, progress_bar
 
 
 class DocumentSet:
-    """ Represents a set of documents.
+    """Represents a set of documents.
 
     `DocumentSet` stores a list of `Document` objects. Optionally, a pandas
     data frame can be provided which stores additional properties on the
@@ -25,7 +25,7 @@ class DocumentSet:
     """
 
     def __init__(self, docs, data=None):
-        """ Construct a new `DocumentSet`.
+        """Construct a new `DocumentSet`.
 
         :param docs: A list (or iterator) of `Document` objects.
         :param data: Additional metadata associated with the documents. This
@@ -69,7 +69,7 @@ class DocumentSet:
         return DocumentSet(new_docs, new_data), DocumentSet(old_docs, old_data)
 
     def add_property(self, name: str, values) -> "DocumentSet":
-        """ Returns a new set which has an additional property added.
+        """Returns a new set which has an additional property added.
 
         :param name: Name of the new property.
         :param values: List of values. Should be the same length as the
@@ -81,7 +81,7 @@ class DocumentSet:
         return DocumentSet(self.docs, data)
 
     def remove_property(self, name: str) -> "DocumentSet":
-        """ Returns a new set which has the given property removed.
+        """Returns a new set which has the given property removed.
 
         :param name: Name of the property.
         :returns: The new document set.
@@ -91,7 +91,7 @@ class DocumentSet:
         return DocumentSet(self.docs, data)
 
     def filter_docs(self, predicate) -> "DocumentSet":
-        """ Returns a new set for which the provided predicate returned `True`.
+        """Returns a new set for which the provided predicate returned `True`.
 
         :param predicate: A function `Document -> bool`.
         :returns: The new document set.
@@ -99,7 +99,7 @@ class DocumentSet:
         return self.filter(lambda doc, _: predicate(doc))
 
     def filter(self, predicate) -> "DocumentSet":
-        """ Returns a new set for which the provided predicate returned `True`.
+        """Returns a new set for which the provided predicate returned `True`.
 
         :param predicate: A function `Document, dict -> bool`. The provided
                           dict stores the properties of the document.
@@ -114,7 +114,7 @@ class DocumentSet:
         return self.select(indices)
 
     def select(self, indices) -> "DocumentSet":
-        """ Returns a new set which contains only the documents at the
+        """Returns a new set which contains only the documents at the
         provided indices.
 
         :param indices: Any input accepted by `pandas.DataFrame.iloc` such
@@ -162,7 +162,7 @@ class DocumentSet:
         return pd.DataFrame(index=range(len(left)), data=data)
 
     def intersect(self, other: "DocumentSet") -> "DocumentSet":
-        """ Returns a new set which contains the documents provided in
+        """Returns a new set which contains the documents provided in
         both `self` and `other`. This is also available as the `&` operator.
 
         :returns: The new document set.
@@ -177,7 +177,7 @@ class DocumentSet:
         return DocumentSet(docs, data)
 
     def difference(self, other: "DocumentSet") -> "DocumentSet":
-        """ Returns a new set which contains the documents provided in
+        """Returns a new set which contains the documents provided in
         `self` but not in `other`. This is also available as the `-` operator.
 
         :returns: The new document set.
@@ -189,7 +189,7 @@ class DocumentSet:
         return self.select(sorted(set(range(len(self))) - set(indices)))
 
     def union(self, other: "DocumentSet") -> "DocumentSet":
-        """ Returns a new set which contains the documents provided in
+        """Returns a new set which contains the documents provided in
         either `self` and `other`. Duplicate documents in `other` that also
         appear in `self` are discarded. This is also available as the `|`
         operator.
@@ -215,22 +215,23 @@ class DocumentSet:
         return DocumentSet.concat(middle, DocumentSet.concat(left, right))
 
     def concat(self, other: "DocumentSet") -> "DocumentSet":
-        """ Returns a new set which does contain the documents provided in
+        """Returns a new set which does contain the documents provided in
         either `self` and `other`. Duplicate documents are not removed, see
         `union` instead. This is also available as the `+` operator.
 
         :returns: The new document set.
         """
+
         def default_val(dtype):
             c = dtype.char
-            if c == '?':
+            if c == "?":
                 return False
-            if c in 'bBiu':
+            if c in "bBiu":
                 return 0
-            if c in 'fc':
-                return float('nan')
-            if c in 'SaU':
-                return ''
+            if c in "fc":
+                return float("nan")
+            if c in "SaU":
+                return ""
 
             return None
 
@@ -258,7 +259,7 @@ class DocumentSet:
         return DocumentSet(docs, data)
 
     def unique(self) -> "DocumentSet":
-        """ Returns a new set which has all duplicate documents removed.
+        """Returns a new set which has all duplicate documents removed.
 
         :returns: The new document set.
         """
@@ -280,7 +281,7 @@ class DocumentSet:
         return self.select(indices)
 
     def sample(self, n, seed=0) -> "DocumentSet":
-        """ Returns a new set which contains `n` randomly chosen documents
+        """Returns a new set which contains `n` randomly chosen documents
         from `self`.
 
         :returns: The new document set.
@@ -294,33 +295,33 @@ class DocumentSet:
         return self.select(indices)
 
     def itertuples(self):
-        """ Returns an iterator over `(Document, dict)` tuples, where the
+        """Returns an iterator over `(Document, dict)` tuples, where the
         `dict` contains the properties of this document.
         """
         return zip(self.docs, self.data.itertuples())
 
     def __or__(self, other):
-        """ Alias for `DocumentSet.union` """
+        """Alias for `DocumentSet.union`"""
         return self.union(other)
 
     def __and__(self, other):
-        """ Alias for `DocumentSet.intersect` """
+        """Alias for `DocumentSet.intersect`"""
         return self.intersect(other)
 
     def __add__(self, other):
-        """ Alias for `DocumentSet.concat` """
+        """Alias for `DocumentSet.concat`"""
         return self.concat(other)
 
     def __sub__(self, other):
-        """ Alias for `DocumentSet.difference` """
+        """Alias for `DocumentSet.difference`"""
         return self.difference(other)
 
     def __len__(self):
-        """ Returns the number of documents in this set """
+        """Returns the number of documents in this set"""
         return len(self.docs)
 
     def __getitem__(self, key):
-        """ Returns different things depending on the key type:
+        """Returns different things depending on the key type:
 
         * `str`: The property named `key` is returned.
         * `int`: The document at position `key` is returned.
@@ -334,18 +335,18 @@ class DocumentSet:
             return self.select(key)
 
     def __iter__(self):
-        """ Returns an iterator over `Document` objects in this set. """
+        """Returns an iterator over `Document` objects in this set."""
         return iter(self.docs)
 
     def __bool__(self):
         return bool(len(self))
 
     def __repr__(self):
-        return f'<{len(self)} documents>'
+        return f"<{len(self)} documents>"
 
 
 class DocumentIdentifier:
-    """ Represents an identifier for a document.
+    """Represents an identifier for a document.
 
     Uniquely identifing an scientific document is often difficult since a
     single document might have multiple identifiers assigned to it (e.g., DOI,
@@ -361,36 +362,36 @@ class DocumentIdentifier:
 
     @property
     def title(self) -> Optional[str]:
-        """ Returns the title. """
+        """Returns the title."""
         return self._title
 
     @property
     def doi(self) -> Optional[str]:
-        """ Returns the DOI (example: 10.1093/ajae/aaq063). """
-        return self._attr.get('doi')
+        """Returns the DOI (example: 10.1093/ajae/aaq063)."""
+        return self._attr.get("doi")
 
     @property
     def pubmed(self) -> Optional[str]:
-        """ Returns the PubMed ID. """
-        return self._attr.get('pubmed')
+        """Returns the PubMed ID."""
+        return self._attr.get("pubmed")
 
     @property
     def arxivid(self) -> Optional[str]:
-        """ Returns the arXiv ID. """
-        return self._attr.get('arxivid')
+        """Returns the arXiv ID."""
+        return self._attr.get("arxivid")
 
     @property
     def scopusid(self) -> Optional[str]:
-        """ Returns the Scopus ID. """
-        return self._attr.get('eid')
+        """Returns the Scopus ID."""
+        return self._attr.get("eid")
 
     @property
     def s2id(self) -> Optional[str]:
-        """ Returns the Semantic Scholar ID. """
-        return self._attr.get('s2id')
+        """Returns the Semantic Scholar ID."""
+        return self._attr.get("s2id")
 
     def matches(self, other: "DocumentIdentifier") -> bool:
-        """ Returns `True` iff these two identifiers are equivalent
+        """Returns `True` iff these two identifiers are equivalent
 
 
         Two documents are considered to be equivalent if all identifiers they
@@ -413,8 +414,8 @@ class DocumentIdentifier:
         # No identifiers in common
         return fuzzy_match(self._title, other._title)
 
-    def merge(self, other) -> 'DocumentIdentifier':
-        """ Returns a new `DocumentIdentifier` which adds the identifiers
+    def merge(self, other) -> "DocumentIdentifier":
+        """Returns a new `DocumentIdentifier` which adds the identifiers
         `others` to `self`.
         """
         attr = dict()
@@ -423,39 +424,40 @@ class DocumentIdentifier:
         return DocumentIdentifier(self._title, **attr)
 
     def __repr__(self):
-        return f'<{self._title}, {self._attr}>'
+        return f"<{self._title}, {self._attr}>"
 
 
 class Document(ABC):
-    """ Stores the metadata of a document.
+    """Stores the metadata of a document.
 
     This is an interface which provides several methods which can be
     overridden by child classes. All methods can thus return `None`
     in case that method is not overridden.
     """
+
     def __init__(self, identifier: DocumentIdentifier):
         self._identifier = identifier
 
     @property
     def id(self) -> DocumentIdentifier:
-        """ The `DocumentIdentifier` of this document. """
+        """The `DocumentIdentifier` of this document."""
         return self._identifier
 
     @property
     @abstractmethod
     def title(self) -> str:
-        """ The title of this document. """
+        """The title of this document."""
         pass
 
     @property
     @abstractmethod
     def authors(self) -> Optional[List["Author"]]:
-        """ The authors of this document. """
+        """The authors of this document."""
         pass
 
     @property
     def affiliations(self) -> Optional[List["Affiliation"]]:
-        """ The affiliations associated with the authors of this document. """
+        """The affiliations associated with the authors of this document."""
         authors = self.authors
 
         if authors is not None:
@@ -471,22 +473,22 @@ class Document(ABC):
 
     @property
     def publisher(self) -> Optional[str]:
-        """ The publisher of this document. """
+        """The publisher of this document."""
         return None
 
     @property
     def language(self) -> Optional[str]:
-        """ The language this document is written in. """
+        """The language this document is written in."""
         return None
 
     @property
     def publication_date(self) -> Optional[date]:
-        """ The data of publication. """
+        """The data of publication."""
         return None
 
     @property
     def publication_year(self) -> Optional[int]:
-        """ The year of publication. """
+        """The year of publication."""
         date = self.publication_date
         if date is None:
             return None
@@ -494,21 +496,21 @@ class Document(ABC):
 
     @property
     def publication_source(self) -> Optional[str]:
-        """ The name of the publication source (i.e., journal name,
+        """The name of the publication source (i.e., journal name,
         conference name, etc.)
         """
         return None
 
     @property
     def source_type(self) -> Optional[str]:
-        """ The type of publication source (i.e., journal, conference
+        """The type of publication source (i.e., journal, conference
         proceedings, book, etc.)
         """
         return None
 
     @property
     def keywords(self) -> Optional[List[str]]:
-        """ The keywords of this document. What exactly consistutes as
+        """The keywords of this document. What exactly consistutes as
         keywords depends on the data source (author keywords, generated
         keywords, topic categories), but is should be a list of strings.
         """
@@ -516,29 +518,29 @@ class Document(ABC):
 
     @property
     def abstract(self) -> Optional[str]:
-        """ The abstract of this document. """
+        """The abstract of this document."""
         return None
 
     @property
     def citation_count(self) -> Optional[int]:
-        """ The number of citations that this document received. """
+        """The number of citations that this document received."""
         return None
 
     @property
     def references(self) -> Optional[List[DocumentIdentifier]]:
-        """ The list of other documents that are cited by this document. """
+        """The list of other documents that are cited by this document."""
         return None
 
     @property
     def citations(self) -> Optional[List[DocumentIdentifier]]:
-        """ The list of other documents that cite this document. """
+        """The list of other documents that cite this document."""
         return None
 
     def mentions(self, term: str) -> bool:
-        """ Returns `True` if this document mentions the given term in the
+        """Returns `True` if this document mentions the given term in the
         title, abstract, or keywords.
         """
-        pattern = r'(^|\s)' + re.escape(term) + r'($|\s)'
+        pattern = r"(^|\s)" + re.escape(term) + r"($|\s)"
         flags = re.IGNORECASE
         keywords = self.keywords or []
 
@@ -550,45 +552,47 @@ class Document(ABC):
 
 
 class Affiliation(ABC):
-    """ Represents the affiliation of an author """
+    """Represents the affiliation of an author"""
+
     @property
     @abstractmethod
     def name(self) -> str:
-        """ Name of the affiliation """
+        """Name of the affiliation"""
         pass
 
     @property
     def city(self) -> Optional[str]:
-        """ City the affiliation is located in. """
+        """City the affiliation is located in."""
         pass
 
     @property
     def country(self) -> Optional[str]:
-        """ Country the affiliation is located in. """
+        """Country the affiliation is located in."""
         pass
 
 
 class Author(ABC):
-    """ Represents the author of a document. """
+    """Represents the author of a document."""
+
     @property
     @abstractmethod
     def name(self) -> str:
-        """ The name of the author. """
+        """The name of the author."""
         pass
 
     @property
     def orcid(self) -> Optional[str]:
-        """ The ORCID of the author. """
+        """The ORCID of the author."""
         return None
 
     @property
     def s2id(self) -> Optional[str]:
-        """ The SemanticScholar ID of the author. """
+        """The SemanticScholar ID of the author."""
         return None
 
     @property
-    def affiliations(self) -> 'Optional[list[Affiliation]]':
-        """ The affiliations this author is associated with. """
+    def affiliations(self) -> "Optional[list[Affiliation]]":
+        """The affiliations this author is associated with."""
         return None
 
 
