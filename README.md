@@ -26,6 +26,33 @@ If your question or error is not on the list, please check the [GitHub issue tra
 create a [new issue](https://github.com/NLeSC/litstudy/issues/new).
 
 
+## Supported Source
+
+LitStudy supports the following data sources. The table below lists which metadata is fully (✓) or partially (*) provided by each source.
+
+| Name            | Title | Authors | Venue | Abstract | Citations      | References |
+|-----------------|-------|---------|-------|----------|----------------|------------|
+| [Scopus]          | ✓     | ✓       | ✓     | ✓        | ✓              | ✓
+| [SemanticScholar] | ✓     | ✓       | ✓     | ✓        | * (count only) | ✓
+| [CrossRef]        | ✓     | ✓       | ✓     | ✓        | * (count only) | ✓
+| [DBLP]            | ✓     | ✓       | ✓     |          |                |
+| [arXiv]           | ✓     | ✓       |       | ✓        |                |
+| [IEEE Xplore]     | ✓     | ✓       | ✓     | ✓        | * (count only) |
+| [Springer Link]   | ✓     | ✓       | ✓     | ✓        | * (count only) |
+| CSV file        | ✓     | ✓       | ✓     | ✓        |                |
+| bibtex file     | ✓     | ✓       | ✓     | ✓        |                |
+| RIS file        | ✓     | ✓       | ✓     | ✓        |                |
+
+[Scopus]: http://scopus.com/
+[SemanticScholar]: https://www.semanticscholar.org/
+[CrossRef]: https://www.crossref.org/
+[DBLP]: https://dblp.org/
+[arXiv]: https://arxiv.org/
+[IEEE Xplore]: https://ieeexplore.ieee.org/
+[Springer Link]: https://link.springer.com/
+
+
+
 ## Example
 An example notebook is available in `notebooks/example.ipynb` and [here](https://nlesc.github.io/litstudy/example.html).
 
