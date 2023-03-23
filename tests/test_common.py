@@ -1,11 +1,12 @@
 import litstudy
 import codecs
 
+
 def test_robust_open():
     f = litstudy.common.robust_open
     expected = "ABC \U0001F600"
 
-    assert f(b'').read() == ""
+    assert f(b"").read() == ""
 
     content = expected.encode("utf8")
     assert f(content).read() == expected
@@ -20,5 +21,5 @@ def test_robust_open():
     assert f(content).read() == expected
 
     # Contains some invalid UTF-8 character, should become U+FFFD
-    content = b'ABC \x9f\x98\x80 DEF'
+    content = b"ABC \x9f\x98\x80 DEF"
     assert f(content).read() == "ABC \ufffd\ufffd\ufffd DEF"

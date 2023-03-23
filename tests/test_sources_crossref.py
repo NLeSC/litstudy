@@ -1,8 +1,10 @@
 from litstudy.sources.crossref import fetch_crossref, search_crossref
+from .common import MockSession
 
 
 def test_fetch_crossref():
-    doc = fetch_crossref("10.1109/SAMOS.2013.6621096")
+    session = MockSession()
+    doc = fetch_crossref("10.1109/SAMOS.2013.6621096", session=session)
 
     assert doc.title == "Rethinking computer architecture for throughput computing"
     assert doc.id.title == "Rethinking computer architecture for throughput computing"
@@ -10,6 +12,7 @@ def test_fetch_crossref():
 
 
 def test_search_crossref():
-    docs = search_crossref("litstudy")
+    session = MockSession()
+    docs = search_crossref("litstudy", session=session)
 
     assert any(doc.title == "litstudy: A Python package for literature reviews" for doc in docs)

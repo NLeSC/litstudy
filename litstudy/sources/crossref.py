@@ -143,9 +143,11 @@ CACHE_FILE = ".crossref"
 CROSSREF_URL = "https://api.crossref.org/works/"
 
 
-def fetch_crossref(doi: str, timeout=0.5) -> Optional[Document]:
+def fetch_crossref(doi: str, *, timeout=0.5, session=None) -> Optional[Document]:
     """Fetch the metadata for the given DOI from CrossRef.
 
+    :param timeout: The timeout between each HTTP request in seconds.
+    :param session: The `requests.Session` to use for HTTP requests.
     :returns: The `Document` or `None` if the DOI was not available.
     """
 
@@ -160,7 +162,7 @@ def fetch_crossref(doi: str, timeout=0.5) -> Optional[Document]:
             url = CROSSREF_URL + quote_plus(doi)
 
             try:
-                response = requests.get(url)
+                response = session.get(url)
             except Exception as e:
                 logging.warn(f"failed to retrieve {doi}: {e}")
                 return None
@@ -188,25 +190,27 @@ def fetch_crossref(doi: str, timeout=0.5) -> Optional[Document]:
     return CrossRefDocument(data) if data else None
 
 
-def refine_crossref(docs: DocumentSet, timeout=0.5) -> Tuple[DocumentSet, DocumentSet]:
+def refine_crossref(
+    docs: DocumentSet, *, timeout=0.5, session=None
+) -> Tuple[DocumentSet, DocumentSet]:
     """Attempts to fetch metadata from CrossRef for each document in the given
     set. Returns a tuple of two sets: the documents retrieved from CrossRef
     and the remaining documents (i.e., without DOI or not found).
 
-    :param timeout: Timeout in seconds between each request to throttle
-        server communication.
+    :param timeout: Timeout in seconds between each request to throttle server communication.
+    :param session: The `requests.Session` to use for HTTP requests.
     """
 
     def callback(doc):
         if isinstance(doc, CrossRefDocument):
             return doc
 
-        return fetch_crossref(doc.id.doi, timeout)
+        return fetch_crossref(doc.id.doi, timeout=timeout, session=session)
 
     return docs._refine_docs(callback)
 
 
-def _fetch_dois(params: dict, timeout: float, limit: int):
+def _fetch_dois(params: dict, timeout: float, limit: int, session):
     dois = []
 
     params = dict(params)
@@ -217,11 +221,7 @@ def _fetch_dois(params: dict, timeout: float, limit: int):
         query_string = urlencode(params)
         url = CROSSREF_URL + "?" + query_string
 
-        try:
-            response = requests.get(url).json()
-        except Exception as e:
-            logging.warn(f"failed to retrieve {url}: {e}")
-            return None
+        response = session.get(url).json()
 
         # Status should be "ok"
         if response["status"] != "ok":
@@ -251,7 +251,7 @@ def _fetch_dois(params: dict, timeout: float, limit: int):
 
 
 def search_crossref(
-    query: str, limit: int = None, timeout: float = 0.5, options: dict = dict()
+    query: str, *, limit: int = None, timeout: float = 0.5, options: dict = dict(), session=None
 ) -> DocumentSet:
     """Submit the query to the CrossRef API.
 
@@ -263,9 +263,13 @@ def search_crossref(
                     endpoint of CrossRef (see `CrossRef API`
                     <https://api.crossref.org>`_). Options are `sort` and
                     `filter`.
+    :param session: The `requests.Session` to use for HTTP requests.
     """
     if not query:
         return DocumentSet()
+
+    if session is None:
+        session = requests.Session()
 
     params = dict()
     params["query"] = query
@@ -280,13 +284,13 @@ def search_crossref(
 
     with shelve.open(CACHE_FILE) as cache:
         if cache_key not in cache:
-            dois = _fetch_dois(params, timeout, limit)
+            dois = _fetch_dois(params, timeout, limit, session)
             cache[cache_key] = dois
         else:
             dois = cache[cache_key]
 
     docs = []
     for doi in progress_bar(dois):
-        docs.append(fetch_crossref(doi))
+        docs.append(fetch_crossref(doi, session=session, timeout=timeout))
 
     return DocumentSet(docs)

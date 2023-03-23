@@ -96,48 +96,47 @@ CACHE_FILE = ".semantischolar"
 DEFAULT_TIMEOUT = 3.05  # 100 requests per 5 minutes
 
 
-def request_query(query, offset, limit, cache, timeout=DEFAULT_TIMEOUT):
-    cache_key = f"results={query};{offset}"
-    if cache_key in cache:
-        return cache[cache_key]
+def request_query(query, offset, limit, cache, session, timeout=DEFAULT_TIMEOUT):
+    params = urlencode(dict(query=query, offset=offset, limit=limit))
+    url = f"{S2_QUERY_URL}?{params}"
 
-    url = S2_QUERY_URL
-    params = dict(offset=offset, query=query, limit=limit)
-    reply = requests.get(url, params=params)
+    if url in cache:
+        return cache[url]
+
+    reply = session.get(url)
     response = reply.json()
 
     if "data" not in response:
         msg = response.get("error") or response.get("message") or "unknown"
         raise Exception(f"error while fetching {reply.url}: {msg}")
 
-    cache[cache_key] = response
+    cache[url] = response
     return response
 
 
-def request_paper(key, cache, timeout=DEFAULT_TIMEOUT):
-    cache_key = urlencode(dict(paper=key))
-    if cache_key in cache:
-        return cache[cache_key]
-
+def request_paper(key, cache, session, timeout=DEFAULT_TIMEOUT):
     url = S2_PAPER_URL + quote_plus(key)
+
+    if url in cache:
+        return cache[url]
 
     try:
         sleep(timeout)
-        data = requests.get(url).json()
+        data = session.get(url).json()
     except Exception as e:
         logging.warning(f"failed to retrieve {key}: {e}")
         return None
 
-    if "paperId" in data:
-        cache[cache_key] = data
-        return data
-    else:
+    if "paperId" not in data:
         msg = data.get("error") or data.get("message") or "unknown error"
         logging.warning(f"failed to retrieve {key}: {msg}")
         return None
 
+    cache[url] = data
+    return data
 
-def fetch_semanticscholar(key: set) -> Optional[Document]:
+
+def fetch_semanticscholar(key: set, *, session=None) -> Optional[Document]:
     """Fetch SemanticScholar metadata for the given key. The key can be
     one of the following (see `API reference
     <https://www.semanticscholar.org/product/api>`_):
@@ -150,28 +149,32 @@ def fetch_semanticscholar(key: set) -> Optional[Document]:
     * PubMed ID (example format: `PMID:19872477`)
     * Corpus ID (example format: `CorpusID:37220927`)
 
+    :param session: The `requests.Session` to use for HTTP requests.
     :returns: The `Document` if it was found and `None` otherwise.
     """
 
     if key is None:
         return None
 
+    if session is None:
+        session = requests.Session()
+
     with shelve.open(CACHE_FILE) as cache:
         if isinstance(key, DocumentIdentifier):
             data = None
             if data is None and key.s2id:
-                data = request_paper(key.s2id, cache)
+                data = request_paper(key.s2id, cache, session)
 
             if data is None and key.doi:
-                data = request_paper(key.doi, cache)
+                data = request_paper(key.doi, cache, session)
 
             if data is None and key.pubmed:
-                data = request_paper(f"PMID:{key.pubmed}", cache)
+                data = request_paper(f"PMID:{key.pubmed}", cache, session)
 
             if data is None and key.arxivid:
-                data = request_paper(f"arXiv:{key.arxivid}", cache)
+                data = request_paper(f"arXiv:{key.arxivid}", cache, session)
         else:
-            data = request_paper(key, cache)
+            data = request_paper(key, cache, session)
 
     if data is None:
         return None
@@ -179,33 +182,42 @@ def fetch_semanticscholar(key: set) -> Optional[Document]:
     return ScholarDocument(data)
 
 
-def refine_semanticscholar(docs: DocumentSet) -> Tuple[DocumentSet, DocumentSet]:
+def refine_semanticscholar(docs: DocumentSet, *, session=None) -> Tuple[DocumentSet, DocumentSet]:
     """Attempt to fetch SemanticScholar metadata for each document in the
     given set based on their DOIs. Returns a tuple containing two sets: the
     documents available on SemanticScholar and the remaining documents that
     were not found or do not have a DOI.
+
+    :param session: The `requests.Session` to use for HTTP requests.
+    :returns: The documents available on SemanticScholar and the remaining documents.
     """
 
     def callback(doc):
         if isinstance(doc, ScholarDocument):
             return doc
 
-        return fetch_semanticscholar(doc.id)
+        return fetch_semanticscholar(doc.id, session)
 
     return docs._refine_docs(callback)
 
 
-def search_semanticscholar(query: str, *, limit: int = None, batch_size: int = 100) -> DocumentSet:
+def search_semanticscholar(
+    query: str, *, limit: int = None, batch_size: int = 100, session=None
+) -> DocumentSet:
     """Submit the given query to SemanticScholar API and return the results
     as a `DocumentSet`.
 
     :param query: The search query to submit.
     :param limit: The maximum number of results to return.
     :param batch_size: The number of results to retrieve per request. Must be at most 100.
+    :param session: The `requests.Session` to use for HTTP requests.
     """
 
     if not query:
         raise Exception("no query specified in `search_semanticscholar`")
+
+    if session is None:
+        session = requests.Session()
 
     docs = []
 
@@ -215,7 +227,7 @@ def search_semanticscholar(query: str, *, limit: int = None, batch_size: int = 1
         while True:
             offset = len(paper_ids)
 
-            response = request_query(query, offset, batch_size, cache)
+            response = request_query(query, offset, batch_size, cache, session)
             if not response:
                 break
 
@@ -235,7 +247,7 @@ def search_semanticscholar(query: str, *, limit: int = None, batch_size: int = 1
                 break
 
         for paper_id in progress_bar(paper_ids):
-            doc = request_paper(paper_id, cache)
+            doc = request_paper(paper_id, cache, session)
 
             if doc:
                 docs.append(ScholarDocument(doc))
