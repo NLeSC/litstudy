@@ -88,10 +88,25 @@ def plot_histogram(
             ylabel = 'No. of documents'
 
     if not vertical:
-        ax.grid(b=False, which='both', axis='y')
+        ''' semmyk-research [github]
+        ## All plots based on plot_histogram() throws
+        ## ValueError: keyword grid_b is not recognized
+        ## This is due to changes in matplotlib
+        ## reproducibility: python==3.8.16, matplotlib==3.7.1
+        ## AKA: assist https://stackoverflow.com/a/75581916/20107918
+        
+        ### https://matplotlib.org/stable/api/prev_api_changes/api_changes_3.5.0.html#the-first-parameter-of-axes-grid-and-axis-grid-has-been-renamed-to-visible
+        ### API change in 3.5.0
+        ### The first parameter of Axes.grid and Axis.grid has been renamed to visible
+        ### The parameter was previously named b. This deprecation only matters if that parameter was passed using a keyword argument, e.g. grid(b=False)
+        '''
+        
+        #ax.grid(b=False, which='both', axis='y')
+        ax.grid(visible=False, which='both', axis='y')
         xlabel, ylabel = ylabel, xlabel
     else:
-        ax.grid(b=False, which='both', axis='x')
+        #ax.grid(b=False, which='both', axis='x')
+        ax.grid(visible=False, which='both', axis='x')
 
     if title:
         ax.set_title(title)
