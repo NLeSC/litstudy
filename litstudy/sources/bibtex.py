@@ -66,7 +66,8 @@ def find_doi(entry):
     # Remove URL prefix
     prefix = "https://doi.org/"
     if doi.startswith(prefix):
-        doi = doi[len(prefix) :]
+        n = len(prefix)
+        doi = doi[n:]
 
     return doi
 

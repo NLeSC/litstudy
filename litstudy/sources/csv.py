@@ -191,14 +191,13 @@ def load_csv(
     :param citation_field: Field name for ``citation_count``.
     :param date_field: Field name for ``publication_date`` or
     :param filter: Optional function applied to each loaded record. This
-    function can be used to, for example, add or delete fields.
+                   function can be used to, for example, add or delete fields.
 
-    Examples:
-    ```
-    docs = litstudy.load_csv("my_data.csv",
-                             title_field="Document Title",
-                             date_field="Pub Date")
-    ```
+    Example::
+
+        docs = litstudy.load_csv("my_data.csv",
+                                 title_field="Document Title",
+                                 date_field="Pub Date")
     """
     with robust_open(path) as f:
         text = f.read()

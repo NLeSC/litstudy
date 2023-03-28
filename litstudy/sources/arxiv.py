@@ -77,7 +77,8 @@ def search_arxiv(
     Each returned document contains the following attributes:
     title, authors, doi, journal_ref, publication_date, abstract, language, and category
 
-    :param query: The query as described in the `arXiv API use manual <https://info.arxiv.org/help/api/user-manual.html#query_details>`_.
+    :param query: The query as described in the
+                  `arXiv API use manual <https://info.arxiv.org/help/api/user-manual.html#query_details>`_.
     :param max_results: The maximum number of results to return.
     :param start: Skip the first ``start`` documents from the results.
     :param batch_size: The number documents to fetch per request.
