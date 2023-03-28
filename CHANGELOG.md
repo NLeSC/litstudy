@@ -10,6 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 ### Fixed
 
+## [1.0.5] - 2023-03-28
+### Fixed
+- Fix wrong argument in call to `matplotlib.pyplot.grid(...)` due to change in their API
+- Fix semanticscholar backend not retrieving papers correctly
+
 ## [1.0.4] - 2023-03-02
 ### Added
 - Add `load_csv` function
