@@ -102,7 +102,8 @@ def load_ris_file(path: str) -> DocumentSet:
             else:
                 attr[key] = value
 
+    # Last document in RIS file
     if attr:
         docs.append(RISDocument(attr, keywords, authors))
 
-    return docs
+    return DocumentSet(docs)

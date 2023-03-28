@@ -5,6 +5,9 @@ import os
 def test_load_ris_file():
     path = os.path.dirname(__file__) + "/resources/example.ris"
     docs = load_ris_file(path)
+
+    assert len(docs) == 25
+
     doc = docs[0]
 
     assert doc.title == "The European Approach to the Exascale Challenge"
