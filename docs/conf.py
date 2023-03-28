@@ -102,6 +102,7 @@ html_extra_path = ['citation.html']
 #
 # html_sidebars = {}
 
+html_style = "css/style.css"
 
 # -- Options for HTMLHelp output ---------------------------------------------
 
