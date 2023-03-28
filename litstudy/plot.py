@@ -91,10 +91,10 @@ def plot_histogram(
             ylabel = "No. of documents"
 
     if not vertical:
-        ax.grid(b=False, which="both", axis="y")
+        ax.grid(visible=False, which="both", axis="y")
         xlabel, ylabel = ylabel, xlabel
     else:
-        ax.grid(b=False, which="both", axis="x")
+        ax.grid(visible=False, which="both", axis="x")
 
     if title:
         ax.set_title(title)
