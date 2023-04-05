@@ -196,7 +196,7 @@ def refine_semanticscholar(docs: DocumentSet, *, session=None) -> Tuple[Document
         if isinstance(doc, ScholarDocument):
             return doc
 
-        return fetch_semanticscholar(doc.id, session)
+        return fetch_semanticscholar(doc.id, session=session)
 
     return docs._refine_docs(callback)
 
