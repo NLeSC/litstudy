@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 ### Removed
 ### Fixed
+- Fix incorrect return type of `load_ris_file` (fixes #34)
+- Fix passing session as non-positional argument in `refine_semanticscholar`, see PR #35. (Thanks martinuray!)
+
+## [1.0.5] - 2023-03-28
+### Fixed
+- Fix wrong argument in call to `matplotlib.pyplot.grid(...)` due to change in their API
 
 ## [1.0.5] - 2023-03-28
 ### Fixed
