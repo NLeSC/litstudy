@@ -63,6 +63,13 @@ from .nlp import (
     compute_word_distribution,
     calculate_embedding,
 )  # noqa: F401
+from .types import (
+    Document,
+    DocumentSet,
+    DocumentIdentifier,
+    Affiliation,
+    Author,
+)  # noqa: F401
 
 __all__ = [
     "compute_year_histogram",
@@ -120,4 +127,9 @@ __all__ = [
     "search_dblp",
     "search_scopus",
     "search_semanticscholar",
+    "Affiliation",
+    "Author",
+    "Document",
+    "DocumentIdentifier",
+    "DocumentSet",
 ]
