@@ -3,6 +3,7 @@ import json
 import os
 import pickle
 import requests
+from litstudy.types import Document, DocumentIdentifier, DocumentSet
 
 
 class MockResponse:
@@ -54,3 +55,28 @@ class MockSession:
 
         with open(filename, "rb") as f:
             return MockResponse(pickle.loads(f.read()))
+
+
+class ExampleDocument(Document):
+    def __init__(self, id: DocumentIdentifier):
+        super().__init__(id)
+
+    @property
+    def title(self):
+        return self.id.title
+
+    @property
+    def authors(self):
+        return None
+
+
+def example_docs() -> DocumentSet:
+    a = DocumentIdentifier(
+        "The European Approach to the Exascale Challenge", doi="10.1109/MCSE.2018.2884139"
+    )
+
+    b = DocumentIdentifier(
+        "this document should not exists since the title is long",
+    )
+
+    return DocumentSet([ExampleDocument(a), ExampleDocument(b)])

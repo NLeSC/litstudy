@@ -1,5 +1,10 @@
-from litstudy.sources.semanticscholar import search_semanticscholar, fetch_semanticscholar
-from .common import MockSession
+from litstudy.sources.semanticscholar import (
+    search_semanticscholar,
+    fetch_semanticscholar,
+    refine_semanticscholar,
+)
+import os
+from .common import MockSession, example_docs
 
 
 def test_load_s2_file():
@@ -32,3 +37,16 @@ def test_fetch_semanticscholar():
 
     doc = fetch_semanticscholar("PMID:19872477", session=session)
     assert doc.title == "THE COMBINATION OF GELATIN WITH HYDROCHLORIC ACID"
+
+
+def test_refine_semanticscholar():
+    session = MockSession()
+
+    docs = example_docs()
+    found, notfound = refine_semanticscholar(docs, session=session)
+
+    assert len(found) == 1
+    assert found[0].title == docs[0].title
+
+    assert len(notfound) == 1
+    assert notfound[0].title == docs[1].title
