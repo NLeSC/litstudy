@@ -3,7 +3,6 @@ from litstudy.sources.semanticscholar import (
     fetch_semanticscholar,
     refine_semanticscholar,
 )
-import os
 from .common import MockSession, example_docs
 
 
