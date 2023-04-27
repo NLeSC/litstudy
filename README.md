@@ -10,7 +10,6 @@
 
 LitStudy is a Python package that enables analysis of scientific literature from the comfort of a Jupyter notebook. It provides the ability to select scientific publications and study their metadata through the use of visualizations, network analysis, and natural language processing.
 
-
 In essence, this package offers five main features:
 
 * Extract metadata from scientific documents sourced from various locations. The data is presented in a standardized interface, allowing for the combination of data from different sources.
@@ -19,12 +18,11 @@ In essence, this package offers five main features:
 * Generate and plot various bibliographic networks as interactive visualizations.
 * Topic discovery using natural language processing (NLP) allows for the automatic discovery of popular topics.
 
-
 ## Frequently Asked Questions
+
 If you have any questions or run into an error, see the [_Frequently Asked Questions_](https://nlesc.github.io/litstudy/faq.html) section of the [documentation](https://nlesc.github.io/litstudy/).
 If your question or error is not on the list, please check the [GitHub issue tracker](https://github.com/NLeSC/litstudy/issues) for a similar issue or
 create a [new issue](https://github.com/NLeSC/litstudy/issues/new).
-
 
 ## Supported Source
 
@@ -51,15 +49,14 @@ LitStudy supports the following data sources. The table below lists which metada
 [IEEE Xplore]: https://ieeexplore.ieee.org/
 [Springer Link]: https://link.springer.com/
 
-
-
 ## Example
+
 An example notebook is available in `notebooks/example.ipynb` and [here](https://nlesc.github.io/litstudy/example.html).
 
 [![Example notebook](https://raw.githubusercontent.com/NLeSC/litstudy/master/docs/images/notebook.png)](https://github.com/NLeSC/litstudy/blob/master/notebooks/example.ipynb)
 
-
 ## Installation Guide
+
 LitStudy is available on PyPI!
 Full installation guide is available [here](https://nlesc.github.io/litstudy/installation.html).
 
@@ -73,41 +70,39 @@ Or install the latest development version directly from GitHub:
 pip install git+https://github.com/NLeSC/litstudy
 ```
 
-
 ## Documentation
 
 Documentation is available [here](https://nlesc.github.io/litstudy/).
 
-
 ## Requirements
+
 The package has been tested for Python 3.7. Required packages are available in `requirements.txt`.
 
 `litstudy` supports several data sources.
 Some of these sources (such as semantic Scholar, CrossRef, and arXiv) are openly available.
 However to access the Scopus API, you (or your institute) requires a Scopus subscription and you need to request an Elsevier Developer API key (see [Elsevier Developers](https://dev.elsevier.com/index.jsp)).
 
-
 ## License
+
 Apache 2.0. See [LICENSE](https://github.com/NLeSC/litstudy/blob/master/LICENSE).
 
-
 ## Change log
+
 See [CHANGELOG.md](https://github.com/NLeSC/litstudy/blob/master/CHANGELOG.md).
 
-
 ## Contributing
+
 See [CONTRIBUTING.md](https://github.com/NLeSC/litstudy/blob/master/CONTRIBUTING.md).
 
-
 ## Citation
+
 If you use LitStudy in you work, please cite the following publication:
 
 > S. Heldens, A. Sclocco, H. Dreuning, B. van Werkhoven, P. Hijma, J. Maassen & R.V. van Nieuwpoort (2022), "litstudy: A Python package for literature reviews", SoftwareX 20
 
-
 As BibTeX:
 
-```
+```Latex
 @article{litstudy,
     title = {litstudy: A Python package for literature reviews},
     journal = {SoftwareX},
@@ -120,7 +115,6 @@ As BibTeX:
     author = {S. Heldens and A. Sclocco and H. Dreuning and B. {van Werkhoven} and P. Hijma and J. Maassen and R. V. {van Nieuwpoort}},
 }
 ```
-
 
 ## Related work
 
