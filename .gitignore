@@ -107,3 +107,7 @@ venv.bak/
 # notebooks
 notebooks/*.eps
 notebooks/.*
+
+# bibliometrix
+.crossref*
+.semantis*

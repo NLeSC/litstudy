@@ -20,9 +20,9 @@ def preprocess_remove_short(texts, min_length=3):
     yield from filter_tokens(texts, lambda token: len(token) >= min_length)
 
 
-def preprocess_remove_words(texts, stopwords):
-    stopwords = set(w.strip() for w in stopwords)
-    yield from filter_tokens(texts, lambda token: token not in STOPWORDS)
+def preprocess_remove_words(texts, remove_words):
+    remove_words = set(w.strip() for w in remove_words)
+    yield from filter_tokens(texts, lambda token: token not in remove_words)
 
 
 def preprocess_stopwords(texts):
