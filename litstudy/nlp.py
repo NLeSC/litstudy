@@ -20,9 +20,9 @@ def preprocess_remove_short(texts, min_length=3):
     yield from filter_tokens(texts, lambda token: len(token) >= min_length)
 
 
-def preprocess_remove_words(texts, stopwords):
-    stopwords = set(w.strip() for w in stopwords)
-    yield from filter_tokens(texts, lambda token: token not in STOPWORDS)
+def preprocess_remove_words(texts, remove_words):
+    remove_words = set(w.strip() for w in remove_words)
+    yield from filter_tokens(texts, lambda token: token not in remove_words)
 
 
 def preprocess_stopwords(texts):
@@ -157,6 +157,10 @@ def build_corpus(
     word frequency vector for each document. This preprocessing stage is
     highly customizable, thus it is advised to experiment with the many
     parameters.
+
+    Please notice that a small document set with no Abstracts available, might
+    not yield a Corpus, since there is a higher chance of words not achieving
+    a ocorrency in more than one document. 
 
     :param remove_words: list of words that should be ignored while building
                          the word frequency vectors.
