@@ -142,6 +142,9 @@ documents, preprocesses the tokens, and returns a corpus consisting of a
 word frequency vector for each document. This preprocessing stage is
 highly customizable, thus it is advised to experiment with the many
 parameters.</p>
+<p>Please notice that a small document set with no Abstracts available, might
+not yield a Corpus, since there is a higher chance of words not achieving
+a ocorrency in more than one document.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
