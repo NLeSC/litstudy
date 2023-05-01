@@ -160,7 +160,7 @@ def build_corpus(
 
     Please notice that a small document set with no Abstracts available, might
     not yield a Corpus, since there is a higher chance of words not achieving
-    a ocorrency in more than one document. 
+    a ocorrency in more than one document.
 
     :param remove_words: list of words that should be ignored while building
                          the word frequency vectors.
