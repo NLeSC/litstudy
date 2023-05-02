@@ -96,7 +96,7 @@ See [CONTRIBUTING.md](https://github.com/NLeSC/litstudy/blob/master/CONTRIBUTING
 
 ## Citation
 
-If you use LitStudy in you work, please cite the following publication:
+If you use LitStudy in your work, please cite the following publication:
 
 > S. Heldens, A. Sclocco, H. Dreuning, B. van Werkhoven, P. Hijma, J. Maassen & R.V. van Nieuwpoort (2022), "litstudy: A Python package for literature reviews", SoftwareX 20
 
