@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix incorrect return type of `load_ris_file` (fixes #34)
 - Fix passing session as non-positional argument in `refine_semanticscholar`, see PR #35. (Thanks martinuray!)
 - Fix incorrect filtering in `Corpus` when building corpus from docs (fixes #38)
+- Fix error when calling `fetch_crossref` and `refine_crossref` with `session=None` as argument (fixes #40)
 
 ## [1.0.5] - 2023-03-28
 ### Fixed

@@ -151,6 +151,9 @@ def fetch_crossref(doi: str, *, timeout=0.5, session=None) -> Optional[Document]
     :returns: The `Document` or `None` if the DOI was not available.
     """
 
+    if session is None:
+        session = requests.Session()
+
     def request():
         if not doi:
             return None
@@ -200,6 +203,9 @@ def refine_crossref(
     :param timeout: Timeout in seconds between each request to throttle server communication.
     :param session: The `requests.Session` to use for HTTP requests.
     """
+
+    if session is None:
+        session = requests.Session()
 
     def callback(doc):
         if isinstance(doc, CrossRefDocument):
