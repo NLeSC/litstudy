@@ -19,7 +19,6 @@ def test_load_scopus_csv():
         source_type = doc.source_type
         for author in doc.authors:
             author_name = author.name
-            print(author_name)
             for aff in author.affiliations:
                 affiliation = aff.name
         if num == 0:
