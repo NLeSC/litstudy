@@ -8,6 +8,7 @@ from .dblp import search_dblp
 from .ris import load_ris_file
 from .arxiv import search_arxiv
 from .csv import load_csv
+from .scopus_csv import load_scopus_csv
 
 __all__ = [
     "fetch_crossref",
@@ -17,6 +18,7 @@ __all__ = [
     "load_csv",
     "load_ieee_csv",
     "load_ris_file",
+    "load_scopus_csv",
     "load_springer_csv",
     "refine_crossref",
     "refine_scopus",
