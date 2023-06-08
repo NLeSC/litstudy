@@ -6,6 +6,7 @@ from .sources import (
     load_csv,
     load_ieee_csv,
     load_ris_file,
+    load_scopus_csv,
     load_springer_csv,
     refine_crossref,
     refine_scopus,
