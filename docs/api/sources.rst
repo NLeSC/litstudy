@@ -5,7 +5,7 @@ Literature Databases
 Scopus
 ------
 .. automodule:: litstudy
-  :members: search_scopus, refine_scopus
+  :members: search_scopus, refine_scopus, load_scopus_csv
 
 SemanticScholar
 ---------------
