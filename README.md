@@ -81,6 +81,7 @@ The package has been tested for Python 3.7. Required packages are available in `
 `litstudy` supports several data sources.
 Some of these sources (such as semantic Scholar, CrossRef, and arXiv) are openly available.
 However to access the Scopus API, you (or your institute) requires a Scopus subscription and you need to request an Elsevier Developer API key (see [Elsevier Developers](https://dev.elsevier.com/index.jsp)).
+For more information, see the [guide](https://pybliometrics.readthedocs.io/en/stable/access.html) by `pybliometrics`.
 
 ## License
 
