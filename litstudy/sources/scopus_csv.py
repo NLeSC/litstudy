@@ -118,8 +118,6 @@ class ScopusCsvDocument(Document):
         # of searching for author in auths_affs
         if len(auths) == 1:
             return [ScopusCsvAuthor(auths[0], self._get_affiliations(affs))]
-        print(auths)
-        print(auths_affs)
         indexes_of_authors = [auths_affs.index(auth) for auth in auths]
         auth_to_affs_mapping = {}
         for num, index in enumerate(indexes_of_authors):
