@@ -1,6 +1,7 @@
 from ..types import Document, Author, DocumentSet, DocumentIdentifier, Affiliation
 from ..common import robust_open
 import csv
+import logging
 
 
 class IEEEDocument(Document):
@@ -19,7 +20,20 @@ class IEEEDocument(Document):
     def authors(self):
         authors = self.entry.get("Authors", "").split("; ")
         affs = self.entry.get("Author Affiliations", "").split("; ")
-        assert len(authors) == len(affs)
+
+        # Bug fix #55:
+        # In some cases, the number of affiliations does not match the number of authors
+        # given by the CSV file. Since there is no way of knowing which affiliations belong
+        # to which authors, we just ignore all affiliations in this case.
+        if len(authors) != len(affs):
+            affs = [None] * len(authors)
+            logging.warn(
+                (
+                    f"affiliations for entry '{self.title}' are invalid: the number of authors "
+                    f"({len(authors)}) does not match the number of author affilications ({len(affs)})"
+                )
+            )
+
         return [IEEEAuthor(a, b) for a, b in zip(authors, affs)]
 
     @property
@@ -85,8 +99,8 @@ class IEEEAuthor(Author):
 
     @property
     def affiliations(self):
-        # Special case where affiliation is NA (not applicable)
-        if self._affiliation == "NA":
+        # Handle special case where affiliation is NA (not applicable)
+        if not self._affiliation or self._affiliation == "NA":
             return None
 
         return [IEEEAffiliation(self._affiliation)]
