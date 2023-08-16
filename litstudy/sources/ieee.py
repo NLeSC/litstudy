@@ -26,7 +26,6 @@ class IEEEDocument(Document):
         # given by the CSV file. Since there is no way of knowing which affiliations belong
         # to which authors, we just ignore all affiliations in this case.
         if len(authors) != len(affs):
-            affs = [None] * len(authors)
             logging.warn(
                 (
                     f"affiliations for entry '{self.title}' are invalid: the number of authors "
@@ -34,7 +33,14 @@ class IEEEDocument(Document):
                 )
             )
 
+            affs = [None] * len(authors)
+
         return [IEEEAuthor(a, b) for a, b in zip(authors, affs)]
+
+    @property
+    def affiliations(self):
+        affs = self.entry.get("Author Affiliations", "").split("; ")
+        return [IEEEAffiliation(a) for a in affs]
 
     @property
     def publisher(self):
