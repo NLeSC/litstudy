@@ -460,16 +460,19 @@ class Document(ABC):
         """The affiliations associated with the authors of this document."""
         authors = self.authors
 
-        if authors is not None:
-            items = dict()
+        if authors is None:
+            return None
 
-            for author in authors:
-                for aff in author.affiliations:
-                    items[aff.name] = aff
+        items = dict()
+        for author in authors:
+            affiliations = author.affiliations
 
-            return list(items.values())
+            if affiliations:
+                for aff in affiliations:
+                    if aff.name:
+                        items[aff.name] = aff
 
-        return None
+        return list(items.values())
 
     @property
     def publisher(self) -> Optional[str]:

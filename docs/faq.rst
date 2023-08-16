@@ -13,6 +13,7 @@ To use the Scopus API, you will need two things:
  * Be connected to the network of your University or Research Institute for which you obtained the API key.
 
 LitStudy will ask for the API key on the first time that it launches.
+For more information, see the [guide](https://pybliometrics.readthedocs.io/en/stable/access.html) by pybliometrics.
 
 
 
