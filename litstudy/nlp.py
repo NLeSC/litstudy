@@ -407,7 +407,5 @@ def calculate_embedding(corpus: Corpus, *, rank=2, svd_dims=50, perplexity=30, s
     else:
         components = tfidf
 
-    model = TSNE(
-        rank, metric="cosine", perplexity=perplexity, random_state=seed
-    )
+    model = TSNE(rank, metric="cosine", perplexity=perplexity, random_state=seed)
     return model.fit_transform(components)
