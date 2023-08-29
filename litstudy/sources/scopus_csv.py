@@ -87,9 +87,6 @@ class ScopusCsvDocument(Document):
         return auths_ids
 
     def _try_to_add_ids_to_authors(self, auths: List[str]) -> List[str]:
-        """
-        auths is non-zero length list.
-        """
         auths_ids = self._get_authors_ids()
 
         if len(auths_ids) == len(auths) and len(auths) > 0:
@@ -100,18 +97,19 @@ class ScopusCsvDocument(Document):
     def _parse_affiliations(self, affs) -> List[str]:
         if affs == "":
             return []
-        return affs.split(";")
+        return [aff.lstrip().rstrip() for aff in affs.split(";")]
 
     @property
-    def authors(self) -> List[ScopusCsvAuthor]:
+    def authors(self) -> Optional[List[ScopusCsvAuthor]]:
         auths = self.entry.get("Authors")
         no_authors_formats = ["[No Authors Found]", "[No author name available]"]
 
         if auths == "" or auths in no_authors_formats:
-            return []
+            return None
 
-        # use auths to search in auths_with_affs string
+        # use auths to search in auths_with_affs string.
         auths = self._parse_authors(auths)
+        # use auths_with_ids for unique field.
         authors_with_ids = self._try_to_add_ids_to_authors(auths)
 
         affs = self.entry.get("Affiliations")
@@ -119,7 +117,6 @@ class ScopusCsvDocument(Document):
         # if single author, no way to know if ',' in author name
         # within auths_affs field (can't search string),
         # use 'Affiliations' field.
-
         if len(auths) == 1:
             return [
                 ScopusCsvAuthor(authors_with_ids[0], [ScopusCsvAffiliation(aff) for aff in affs])
@@ -127,27 +124,39 @@ class ScopusCsvDocument(Document):
 
         auths_affs = self.entry.get("Authors with affiliations")
         if auths_affs == "":  # can't map affiliations to authors
-            return [ScopusCsvAuthor(auth, []) for auth in authors_with_ids]
+            return [ScopusCsvAuthor(auth, None) for auth in authors_with_ids]
 
         indexes_of_authors = [auths_affs.index(auth) for auth in auths]
         auth_to_affs_mapping = {}
 
         for num, index in enumerate(indexes_of_authors):
-            #auth = auths[num]
+            # auth = auths[num]
 
             if num < len(indexes_of_authors) - 1:
                 next_index = indexes_of_authors[num + 1]
                 cur_auth_affils = auths_affs[index:next_index]
-                # only want part of string for current author
-                # and affiliations
             else:
                 cur_auth_affils = auths_affs[index:]
-
             # cur_auth_affils = substring.replace(f"{auth}, ", "")
             # could be multiple affiliates, but no clear deliminator
-            cur_auth_affils = [ScopusCsvAffiliation(a) for a in affs if a in cur_auth_affils]
-            auth_to_affs_mapping[authors_with_ids[num]] = cur_auth_affils
 
+            affs_filtered = [a for a in affs if a in cur_auth_affils]
+            affs_filtered = sorted(affs_filtered, key=lambda x: len(x))
+            # edge case is str in affs is substr of aff in cur_auth_affs
+
+            # removes edge case where aff is substring of other aff
+            disclude = []
+            short_string = affs_filtered[0]
+            for j in range(0, len(affs_filtered) - 1):
+                long_strings = affs_filtered[j + 1 :]
+                for ls in long_strings:
+                    if short_string in ls:
+                        disclude.append(short_string)
+                short_string = affs_filtered[j + 1]
+
+            auth_to_affs_mapping[authors_with_ids[num]] = [
+                ScopusCsvAffiliation(a) for a in affs_filtered if a not in disclude
+            ]
         return [ScopusCsvAuthor(a, b) for a, b in auth_to_affs_mapping.items()]
 
     @property
@@ -169,7 +178,7 @@ class ScopusCsvDocument(Document):
     def keywords(self) -> Optional[List[str]]:
         keywords = self.entry.get("Author Keywords")
         if not keywords:
-            return None
+            return []
         return keywords.split("; ")
 
     @property
