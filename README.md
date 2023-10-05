@@ -31,12 +31,12 @@ LitStudy supports the following data sources. The table below lists which metada
 | Name            | Title | Authors | Venue | Abstract | Citations      | References |
 |-----------------|-------|---------|-------|----------|----------------|------------|
 | [Scopus]          | ✓     | ✓       | ✓     | ✓        | ✓              | ✓
-| [SemanticScholar] | ✓     | ✓       | ✓     | ✓        | * (count only) | ✓
-| [CrossRef]        | ✓     | ✓       | ✓     | ✓        | * (count only) | ✓
+| [SemanticScholar] | ✓     | ✓       | ✓     | ✓        | * <sup>(count only)</sup> | ✓
+| [CrossRef]        | ✓     | ✓       | ✓     | ✓        | * <sup>(count only)</sup> | ✓
 | [DBLP]            | ✓     | ✓       | ✓     |          |                |
 | [arXiv]           | ✓     | ✓       |       | ✓        |                |
-| [IEEE Xplore]     | ✓     | ✓       | ✓     | ✓        | * (count only) |
-| [Springer Link]   | ✓     | ✓       | ✓     | ✓        | * (count only) |
+| [IEEE Xplore]     | ✓     | ✓       | ✓     | ✓        | * <sup>(count only)</sup> |
+| [Springer Link]   | ✓     | ✓       | ✓     | ✓        | * <sup>(count only)</sup> |
 | CSV file        | ✓     | ✓       | ✓     | ✓        |                |
 | bibtex file     | ✓     | ✓       | ✓     | ✓        |                |
 | RIS file        | ✓     | ✓       | ✓     | ✓        |                |

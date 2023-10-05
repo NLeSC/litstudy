@@ -6,7 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- Add support for loading CSV files exported from Scopus (Thanks tleedepriest!)
+### Changed
+### Removed
+### Fixed
+
+## [1.0.6] 2023-10-05
+### Added
+- Add support for loading CSV files exported from Scopus (see PR #45, Thanks tleedepriest!)
 
 ### Changed
 ### Removed
@@ -15,10 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix passing session as non-positional argument in `refine_semanticscholar`, see PR #35. (Thanks martinuray!)
 - Fix incorrect filtering in `Corpus` when building corpus from docs (fixes #38)
 - Fix error when calling `fetch_crossref` and `refine_crossref` with `session=None` as argument (fixes #40)
-
-## [1.0.5] - 2023-03-28
-### Fixed
-- Fix wrong argument in call to `matplotlib.pyplot.grid(...)` due to change in their API
+- Fix KeyError when loading CSV files from IEEE that have an incorrect format (fixed #55)
+- Fix bug in nlp.py due to argument `square_distances` being removed in newer versions of sklearn, see PR #58 (Thanks rjavierch!)
 
 ## [1.0.5] - 2023-03-28
 ### Fixed
