@@ -311,9 +311,16 @@ def train_lda_model(corpus: Corpus, num_topics, seed=0, **kwargs) -> TopicModel:
 
     :param num_topics: The number of topics to train.
     :param seed: The seed used for random number generation.
-    :param kwargs: Arguments passed to `gensim.models.lda.LdaModel`.
+    :param kwargs: Arguments passed to `gensim.models.lda.LdaModel` (gensim3)
+                   or `gensim.models.ldamodel.LdaModel` (gensim4).
     """
-    from gensim.models.lda import LdaModel
+    try:
+        from gensim.models.lda import LdaModel
+    except:
+        try:
+            from gensim.models.ldamodel import LdaModel
+        except:
+            sys.exit('LdaModel could not be imported from gensim 3 or 4.')
 
     dic = corpus.dictionary
     freqs = corpus.frequencies
