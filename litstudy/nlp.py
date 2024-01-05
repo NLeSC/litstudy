@@ -319,7 +319,7 @@ def train_lda_model(corpus: Corpus, num_topics, seed=0, **kwargs) -> TopicModel:
     freqs = corpus.frequencies
 
     from importlib.metadata import version
-    gensim_mayor=version('gensim').split('.')[0]
+    gensim_mayor=int(version('gensim').split('.')[0])
 
     if gensim_mayor == 3:
         from gensim.models.lda import LdaModel
