@@ -326,7 +326,7 @@ def train_lda_model(corpus: Corpus, num_topics, seed=0, **kwargs) -> TopicModel:
         model = LdaModel(list(corpus), **kwargs)
     elif gensim_mayor == 4:
         from gensim.models.ldamodel import LdaModel
-        model = LdaModel(freqs,id2word=dic, **kwargs)
+        model = LdaModel(freqs, id2word=dic, **kwargs)
     else:
         sys.exit('LdaModel could not be imported from gensim 3 or 4.')
 
