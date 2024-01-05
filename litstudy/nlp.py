@@ -314,18 +314,21 @@ def train_lda_model(corpus: Corpus, num_topics, seed=0, **kwargs) -> TopicModel:
     :param kwargs: Arguments passed to `gensim.models.lda.LdaModel` (gensim3)
                    or `gensim.models.ldamodel.LdaModel` (gensim4).
     """
-    try:
-        from gensim.models.lda import LdaModel
-    except:
-        try:
-            from gensim.models.ldamodel import LdaModel
-        except:
-            sys.exit('LdaModel could not be imported from gensim 3 or 4.')
 
     dic = corpus.dictionary
     freqs = corpus.frequencies
 
-    model = LdaModel(list(corpus), **kwargs)
+    from importlib.metadata import version
+    gensim_mayor=version('gensim').split('.')[0]
+
+    if gensim_mayor == 3:
+        from gensim.models.lda import LdaModel
+        model = LdaModel(list(corpus), **kwargs)
+    elif gensim_mayor == 4:
+        from gensim.models.ldamodel import LdaModel
+        model = LdaModel(freqs,id2word=dic, **kwargs)
+    else:
+        sys.exit('LdaModel could not be imported from gensim 3 or 4.')
 
     doc2topic = corpus2dense(model[freqs], num_topics)
     topic2token = model.get_topics()
