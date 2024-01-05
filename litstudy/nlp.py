@@ -331,7 +331,7 @@ def train_lda_model(corpus: Corpus, num_topics, seed=0, **kwargs) -> TopicModel:
         from sys import exit
         exit('LdaModel could not be imported from gensim 3 or 4.')
 
-    doc2topic = corpus2dense(model[freqs], num_topics)
+    doc2topic = corpus2dense(model[freqs], num_topics).T
     topic2token = model.get_topics()
 
     return TopicModel(dic, doc2topic, topic2token)
