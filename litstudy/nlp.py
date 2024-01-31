@@ -341,6 +341,29 @@ def train_lda_model(corpus: Corpus, num_topics, seed=0, **kwargs) -> TopicModel:
     return TopicModel(dic, doc2topic, topic2token)
 
 
+def train_elda_model(corpus: Corpus, num_topics, num_models=4, seed=0, **kwargs) -> TopicModel:
+    """Train a topic model using ensemble LDA.
+
+    :param num_topics: The number of topics to train.
+    :param num_models: The number of models to train.
+    :param seed: The seed used for random number generation.
+    :param kwargs: Arguments passed to `gensim.models.ensembelda.EnsembleLda` (gensim4).
+    """
+
+    if gensim_mayor <= 3:
+        from sys import exit
+
+        exit("EnsembleLda requires at least gensim 4.")
+
+    from gensim.models.ensembelda import EnsembleLda
+
+    model = EnsembleLda(corpus=freqs, id2word=dic, num_topics=num_topics, num_models=num_models, **kwargs)
+
+    doc2topic = corpus2dense(model[freqs], num_topics).T
+    topic2token = model.get_topics()
+
+    return TopicModel(dic, doc2topic, topic2token)
+
 def compute_word_distribution(corpus: Corpus, *, limit=None) -> pd.DataFrame:
     """Returns dataframe that indicates, for each word, the number of
     documents that mention that word.
