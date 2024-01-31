@@ -350,6 +350,13 @@ def train_elda_model(corpus: Corpus, num_topics, num_models=4, seed=0, **kwargs)
     :param kwargs: Arguments passed to `gensim.models.ensembelda.EnsembleLda` (gensim4).
     """
 
+    dic = corpus.dictionary
+    freqs = corpus.frequencies
+
+    from importlib.metadata import version
+
+    gensim_mayor = int(version("gensim").split(".")[0])
+
     if gensim_mayor <= 3:
         from sys import exit
 
@@ -357,12 +364,15 @@ def train_elda_model(corpus: Corpus, num_topics, num_models=4, seed=0, **kwargs)
 
     from gensim.models.ensembelda import EnsembleLda
 
-    model = EnsembleLda(corpus=freqs, id2word=dic, num_topics=num_topics, num_models=num_models, **kwargs)
+    model = EnsembleLda(
+        corpus=freqs, id2word=dic, num_topics=num_topics, num_models=num_models, **kwargs
+    )
 
     doc2topic = corpus2dense(model[freqs], num_topics).T
     topic2token = model.get_topics()
 
     return TopicModel(dic, doc2topic, topic2token)
+
 
 def compute_word_distribution(corpus: Corpus, *, limit=None) -> pd.DataFrame:
     """Returns dataframe that indicates, for each word, the number of
