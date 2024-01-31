@@ -347,7 +347,7 @@ def train_elda_model(corpus: Corpus, num_topics, num_models=4, seed=0, **kwargs)
     :param num_topics: The number of topics to train.
     :param num_models: The number of models to train.
     :param seed: The seed used for random number generation.
-    :param kwargs: Arguments passed to `gensim.models.ensembelda.EnsembleLda` (gensim4).
+    :param kwargs: Arguments passed to `gensim.models.ensemblelda.EnsembleLda` (gensim4).
     """
 
     dic = corpus.dictionary
@@ -362,7 +362,7 @@ def train_elda_model(corpus: Corpus, num_topics, num_models=4, seed=0, **kwargs)
 
         exit("EnsembleLda requires at least gensim 4.")
 
-    from gensim.models.ensembelda import EnsembleLda
+    from gensim.models.ensemblelda import EnsembleLda
 
     model = EnsembleLda(
         corpus=freqs, id2word=dic, num_topics=num_topics, num_models=num_models, **kwargs
