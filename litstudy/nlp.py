@@ -350,9 +350,6 @@ def train_elda_model(corpus: Corpus, num_topics, num_models=4, seed=0, **kwargs)
     :param kwargs: Arguments passed to `gensim.models.ensemblelda.EnsembleLda` (gensim4).
     """
 
-    dic = corpus.dictionary
-    freqs = corpus.frequencies
-
     from importlib.metadata import version
 
     gensim_mayor = int(version("gensim").split(".")[0])
@@ -362,10 +359,18 @@ def train_elda_model(corpus: Corpus, num_topics, num_models=4, seed=0, **kwargs)
 
         exit("EnsembleLda requires at least gensim 4.")
 
+    dic = corpus.dictionary
+    freqs = corpus.frequencies
+
     from gensim.models.ensemblelda import EnsembleLda
 
     model = EnsembleLda(
-        corpus=freqs, id2word=dic, num_topics=num_topics, num_models=num_models, **kwargs
+        topic_model_class="ldamulticore",
+        corpus=freqs,
+        id2word=dic,
+        num_topics=num_topics,
+        num_models=num_models,
+        **kwargs
     )
 
     doc2topic = corpus2dense(model[freqs], num_topics).T
