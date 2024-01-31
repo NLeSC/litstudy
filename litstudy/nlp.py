@@ -319,17 +319,21 @@ def train_lda_model(corpus: Corpus, num_topics, seed=0, **kwargs) -> TopicModel:
     freqs = corpus.frequencies
 
     from importlib.metadata import version
-    gensim_mayor=int(version('gensim').split('.')[0])
+
+    gensim_mayor = int(version("gensim").split(".")[0])
 
     if gensim_mayor == 3:
         from gensim.models.lda import LdaModel
+
         model = LdaModel(list(corpus), **kwargs)
     elif gensim_mayor == 4:
         from gensim.models.ldamodel import LdaModel
+
         model = LdaModel(freqs, id2word=dic, num_topics=num_topics, **kwargs)
     else:
         from sys import exit
-        exit('LdaModel could not be imported from gensim 3 or 4.')
+
+        exit("LdaModel could not be imported from gensim 3 or 4.")
 
     doc2topic = corpus2dense(model[freqs], num_topics).T
     topic2token = model.get_topics()
