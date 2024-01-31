@@ -61,6 +61,7 @@ from .nlp import (
     build_corpus,
     train_nmf_model,
     train_lda_model,
+    train_elda_model,
     compute_word_distribution,
     calculate_embedding,
 )  # noqa: F401
