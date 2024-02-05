@@ -1,6 +1,7 @@
 """
 support loading Scopus CSV export.
 """
+
 from typing import List, Optional
 from ..types import Document, Author, DocumentSet, DocumentIdentifier, Affiliation
 from ..common import robust_open
