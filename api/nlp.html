@@ -77,6 +77,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#litstudy.nlp.train_nmf_model"><code class="docutils literal notranslate"><span class="pre">train_nmf_model()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#litstudy.nlp.train_lda_model"><code class="docutils literal notranslate"><span class="pre">train_lda_model()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#litstudy.nlp.train_elda_model"><code class="docutils literal notranslate"><span class="pre">train_elda_model()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#litstudy.nlp.compute_word_distribution"><code class="docutils literal notranslate"><span class="pre">compute_word_distribution()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#litstudy.nlp.generate_topic_cloud"><code class="docutils literal notranslate"><span class="pre">generate_topic_cloud()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#litstudy.nlp.calculate_embedding"><code class="docutils literal notranslate"><span class="pre">calculate_embedding()</span></code></a></li>
@@ -273,7 +274,24 @@ times.</p></li>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>num_topics</strong> -- The number of topics to train.</p></li>
 <li><p><strong>seed</strong> -- The seed used for random number generation.</p></li>
-<li><p><strong>kwargs</strong> -- Arguments passed to <cite>gensim.models.lda.LdaModel</cite>.</p></li>
+<li><p><strong>kwargs</strong> -- Arguments passed to <cite>gensim.models.lda.LdaModel</cite> (gensim3)
+or <cite>gensim.models.ldamodel.LdaModel</cite> (gensim4).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="litstudy.nlp.train_elda_model">
+<span class="sig-prename descclassname"><span class="pre">litstudy.nlp.</span></span><span class="sig-name descname"><span class="pre">train_elda_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#litstudy.nlp.Corpus" title="litstudy.nlp.Corpus"><span class="pre">Corpus</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_topics</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_models</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#litstudy.nlp.TopicModel" title="litstudy.nlp.TopicModel"><span class="pre">TopicModel</span></a></span></span><a class="headerlink" href="#litstudy.nlp.train_elda_model" title="Permalink to this definition"></a></dt>
+<dd><p>Train a topic model using ensemble LDA.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>num_topics</strong> -- The number of topics to train.</p></li>
+<li><p><strong>num_models</strong> -- The number of models to train.</p></li>
+<li><p><strong>seed</strong> -- The seed used for random number generation.</p></li>
+<li><p><strong>kwargs</strong> -- Arguments passed to <cite>gensim.models.ensemblelda.EnsembleLda</cite> (gensim4).</p></li>
 </ul>
 </dd>
 </dl>
