@@ -287,11 +287,12 @@ def train_nmf_model(
     :param filename: Name of gensim model to save, or to load if file exists.
     """
     import gensim.models.nmf
+    from os.path import isfile
 
     dic = corpus.dictionary
     freqs = corpus.frequencies
 
-    if filename == None or os.path.isfile(filename) == False:
+    if filename == None or isfile(filename) == False:
         tfidf = gensim.models.tfidfmodel.TfidfModel(dictionary=dic)
         model = gensim.models.nmf.Nmf(
             list(tfidf[freqs]),
@@ -328,16 +329,20 @@ def train_lda_model(corpus: Corpus, num_topics, seed=0, filename=None, **kwargs)
     freqs = corpus.frequencies
 
     from importlib.metadata import version
+    from os.path import isfile
 
     gensim_mayor = int(version("gensim").split(".")[0])
     if gensim_mayor == 3:
         from gensim.models.lda import LdaModel
 
-        model = LdaModel(list(corpus), **kwargs)
+        if filename == None or isfile(filename) == False:
+            model = LdaModel(list(corpus), **kwargs)
+            if filename != None:
+                model.save(filename)
     elif gensim_mayor == 4:
         from gensim.models.ldamodel import LdaModel
 
-        if filename == None or os.path.isfile(filename) == False:
+        if filename == None or isfile(filename) == False:
             model = LdaModel(freqs, id2word=dic, num_topics=num_topics, **kwargs)
             if filename != None:
                 model.save(filename)
@@ -368,6 +373,7 @@ def train_elda_model(
     """
 
     from importlib.metadata import version
+    from os.path import isfile
 
     gensim_mayor = int(version("gensim").split(".")[0])
     if gensim_mayor <= 3:
@@ -380,7 +386,7 @@ def train_elda_model(
 
     from gensim.models.ensemblelda import EnsembleLda
 
-    if filename == None or os.path.isfile(filename) == False:
+    if filename == None or isfile(filename) == False:
         model = EnsembleLda(
             topic_model_class="ldamulticore",
             corpus=freqs,
