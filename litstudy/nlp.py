@@ -400,6 +400,8 @@ def train_elda_model(
     else:
         model = EnsembleLda.load(filename)
 
+    model = model.generate_gensim_representation()
+
     doc2topic = corpus2dense(model[freqs], num_topics).T
     topic2token = model.get_topics()
 
