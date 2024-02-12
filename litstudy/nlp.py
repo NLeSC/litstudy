@@ -398,7 +398,7 @@ def train_elda_model(
         if filename != None:
             model.save(filename)
     else:
-        model = LdaEnsembleLda.load(filename)
+        model = EnsembleLda.load(filename)
 
     doc2topic = corpus2dense(model[freqs], num_topics).T
     topic2token = model.get_topics()
