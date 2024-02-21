@@ -205,7 +205,8 @@ def search_semanticscholar(
     query: str, *, limit: int = None, batch_size: int = 100, session=None
 ) -> DocumentSet:
     """Submit the given query to SemanticScholar API and return the results
-    as a `DocumentSet`.
+    as a `DocumentSet`. The query is a string containg keywords (see `API reference
+    <https://www.semanticscholar.org/product/api%2Ftutorial#using-search-query-operators>`_).
 
     :param query: The search query to submit.
     :param limit: The maximum number of results to return.
