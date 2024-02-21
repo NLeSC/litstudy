@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 ### Changed
+- Fix unclear documentation of `search_semanticscholar` function, see PR #86 (thanks danibene!).
+
 ### Removed
 ### Fixed
 
