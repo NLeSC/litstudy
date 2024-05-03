@@ -44,7 +44,7 @@ class CrossRefAffiliation(Affiliation):
 
     @property
     def name(self) -> str:
-        return self.entry["name"]
+        return self.entry.get("name")
 
 
 def _extract_title(entry):
@@ -80,7 +80,7 @@ class CrossRefDocument(Document):
 
     @property
     def language(self):
-        return self.get("language")
+        return self.entry.get("language")
 
     @property
     def publication_date(self):
