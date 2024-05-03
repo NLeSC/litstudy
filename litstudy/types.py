@@ -403,6 +403,8 @@ class DocumentIdentifier:
 
         # Two identifiers match if all keys that they have in common are equal
         for key in self._attr:
+            if self._attr[key] == None:
+                continue
             if key in other._attr:
                 if self._attr[key] != other._attr[key]:
                     return False
