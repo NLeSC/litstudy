@@ -1,6 +1,6 @@
 from .scopus import search_scopus, refine_scopus, fetch_scopus
 from .bibtex import load_bibtex
-from .semanticscholar import fetch_semanticscholar, search_semanticscholar, refine_semanticscholar
+from .semanticscholar import fetch_semanticscholar, search_semanticscholar, refine_semanticscholar, load_semanticscholar_json
 from .crossref import fetch_crossref, refine_crossref, search_crossref
 from .ieee import load_ieee_csv
 from .springer import load_springer_csv
@@ -19,6 +19,7 @@ __all__ = [
     "load_ieee_csv",
     "load_ris_file",
     "load_scopus_csv",
+    "load_semanticscholar_json",
     "load_springer_csv",
     "refine_crossref",
     "refine_scopus",

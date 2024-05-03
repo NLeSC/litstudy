@@ -4,6 +4,8 @@ from urllib.parse import urlencode, quote_plus
 import logging
 import requests
 import shelve
+from ..common import robust_open
+import json
 
 from ..common import progress_bar
 from ..types import Document, Author, DocumentSet, DocumentIdentifier
@@ -272,4 +274,22 @@ def search_semanticscholar(
             else:
                 logging.warn(f"could not find paper id {paper_id}")
 
+    return DocumentSet(docs)
+
+def load_semanticscholar_json(path: str) -> DocumentSet:
+    """Import json file exported from SemanticScholar"""
+    docs = []
+    with robust_open(path) as f:
+        result = json.load(f)
+        data=result["data"]
+        for doc in data:
+            ids=doc.pop("externalIds")
+            for i in ids:
+                if i=="DOI":
+                    doc["doi"]=ids.get("DOI").lower()
+                elif i=="ArXiv":
+                    doc["arxivId"]=ids.get("ArXiv")
+                elif i=="PubMed":
+                    doc["pubmed"]=ids.get("PubMed")
+            docs.append(ScholarDocument(doc))
     return DocumentSet(docs)
