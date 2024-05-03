@@ -17,6 +17,7 @@ from .sources import (
     search_dblp,
     search_scopus,
     search_semanticscholar,
+    fastsearch_semanticscholar,
 )
 from .stats import (
     compute_year_histogram,
@@ -132,6 +133,7 @@ __all__ = [
     "search_dblp",
     "search_scopus",
     "search_semanticscholar",
+    "fastsearch_semanticscholar",
     "Affiliation",
     "Author",
     "Document",

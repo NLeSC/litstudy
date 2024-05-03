@@ -1,6 +1,6 @@
 from .scopus import search_scopus, refine_scopus, fetch_scopus
 from .bibtex import load_bibtex
-from .semanticscholar import fetch_semanticscholar, search_semanticscholar, refine_semanticscholar, load_semanticscholar_json
+from .semanticscholar import fetch_semanticscholar, search_semanticscholar, fastsearch_semanticscholar, refine_semanticscholar, load_semanticscholar_json
 from .crossref import fetch_crossref, refine_crossref, search_crossref
 from .ieee import load_ieee_csv
 from .springer import load_springer_csv
@@ -29,4 +29,5 @@ __all__ = [
     "search_dblp",
     "search_scopus",
     "search_semanticscholar",
+    "fastsearch_semanticscholar",
 ]

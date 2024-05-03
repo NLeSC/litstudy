@@ -243,6 +243,8 @@ def search_semanticscholar(
             response = request_query(query, offset, batch_size, cache, session)
             if not response:
                 break
+
+            #retry in case of timeout
             if response == "TIMEOUT":
                 to=to+1
                 logging.info("Timeout:",DEFAULT_TIMEOUT*4*to)
@@ -292,4 +294,69 @@ def load_semanticscholar_json(path: str) -> DocumentSet:
                 elif i=="PubMed":
                     doc["pubmed"]=ids.get("PubMed")
             docs.append(ScholarDocument(doc))
+    return DocumentSet(docs)
+
+def fastsearch_semanticscholar(
+    query: str, *, limit: int = 1000, batch_size: int = 100, session=None
+) -> DocumentSet:
+    """Submit the given query to SemanticScholar API and return the results
+    as a `DocumentSet`.
+
+    :param query: The search query to submit.
+    :param limit: The maximum number of results to return. Must be at most 1,000
+    :param batch_size: The number of results to retrieve per request. Must be at most 100.
+    :param session: The `requests.Session` to use for HTTP requests.
+    """
+
+    if not query:
+        raise Exception("no query specified in `search_semanticscholar`")
+
+    if session is None:
+        session = requests.Session()
+
+    docs = []
+
+    with shelve.open(CACHE_FILE) as cache:
+        paper_ids = []
+        to=0
+        while True:
+            offset = len(docs)
+
+            response = request_query(query, offset, batch_size, cache, session,extraParams={"fields":"title,authors,year,venue,abstract,citations,references,externalIds"})
+            if not response:
+                break
+
+            #Retry in case of timeout
+            if response == "TIMEOUT":
+                to=to+1
+                logging.info("Timeout:",DEFAULT_TIMEOUT*4*to)
+                sleep(DEFAULT_TIMEOUT*4*to)
+                continue 
+            else:
+                to=0
+
+            records = response["data"]
+            total = response["total"]
+            print("Gesamt:",total,"Offset:",offset)
+            for record in records:
+                ids=record.pop("externalIds")
+                for i in ids:
+                    if i=="DOI":
+                        record["doi"]=ids.get("DOI").lower()
+                    elif i=="ArXiv":
+                        record["arxivId"]=ids.get("ArXiv")
+                    elif i=="PubMed":
+                        record["pubmed"]=ids.get("PubMed")
+                docs.append(ScholarDocument(record))
+
+
+            # Check if we reached the total number of papers
+            if len(docs) >= total:
+                break
+
+            # Check if we exceeded the user-defined limit
+            if limit is not None and len(docs) >= limit:
+                docs = docs[:limit]
+                break
+
     return DocumentSet(docs)
