@@ -18,6 +18,8 @@ from .sources import (
     search_scopus,
     search_semanticscholar,
     fastsearch_semanticscholar,
+    generate_reference_list,
+    mass_fetch_semanticscholar,
 )
 from .stats import (
     compute_year_histogram,
@@ -134,6 +136,8 @@ __all__ = [
     "search_scopus",
     "search_semanticscholar",
     "fastsearch_semanticscholar",
+    "generate_reference_list",
+    "mass_fetch_semanticscholar",
     "Affiliation",
     "Author",
     "Document",

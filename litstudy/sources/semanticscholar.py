@@ -360,3 +360,49 @@ def fastsearch_semanticscholar(
                 break
 
     return DocumentSet(docs)
+
+def generate_reference_list(docs: DocumentSet):
+    """Returns a list of referenced documents formattet for a fetch_semanticscholar request.
+    s2id:   <id>
+    PubMed: PMID:<id>
+    DOI:    DOI:<id>
+    ArXiv: ARXIV:<id>
+    """
+    references=[]
+    for u in range(len(docs)):
+        if docs[u].references == None:
+            continue
+        for i in range(len(docs[u].references)):
+            doi=docs[u].references[i].doi
+            s2id=docs[u].references[i].s2id
+            arxivid=docs[u].references[i].arxivid
+            pubmed=docs[u].references[i].pubmed
+            title=docs[u].references[i].title
+            if doi != None:
+                references.append("DOI:"+doi)
+            elif s2id != None:
+                references.append(s2id)
+            elif pubmed != None:
+                references.append("PMID:"+pubmed)
+            elif arxivid != None:
+                references.append("ARXIV:"+arxivid)
+            else:
+                continue
+    return references
+
+def mass_fetch_semanticscholar(paper_ids: list, session=None) -> DocumentSet:
+    if session is None:
+        session = requests.Session()
+    #remove duplicates:
+    paper_ids=list(set(paper_ids))
+    
+    docs = []
+
+    with shelve.open(CACHE_FILE) as cache:
+        for paper_id in progress_bar(paper_ids):            
+            record = request_paper(paper_id, cache, session)
+            if record:
+                docs.append(ScholarDocument(record))
+            else:
+                logging.warn(f"could not find paper id {paper_id}")
+    return DocumentSet(docs)
