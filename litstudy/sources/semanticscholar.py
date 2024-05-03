@@ -18,6 +18,7 @@ def extract_id(item):
         doi=item.get("doi"),
         arxivid=item.get("arxivId"),
         s2id=item.get("paperId"),
+        pubmed=item.get("pubmed"),
     )
 
 
@@ -96,26 +97,34 @@ CACHE_FILE = ".semantischolar"
 DEFAULT_TIMEOUT = 3.05  # 100 requests per 5 minutes
 
 
-def request_query(query, offset, limit, cache, session, timeout=DEFAULT_TIMEOUT):
-    params = urlencode(dict(query=query, offset=offset, limit=limit))
-    url = f"{S2_QUERY_URL}?{params}"
+def request_query(query, offset, limit, cache, session, timeout=DEFAULT_TIMEOUT, extraParams=dict()):
+    params=dict(query=query, offset=offset, limit=limit)
+    params.update(extraParams)
+    encparams = urlencode(params)
+    url = f"{S2_QUERY_URL}?{encparams}"
 
     if url in cache:
         return cache[url]
+    sleep(timeout)
 
-    reply = session.get(url)
+    reply = session.get(url,timeout=60*10)
     response = reply.json()
 
     if "data" not in response:
         msg = response.get("error") or response.get("message") or "unknown"
-        raise Exception(f"error while fetching {reply.url}: {msg}")
+        if msg.find("Too Many Requests.")>-1 or msg.find("Endpoint request timed out")>-1:
+            logging.info(f"request_query: Timeout error while fetching {reply.url}: {msg}")
+            return "TIMEOUT"
+        else:
+            raise Exception(f"error while fetching {reply.url}: {msg}")
 
     cache[url] = response
     return response
 
 
-def request_paper(key, cache, session, timeout=DEFAULT_TIMEOUT):
-    url = S2_PAPER_URL + quote_plus(key)
+def request_paper(key, cache, session, timeout=DEFAULT_TIMEOUT, extraParams=dict()):
+    encparams = urlencode(extraParams)
+    url = S2_PAPER_URL + quote_plus(key)+"?"+encparams
 
     if url in cache:
         return cache[url]
@@ -224,6 +233,7 @@ def search_semanticscholar(
 
     with shelve.open(CACHE_FILE) as cache:
         paper_ids = []
+        to=0
 
         while True:
             offset = len(paper_ids)
@@ -231,6 +241,13 @@ def search_semanticscholar(
             response = request_query(query, offset, batch_size, cache, session)
             if not response:
                 break
+            if response == "TIMEOUT":
+                to=to+1
+                logging.info("Timeout:",DEFAULT_TIMEOUT*4*to)
+                sleep(DEFAULT_TIMEOUT*4*to)
+                continue 
+            else:
+                to=0
 
             records = response["data"]
             total = response["total"]
