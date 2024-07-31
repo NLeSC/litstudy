@@ -167,6 +167,7 @@ def load_csv(
     citation_field: str = None,
     date_field: str = None,
     source_field: str = None,
+    doi_field: str = None,
     filter=None,
 ) -> DocumentSet:
     """Load an abitrary CSV file and parse its contents as a ``DocumentSet``
@@ -190,6 +191,8 @@ def load_csv(
     :param abstract_field: Field name for ``abstract``.
     :param citation_field: Field name for ``citation_count``.
     :param date_field: Field name for ``publication_date`` or
+    :param source_field: Field name for ``source``.
+    :param doi_field: Field name for ``doi``.
     :param filter: Optional function applied to each loaded record. This
                    function can be used to, for example, add or delete fields.
 
@@ -309,7 +312,8 @@ def load_csv(
                 "pubmed id",
             ],
         ),
-        doi=find_field(
+        doi=doi_field
+        or find_field(
             columns,
             [
                 "doi",

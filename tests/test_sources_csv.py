@@ -48,3 +48,27 @@ def test_load_scopus_csv():
 
     assert len(doc.authors) == 10
     assert doc.authors[0].name == "Phillips J.C."
+
+def test_load_retraction_watch_csv():
+    path = os.path.dirname(__file__) + "/resources/retraction_watch.csv"
+
+    # let's also go out of our way to make the date field work:
+    def date_filter(d: dict) -> dict:
+        import datetime
+        try:
+            d["date"] = datetime.datetime.strptime(d["OriginalPaperDate"], "%m/%d/%Y %H:%M").date().isoformat()
+            print(d["date"])
+        except ValueError:
+            pass
+        return d
+
+    docs = load_csv(path, doi_field="OriginalPaperDOI", source_field="Journal", filter=date_filter)
+    doc = docs[0]
+
+    assert doc.title == "Reflections on Research Software"
+    assert doc.publication_source == "Journal of Prominent Things"
+    assert doc.language is None
+    assert doc.publication_year == 2024
+
+    assert len(doc.authors) == 1
+    assert doc.authors[0].name == "Patrick Bos"
