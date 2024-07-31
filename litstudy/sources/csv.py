@@ -116,7 +116,7 @@ class CsvDocument(Document):
 
         for fmt in formats:
             try:
-                return datetime.strptime(text, fmt)
+                return datetime.datetime.strptime(text, fmt)
             except Exception:
                 pass
 
