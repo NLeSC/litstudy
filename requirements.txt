@@ -12,3 +12,4 @@ scikit-learn
 unidecode
 wordcloud
 feedparser
+scipy<1.13
