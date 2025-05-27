@@ -8,15 +8,15 @@
 [![Version](https://img.shields.io/pypi/v/litstudy)](https://pypi.org/project/litstudy/)
 [![Build and Test](https://github.com/NLeSC/litstudy/actions/workflows/python-app.yml/badge.svg)](https://github.com/NLeSC/litstudy/actions/)
 
-LitStudy is a Python package that enables analysis of scientific literature from the comfort of a Jupyter notebook. It provides the ability to select scientific publications and study their metadata through the use of visualizations, network analysis, and natural language processing.
+**LitStudy** is a Python package for analyzing scientific literature right from the comfort of a Jupyter Notebook. It lets you gather publications and explore their metadata through visualizations, network analysis, and natural-language processing.
 
-In essence, this package offers five main features:
+The package offers five main features:
 
-* Extract metadata from scientific documents sourced from various locations. The data is presented in a standardized interface, allowing for the combination of data from different sources.
-* Filter, select, deduplicate, and annotate collections of documents.
-* Compute and plot general statistics for document sets, such as statistics on authors, venues, and publication years.
-* Generate and plot various bibliographic networks as interactive visualizations.
-* Topic discovery using natural language processing (NLP) allows for the automatic discovery of popular topics.
+* **Extract** metadata from scientific documents sourced from various locations. A uniform interface allows combining different data sources.
+* **Filter**, **select**, **deduplicate**, and **annotate** document collections.
+* Compute and plot general **statistics** for document sets (authors, venues, publication years, and more).
+* Generate and plot various **bibliographic networks** as interactive visualizations.
+* Discover topics using **natural-language processing** (NLP) to automatically identify popular themes.
 
 ## Frequently Asked Questions
 
