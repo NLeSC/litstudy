@@ -14,12 +14,6 @@ jobs:
     with:
       python-version: "3.8"
 
-  build-python-37:
-    needs: build-python-38
-    uses: ./.github/workflows/python-action.yml
-    with:
-      python-version: "3.7"
-
   build-python-39:
     needs: build-python-38
     uses: ./.github/workflows/python-action.yml
@@ -31,6 +25,12 @@ jobs:
     uses: ./.github/workflows/python-action.yml
     with:
       python-version: "3.10"
+
+  build-python-311:
+    needs: build-python-38
+    uses: ./.github/workflows/python-action.yml
+    with:
+      python-version: "3.11"
 
 #  build-python-311:
 #    needs: build-python-38
