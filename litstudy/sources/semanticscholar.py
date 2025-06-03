@@ -4,6 +4,8 @@ from urllib.parse import urlencode, quote_plus
 import logging
 import requests
 import shelve
+from ..common import robust_open
+import json
 
 from ..common import progress_bar
 from ..types import Document, Author, DocumentSet, DocumentIdentifier
@@ -18,6 +20,7 @@ def extract_id(item):
         doi=item.get("doi"),
         arxivid=item.get("arxivId"),
         s2id=item.get("paperId"),
+        pubmed=item.get("pubmed"),
     )
 
 
@@ -96,26 +99,34 @@ CACHE_FILE = ".semantischolar"
 DEFAULT_TIMEOUT = 3.05  # 100 requests per 5 minutes
 
 
-def request_query(query, offset, limit, cache, session, timeout=DEFAULT_TIMEOUT):
-    params = urlencode(dict(query=query, offset=offset, limit=limit))
-    url = f"{S2_QUERY_URL}?{params}"
+def request_query(query, offset, limit, cache, session, timeout=DEFAULT_TIMEOUT, extraParams=dict()):
+    params=dict(query=query, offset=offset, limit=limit)
+    params.update(extraParams)
+    encparams = urlencode(params)
+    url = f"{S2_QUERY_URL}?{encparams}"
 
     if url in cache:
         return cache[url]
+    sleep(timeout)
 
-    reply = session.get(url)
+    reply = session.get(url,timeout=60*10)
     response = reply.json()
 
     if "data" not in response:
         msg = response.get("error") or response.get("message") or "unknown"
-        raise Exception(f"error while fetching {reply.url}: {msg}")
+        if msg.find("Too Many Requests.")>-1 or msg.find("Endpoint request timed out")>-1:
+            logging.info(f"request_query: Timeout error while fetching {reply.url}: {msg}")
+            return "TIMEOUT"
+        else:
+            raise Exception(f"error while fetching {reply.url}: {msg}")
 
     cache[url] = response
     return response
 
 
-def request_paper(key, cache, session, timeout=DEFAULT_TIMEOUT):
-    url = S2_PAPER_URL + quote_plus(key)
+def request_paper(key, cache, session, timeout=DEFAULT_TIMEOUT, extraParams=dict()):
+    encparams = urlencode(extraParams)
+    url = S2_PAPER_URL + quote_plus(key)+"?"+encparams
 
     if url in cache:
         return cache[url]
@@ -224,6 +235,7 @@ def search_semanticscholar(
 
     with shelve.open(CACHE_FILE) as cache:
         paper_ids = []
+        to=0
 
         while True:
             offset = len(paper_ids)
@@ -231,6 +243,15 @@ def search_semanticscholar(
             response = request_query(query, offset, batch_size, cache, session)
             if not response:
                 break
+
+            #retry in case of timeout
+            if response == "TIMEOUT":
+                to=to+1
+                logging.info("Timeout:",DEFAULT_TIMEOUT*4*to)
+                sleep(DEFAULT_TIMEOUT*4*to)
+                continue 
+            else:
+                to=0
 
             records = response["data"]
             total = response["total"]
@@ -255,4 +276,133 @@ def search_semanticscholar(
             else:
                 logging.warn(f"could not find paper id {paper_id}")
 
+    return DocumentSet(docs)
+
+def load_semanticscholar_json(path: str) -> DocumentSet:
+    """Import json file exported from SemanticScholar"""
+    docs = []
+    with robust_open(path) as f:
+        result = json.load(f)
+        data=result["data"]
+        for doc in data:
+            ids=doc.pop("externalIds")
+            for i in ids:
+                if i=="DOI":
+                    doc["doi"]=ids.get("DOI").lower()
+                elif i=="ArXiv":
+                    doc["arxivId"]=ids.get("ArXiv")
+                elif i=="PubMed":
+                    doc["pubmed"]=ids.get("PubMed")
+            docs.append(ScholarDocument(doc))
+    return DocumentSet(docs)
+
+def fastsearch_semanticscholar(
+    query: str, *, limit: int = 1000, batch_size: int = 100, session=None
+) -> DocumentSet:
+    """Submit the given query to SemanticScholar API and return the results
+    as a `DocumentSet`.
+
+    :param query: The search query to submit.
+    :param limit: The maximum number of results to return. Must be at most 1,000
+    :param batch_size: The number of results to retrieve per request. Must be at most 100.
+    :param session: The `requests.Session` to use for HTTP requests.
+    """
+
+    if not query:
+        raise Exception("no query specified in `search_semanticscholar`")
+
+    if session is None:
+        session = requests.Session()
+
+    docs = []
+
+    with shelve.open(CACHE_FILE) as cache:
+        paper_ids = []
+        to=0
+        while True:
+            offset = len(docs)
+
+            response = request_query(query, offset, batch_size, cache, session,extraParams={"fields":"title,authors,year,venue,abstract,citations,references,externalIds"})
+            if not response:
+                break
+
+            #Retry in case of timeout
+            if response == "TIMEOUT":
+                to=to+1
+                logging.info("Timeout:",DEFAULT_TIMEOUT*4*to)
+                sleep(DEFAULT_TIMEOUT*4*to)
+                continue 
+            else:
+                to=0
+
+            records = response["data"]
+            total = response["total"]
+            print("Gesamt:",total,"Offset:",offset)
+            for record in records:
+                ids=record.pop("externalIds")
+                for i in ids:
+                    if i=="DOI":
+                        record["doi"]=ids.get("DOI").lower()
+                    elif i=="ArXiv":
+                        record["arxivId"]=ids.get("ArXiv")
+                    elif i=="PubMed":
+                        record["pubmed"]=ids.get("PubMed")
+                docs.append(ScholarDocument(record))
+
+
+            # Check if we reached the total number of papers
+            if len(docs) >= total:
+                break
+
+            # Check if we exceeded the user-defined limit
+            if limit is not None and len(docs) >= limit:
+                docs = docs[:limit]
+                break
+
+    return DocumentSet(docs)
+
+def generate_reference_list(docs: DocumentSet):
+    """Returns a list of referenced documents formattet for a fetch_semanticscholar request.
+    s2id:   <id>
+    PubMed: PMID:<id>
+    DOI:    DOI:<id>
+    ArXiv: ARXIV:<id>
+    """
+    references=[]
+    for u in range(len(docs)):
+        if docs[u].references == None:
+            continue
+        for i in range(len(docs[u].references)):
+            doi=docs[u].references[i].doi
+            s2id=docs[u].references[i].s2id
+            arxivid=docs[u].references[i].arxivid
+            pubmed=docs[u].references[i].pubmed
+            title=docs[u].references[i].title
+            if doi != None:
+                references.append("DOI:"+doi)
+            elif s2id != None:
+                references.append(s2id)
+            elif pubmed != None:
+                references.append("PMID:"+pubmed)
+            elif arxivid != None:
+                references.append("ARXIV:"+arxivid)
+            else:
+                continue
+    return references
+
+def mass_fetch_semanticscholar(paper_ids: list, session=None) -> DocumentSet:
+    if session is None:
+        session = requests.Session()
+    #remove duplicates:
+    paper_ids=list(set(paper_ids))
+    
+    docs = []
+
+    with shelve.open(CACHE_FILE) as cache:
+        for paper_id in progress_bar(paper_ids):            
+            record = request_paper(paper_id, cache, session)
+            if record:
+                docs.append(ScholarDocument(record))
+            else:
+                logging.warn(f"could not find paper id {paper_id}")
     return DocumentSet(docs)
